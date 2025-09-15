@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.manhhoach</groupId>
-	<artifactId>JavaTour</artifactId>
+	<artifactId>EofficeFull</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>JavaTour</name>
-	<description>Java tour</description>
+	<name>EofficeFull</name>
+	<description>EofficeFull</description>
 	<url/>
 	<licenses>
 		<license/>
