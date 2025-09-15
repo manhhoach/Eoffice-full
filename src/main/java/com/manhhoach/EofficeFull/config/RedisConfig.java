@@ -1,7 +1,5 @@
 package com.manhhoach.EofficeFull.config;
 
-
-import com.manhhoach.EofficeFull.listener.RedisSubscriber;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -28,15 +26,4 @@ public class RedisConfig {
         return new ChannelTopic("redispro");
     }
 
-    @Bean
-    public RedisMessageListenerContainer redisContainer(
-            RedisConnectionFactory connectionFactory,
-            RedisSubscriber redisSubscriber,
-            ChannelTopic topic
-    ) {
-        var container = new RedisMessageListenerContainer();
-        container.setConnectionFactory(connectionFactory);
-        container.addMessageListener(redisSubscriber, topic);
-        return container;
-    }
 }

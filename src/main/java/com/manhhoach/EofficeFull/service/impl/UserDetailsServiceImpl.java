@@ -1,6 +1,7 @@
 package com.manhhoach.EofficeFull.service.impl;
 
 import com.manhhoach.EofficeFull.config.CustomUserDetails;
+import com.manhhoach.EofficeFull.dto.res.PermissionDto;
 import com.manhhoach.EofficeFull.repository.PermissionRepository;
 import com.manhhoach.EofficeFull.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +28,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         var user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Not found"));
-        Set<String> permissions = permissionRepository.getPermissionsByUserId(user.getId());
-        List<GrantedAuthority> grantedAuthorities = permissions.stream().map(e -> new SimpleGrantedAuthority(e)).collect(Collectors.toList());
+        List<PermissionDto> permissions = permissionRepository.getPermissionsByUserId(user.getId());
+        List<GrantedAuthority> grantedAuthorities = permissions.stream().map(e -> new SimpleGrantedAuthority(e.getCode())).collect(Collectors.toList());
         return new CustomUserDetails(user.getId(), username, user.getPassword(), grantedAuthorities);
     }
 }

@@ -6,6 +6,7 @@ import com.manhhoach.EofficeFull.dto.req.LoginReq;
 import com.manhhoach.EofficeFull.dto.req.RefreshTokenReq;
 import com.manhhoach.EofficeFull.dto.req.RegisterReq;
 import com.manhhoach.EofficeFull.dto.res.LoginRes;
+import com.manhhoach.EofficeFull.dto.res.PermissionDto;
 import com.manhhoach.EofficeFull.dto.res.UserDto;
 import com.manhhoach.EofficeFull.entity.Role;
 import com.manhhoach.EofficeFull.entity.User;
@@ -60,7 +61,7 @@ public class AuthServiceImpl implements AuthService {
                     new UsernamePasswordAuthenticationToken(req.getUsername(), req.getPassword())
             );
             CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-            List<String> permissions = userDetails.getAuthorities().stream().map(e -> e.getAuthority()).toList();
+            var permissions = permissionRepository.getPermissionsByUserId(userDetails.getId());
             return buildLoginRes(userDetails.getId(),userDetails.getUsername(),permissions);
         } catch (AuthenticationException e) {
             throw new RuntimeException(e);
@@ -99,14 +100,14 @@ public class AuthServiceImpl implements AuthService {
         String username = jwtTokenProvider.getUsername(req.getRefreshToken(), refreshTokenKey);
         var id = jwtTokenProvider.getId(req.getRefreshToken(), refreshTokenKey);
         var permissions = permissionRepository.getPermissionsByUserId(id);
-        return buildLoginRes(id, username, permissions.stream().toList());
+        return buildLoginRes(id, username, permissions);
     }
 
-    private LoginRes buildLoginRes(Long id, String username, List<String> permissions ){
+    private LoginRes buildLoginRes(Long id, String username, List<PermissionDto> permissions ){
         Map<String, Object> claims = new HashMap<>();
         claims.put("id", id);
-        claims.put("permissions", permissions);
-
+        var permissionCodes = permissions.stream().map(e->e.getCode()).toList();
+        claims.put("permissions", permissionCodes);
         String accessToken = jwtTokenProvider.generateToken(username, claims, accessTokenKey, accessTokenExpirationMs);
         String refreshToken = jwtTokenProvider.generateToken(username, claims, refreshTokenKey, refreshTokenExpirationMs);
 
@@ -114,6 +115,7 @@ public class AuthServiceImpl implements AuthService {
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .username(username)
+                .permissions(permissions)
                 .build();
     }
 }
