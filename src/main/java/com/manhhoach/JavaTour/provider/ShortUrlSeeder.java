@@ -1,7 +1,5 @@
 package com.manhhoach.JavaTour.providers;
 
-import com.manhhoach.JavaTour.entity.ShortUrl;
-import com.manhhoach.JavaTour.repository.ShortUrlRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
