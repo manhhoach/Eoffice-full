@@ -1,5 +1,6 @@
-package com.manhhoach.EofficeFull.dto.res;
+package com.manhhoach.EofficeFull.dto.role;
 
+import com.manhhoach.EofficeFull.dto.permission.PermissionDto;
 import lombok.Builder;
 import lombok.Data;
 

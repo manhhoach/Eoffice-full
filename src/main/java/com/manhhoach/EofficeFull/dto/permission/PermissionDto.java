@@ -1,4 +1,4 @@
-package com.manhhoach.EofficeFull.dto.res;
+package com.manhhoach.EofficeFull.dto.permission;
 
 
 import lombok.AllArgsConstructor;

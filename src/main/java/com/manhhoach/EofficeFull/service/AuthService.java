@@ -1,10 +1,10 @@
 package com.manhhoach.EofficeFull.service;
 
-import com.manhhoach.EofficeFull.dto.req.LoginReq;
-import com.manhhoach.EofficeFull.dto.req.RefreshTokenReq;
-import com.manhhoach.EofficeFull.dto.req.RegisterReq;
-import com.manhhoach.EofficeFull.dto.res.LoginRes;
-import com.manhhoach.EofficeFull.dto.res.UserDto;
+import com.manhhoach.EofficeFull.dto.auth.LoginReq;
+import com.manhhoach.EofficeFull.dto.auth.RefreshTokenReq;
+import com.manhhoach.EofficeFull.dto.auth.RegisterReq;
+import com.manhhoach.EofficeFull.dto.auth.LoginRes;
+import com.manhhoach.EofficeFull.dto.user.UserDto;
 
 public interface AuthService {
     LoginRes login(LoginReq req);

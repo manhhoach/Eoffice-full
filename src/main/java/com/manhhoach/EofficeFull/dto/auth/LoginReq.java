@@ -1,4 +1,4 @@
-package com.manhhoach.EofficeFull.dto.req;
+package com.manhhoach.EofficeFull.dto.auth;
 
 import lombok.Builder;
 import lombok.Data;

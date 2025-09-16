@@ -2,12 +2,12 @@ package com.manhhoach.EofficeFull.service.impl;
 
 import com.manhhoach.EofficeFull.config.CustomUserDetails;
 import com.manhhoach.EofficeFull.constant.RoleConstant;
-import com.manhhoach.EofficeFull.dto.req.LoginReq;
-import com.manhhoach.EofficeFull.dto.req.RefreshTokenReq;
-import com.manhhoach.EofficeFull.dto.req.RegisterReq;
-import com.manhhoach.EofficeFull.dto.res.LoginRes;
-import com.manhhoach.EofficeFull.dto.res.PermissionDto;
-import com.manhhoach.EofficeFull.dto.res.UserDto;
+import com.manhhoach.EofficeFull.dto.auth.LoginReq;
+import com.manhhoach.EofficeFull.dto.auth.RefreshTokenReq;
+import com.manhhoach.EofficeFull.dto.auth.RegisterReq;
+import com.manhhoach.EofficeFull.dto.auth.LoginRes;
+import com.manhhoach.EofficeFull.dto.permission.PermissionDto;
+import com.manhhoach.EofficeFull.dto.user.UserDto;
 import com.manhhoach.EofficeFull.entity.Role;
 import com.manhhoach.EofficeFull.entity.User;
 import com.manhhoach.EofficeFull.provider.JwtTokenProvider;
