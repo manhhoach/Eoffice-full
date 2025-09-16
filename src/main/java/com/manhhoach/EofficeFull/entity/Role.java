@@ -10,8 +10,8 @@ import java.util.Set;
 
 @Entity
 @Data
-@AllArgsConstructor
 @Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class Role extends BaseEntity {
     private String name;

@@ -16,11 +16,10 @@ public interface PermissionRepository extends JpaRepository<Permission, Long> {
                 p.url,
                 p.isDisplay,
                 p.priority)
-            FROM user_role ur 
-            JOIN role r ON ur.role_id = r.id
-            JOIN role_permission rp ON r.id = rp.role_id
-            JOIN permission p ON rp.permission_id = p.id
-            WHERE ur.user_id = :userId
-            """, nativeQuery = true)
+            FROM User u
+            JOIN u.roles r
+            JOIN r.permissions p
+            WHERE u.id = :userId
+            """)
     List<PermissionDto> getPermissionsByUserId(Long userId);
 }

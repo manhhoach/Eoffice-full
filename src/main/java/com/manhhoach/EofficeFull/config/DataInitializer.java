@@ -24,15 +24,15 @@ public class DataInitializer {
                 Role userRole = Role.builder().name("User").code("USER").build();
 
                 // 2. Tạo Permissions
-                Permission p1 = Permission.builder().name("Dashboard").code("DASHBOARD").url("/dashboard").isDisplay("Y").priority(1).build();
-                Permission p2 = Permission.builder().name("User Management").code("USER_MGMT").url("/users").isDisplay("Y").priority(2).build();
-                Permission p3 = Permission.builder().name("Role Management").code("ROLE_MGMT").url("/roles").isDisplay("Y").priority(3).build();
-                Permission p4 = Permission.builder().name("System Settings").code("SETTINGS").url("/settings").isDisplay("Y").priority(4).build();
+                Permission p1 = Permission.builder().name("Dashboard").code("DASHBOARD").url("/dashboard").isDisplay(true).priority(1).build();
+                Permission p2 = Permission.builder().name("User Management").code("USER_MGMT").url("/users").isDisplay(true).priority(2).build();
+                Permission p3 = Permission.builder().name("Role Management").code("ROLE_MGMT").url("/roles").isDisplay(true).priority(3).build();
+                Permission p4 = Permission.builder().name("System Settings").code("SETTINGS").url("/settings").isDisplay(true).priority(4).build();
 
-                Permission p5 = Permission.builder().name("Profile").code("PROFILE").url("/profile").isDisplay("Y").priority(1).build();
-                Permission p6 = Permission.builder().name("My Orders").code("ORDERS").url("/orders").isDisplay("Y").priority(2).build();
-                Permission p7 = Permission.builder().name("Notifications").code("NOTIFICATIONS").url("/notifications").isDisplay("Y").priority(3).build();
-                Permission p8 = Permission.builder().name("Help Center").code("HELP").url("/help").isDisplay("Y").priority(4).build();
+                Permission p5 = Permission.builder().name("Profile").code("PROFILE").url("/profile").isDisplay(true).priority(1).build();
+                Permission p6 = Permission.builder().name("My Orders").code("ORDERS").url("/orders").isDisplay(true).priority(2).build();
+                Permission p7 = Permission.builder().name("Notifications").code("NOTIFICATIONS").url("/notifications").isDisplay(true).priority(3).build();
+                Permission p8 = Permission.builder().name("Help Center").code("HELP").url("/help").isDisplay(true).priority(4).build();
 
                 // 3. Gán quyền cho role
                 adminRole.setPermissions(Set.of(p1, p2, p3, p4));
