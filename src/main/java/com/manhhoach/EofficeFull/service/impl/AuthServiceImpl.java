@@ -18,6 +18,7 @@ import com.manhhoach.EofficeFull.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -63,8 +64,8 @@ public class AuthServiceImpl implements AuthService {
             CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
             var permissions = permissionRepository.getPermissionsByUserId(userDetails.getId());
             return buildLoginRes(userDetails.getId(),userDetails.getUsername(),permissions);
-        } catch (AuthenticationException e) {
-            throw new RuntimeException(e);
+        } catch (BadCredentialsException e) {
+            throw new BadCredentialsException("Invalid info");
         }
 
     }
