@@ -17,8 +17,8 @@ function Login() {
   const onFinish = async (values) => {
     try {
       const res = await refetch({ body: values });
-      localStorage.setItem("accessToken", res.accessToken);
-      setPermissions(res.permissions)
+      localStorage.setItem("accessToken", res.data.accessToken);
+      setPermissions(res.data.permissions)
       console.log("Login success:", res);
     } catch (err) {
       console.error("Login failed:", err);
