@@ -1,5 +1,4 @@
 import { createContext, useState, useEffect } from "react";
-import api from "../api/axios";
 
 export const AuthContext = createContext();
 
@@ -8,13 +7,15 @@ export const AuthProvider = ({ children }) => {
   const [permissions, setPermissions] = useState([]);
   const [token, setToken] = useState(localStorage.getItem("token") || null);
 
-  
+
   return (
     <AuthContext.Provider
       value={{
         user,
         permissions,
         token,
+        setUser,
+        setPermissions
       }}
     >
       {children}

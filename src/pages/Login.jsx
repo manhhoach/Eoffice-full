@@ -1,54 +1,74 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from "react";
+import { Form, Input, Button, Card, Typography } from "antd";
+import useApi from "../common/useApi";
+import { AuthContext } from "../contexts/AuthContext";
+
+const { Title } = Typography;
 
 function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { data, loading, error, refetch } = useApi({
+    url: 'auth/login',
+    method: 'POST',
+    auto: false,
+  })
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Xử lý đăng nhập tại đây
+  const { setUser, setPermissions } = useContext(AuthContext);
+
+  const onFinish = async (values) => {
+    try {
+      const res = await refetch({ body: values });
+      localStorage.setItem("accessToken", res.accessToken);
+      setPermissions(res.permissions)
+      console.log("Login success:", res);
+    } catch (err) {
+      console.error("Login failed:", err);
+    }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 font-inter">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6 text-violet-700 text-center">Đăng nhập</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-gray-700 mb-2" htmlFor="email">
-              Email
-            </label>
-            <input
-              id="email"
-              type="email"
-              className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-violet-600"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              autoFocus
-            />
-          </div>
-          <div className="mb-6">
-            <label className="block text-gray-700 mb-2" htmlFor="password">
-              Mật khẩu
-            </label>
-            <input
-              id="password"
-              type="password"
-              className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-violet-600"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-          <button
-            type="submit"
-            className="w-full bg-violet-600 hover:bg-violet-700 text-white font-semibold py-2 rounded transition"
+    <div
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        background: "#f9fafb",
+      }}
+    >
+      <Card style={{ width: 400, borderRadius: 12, boxShadow: "0 2px 8px rgba(0,0,0,0.1)" }}>
+        <Title level={3} style={{ textAlign: "center", color: "#722ed1" }}>
+          Login
+        </Title>
+        <Form layout="vertical" onFinish={onFinish}>
+          <Form.Item
+            label="Username"
+            name="username"
+            rules={[{ required: true, message: "Please enter your username" }]}
           >
-            Đăng nhập
-          </button>
-        </form>
-      </div>
+            <Input placeholder="Enter your username" />
+          </Form.Item>
+
+          <Form.Item
+            label="Password"
+            name="password"
+            rules={[{ required: true, message: "Please enter your password" }]}
+          >
+            <Input.Password placeholder="Enter your password" />
+          </Form.Item>
+
+          <Form.Item>
+            <Button
+              type="primary"
+              htmlType="submit"
+              loading={loading}
+              block
+              style={{ borderRadius: 6 }}
+            >
+              Login
+            </Button>
+          </Form.Item>
+        </Form>
+      </Card>
     </div>
   );
 }
