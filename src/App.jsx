@@ -11,6 +11,10 @@ import './charts/ChartjsConfig';
 
 // Import pages
 import Dashboard from './pages/Dashboard';
+import Login from './pages/Login';
+import Forbidden from './pages/Forbidden';
+import PrivateRoute from './routes/privateRoute';
+import { AuthProvider } from './contexts/AuthContext';
 
 function App() {
 
@@ -23,11 +27,20 @@ function App() {
   }, [location.pathname]); // triggered on route change
 
   return (
-    <>
+    <AuthProvider>
       <Routes>
-        <Route exact path="/" element={<Dashboard />} />
+        <Route path="/login" element={<Login />} />
+        <Route
+          path="/"
+          element={
+            <PrivateRoute permissionCode="DASHBOARD">
+              <Dashboard />
+            </PrivateRoute>
+          }
+        />
+        <Route path="/403" element={<Forbidden />} />
       </Routes>
-    </>
+    </AuthProvider>
   );
 }
 
