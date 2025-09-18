@@ -1,14 +1,13 @@
 package com.manhhoach.EofficeFull.service;
 
+import com.manhhoach.EofficeFull.common.PagedResponse;
 import com.manhhoach.EofficeFull.dto.role.CreateRoleReq;
-import com.manhhoach.EofficeFull.entity.Role;
-
-import java.util.List;
+import com.manhhoach.EofficeFull.dto.role.RoleDto;
 
 public interface RoleService {
-    Role create(CreateRoleReq req);
-    Role update(Long id, CreateRoleReq req);
+    RoleDto create(CreateRoleReq req);
+    RoleDto update(Long id, CreateRoleReq req);
     void delete(Long id);
-    Role getById(Long id);
-    List<Role> getAll();
+    RoleDto getById(Long id);
+    PagedResponse<RoleDto> getPaged(int page, int size);
 }

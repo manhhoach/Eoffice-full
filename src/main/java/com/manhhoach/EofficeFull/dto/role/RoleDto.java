@@ -1,6 +1,7 @@
 package com.manhhoach.EofficeFull.dto.role;
 
 import com.manhhoach.EofficeFull.dto.permission.PermissionDto;
+import com.manhhoach.EofficeFull.entity.Role;
 import lombok.Builder;
 import lombok.Data;
 
@@ -13,4 +14,8 @@ public class RoleDto {
     private String code;
     private String name;
     private List<PermissionDto> permissions;
+
+    public static RoleDto map(Role role){
+        return RoleDto.builder().code(role.getCode()).name(role.getName()).build();
+    }
 }
