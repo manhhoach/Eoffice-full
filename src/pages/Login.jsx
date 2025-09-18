@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { Form, Input, Button, Card, Typography } from "antd";
 import useApi from "../common/useApi";
 import { AuthContext } from "../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const { Title } = Typography;
 
@@ -11,7 +12,7 @@ function Login() {
     method: 'POST',
     auto: false,
   })
-
+  const navigate = useNavigate();
   const { setUser, setPermissions } = useContext(AuthContext);
 
   const onFinish = async (values) => {
@@ -19,7 +20,8 @@ function Login() {
       const res = await refetch({ body: values });
       localStorage.setItem("accessToken", res.data.accessToken);
       setPermissions(res.data.permissions)
-      console.log("Login success:", res);
+      setUser(res.data.username);
+      navigate("/");
     } catch (err) {
       console.error("Login failed:", err);
     }
