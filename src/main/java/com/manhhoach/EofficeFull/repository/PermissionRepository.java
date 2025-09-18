@@ -21,4 +21,10 @@ public interface PermissionRepository extends JpaRepository<Permission, Long> {
             WHERE u.id = :userId
             """)
     List<PermissionDto> getPermissionsByUserId(Long userId);
+
+    @Query("""
+            SELECT CASE WHEN COUNT(r) > 0 THEN true ELSE false END
+            FROM Role r WHERE r.code = :code AND (:id IS NULL OR r.id != :id)
+            """)
+    boolean existCode(Long id, String code);
 }
