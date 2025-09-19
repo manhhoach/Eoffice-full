@@ -28,7 +28,7 @@ public interface PermissionRepository extends JpaRepository<Permission, Long> {
 
     @Query("""
             SELECT CASE WHEN COUNT(r) > 0 THEN true ELSE false END
-            FROM Role r WHERE r.code = :code AND (:id IS NULL OR r.id != :id)
+            FROM Permission r WHERE r.code = :code AND (:id IS NULL OR r.id != :id)
             """)
     boolean existCode(Long id, String code);
 }

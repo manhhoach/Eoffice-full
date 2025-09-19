@@ -7,6 +7,6 @@ public class CreatePermissionReq {
     private String name;
     private String code;
     private String url;
-    private Boolean isDisplay;
+    private Boolean isDisplayed;
     private Integer priority;
 }

@@ -31,7 +31,7 @@ public class PermissionServiceImpl implements PermissionService {
         per.setCode(req.getCode());
         per.setUrl(req.getUrl());
         per.setPriority(req.getPriority());
-        per.setIsDisplayed(req.getIsDisplay());
+        per.setIsDisplayed(req.getIsDisplayed());
         permisionRepository.save(per);
         return PermissionDto.map(per);
     }
@@ -45,7 +45,7 @@ public class PermissionServiceImpl implements PermissionService {
         per.setCode(req.getCode());
         per.setUrl(req.getUrl());
         per.setPriority(req.getPriority());
-        per.setIsDisplayed(req.getIsDisplay());
+        per.setIsDisplayed(req.getIsDisplayed());
         permisionRepository.save(per);
         return PermissionDto.map(per);
     }
@@ -58,7 +58,7 @@ public class PermissionServiceImpl implements PermissionService {
     @Override
     public PermissionDto getById(Long id) {
         Permission per = permisionRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Role not found"));
+                .orElseThrow(() -> new RuntimeException("Permission not found"));
         return PermissionDto.map(per);
     }
 
