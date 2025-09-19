@@ -82,7 +82,7 @@ public class AuthServiceImpl implements AuthService {
         User user = new User();
         user.setUsername(req.getUsername());
         user.setPassword(hashedPassword);
-        user.setRoles(Set.of(defaultRole));
+        user.setRoles(List.of(defaultRole));
 
         userRepository.save(user);
         return true;

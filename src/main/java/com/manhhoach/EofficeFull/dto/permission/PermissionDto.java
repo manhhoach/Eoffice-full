@@ -14,20 +14,19 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PermissionDto {
+    private Long id;
     private String name;
     private String code;
     private String url;
-    private Boolean isDisplay;
+    private Boolean isDisplayed;
     private Integer priority;
-    private Long id;
-
 
     public static PermissionDto map(Permission permission){
         return PermissionDto.builder()
                 .code(permission.getCode())
                 .name(permission.getName())
                 .id(permission.getId())
-                .isDisplay(permission.getIsDisplay())
+                .isDisplayed(permission.getIsDisplayed())
                 .priority(permission.getPriority())
                 .url(permission.getUrl())
                 .build();

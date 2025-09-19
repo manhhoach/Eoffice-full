@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -13,6 +14,7 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "role")
 public class Role extends BaseEntity {
     private String name;
     private String code;
@@ -20,8 +22,17 @@ public class Role extends BaseEntity {
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "role_permission",
-            joinColumns = @JoinColumn(name = "role_id"),
-            inverseJoinColumns = @JoinColumn(name = "permission_id")
+            joinColumns = @JoinColumn(name = "roleId"),
+            inverseJoinColumns = @JoinColumn(name = "permissionId")
     )
-    private Set<Permission> permissions;
+    private List<Permission> permissions;
+
+
+    @ManyToMany(fetch=FetchType.LAZY)
+    @JoinTable(
+            name="role_module",
+            joinColumns = @JoinColumn(name="roleId"),
+            inverseJoinColumns = @JoinColumn(name="moduleId")
+    )
+    private List<Module> modules;
 }

@@ -31,7 +31,7 @@ public class PermissionServiceImpl implements PermissionService {
         per.setCode(req.getCode());
         per.setUrl(req.getUrl());
         per.setPriority(req.getPriority());
-        per.setIsDisplay(req.getIsDisplay());
+        per.setIsDisplayed(req.getIsDisplay());
         permisionRepository.save(per);
         return PermissionDto.map(per);
     }
@@ -45,7 +45,7 @@ public class PermissionServiceImpl implements PermissionService {
         per.setCode(req.getCode());
         per.setUrl(req.getUrl());
         per.setPriority(req.getPriority());
-        per.setIsDisplay(req.getIsDisplay());
+        per.setIsDisplayed(req.getIsDisplay());
         permisionRepository.save(per);
         return PermissionDto.map(per);
     }
