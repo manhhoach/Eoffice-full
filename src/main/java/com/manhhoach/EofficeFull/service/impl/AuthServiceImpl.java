@@ -6,15 +6,18 @@ import com.manhhoach.EofficeFull.dto.auth.LoginReq;
 import com.manhhoach.EofficeFull.dto.auth.RefreshTokenReq;
 import com.manhhoach.EofficeFull.dto.auth.RegisterReq;
 import com.manhhoach.EofficeFull.dto.auth.LoginRes;
+import com.manhhoach.EofficeFull.dto.module.ModuleDto;
 import com.manhhoach.EofficeFull.dto.permission.PermissionDto;
 import com.manhhoach.EofficeFull.dto.user.UserDto;
 import com.manhhoach.EofficeFull.entity.Role;
 import com.manhhoach.EofficeFull.entity.User;
 import com.manhhoach.EofficeFull.provider.JwtTokenProvider;
+import com.manhhoach.EofficeFull.repository.ModuleRepository;
 import com.manhhoach.EofficeFull.repository.PermissionRepository;
 import com.manhhoach.EofficeFull.repository.RoleRepository;
 import com.manhhoach.EofficeFull.repository.UserRepository;
 import com.manhhoach.EofficeFull.service.AuthService;
+import com.manhhoach.EofficeFull.service.ModuleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -39,9 +42,9 @@ public class AuthServiceImpl implements AuthService {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
-    private final RedisService redisService;
     private final AuthenticationManager authenticationManager;
     private final PermissionRepository permissionRepository;
+    private final ModuleService moduleService;
 
     @Value("${security.jwt.access-token.key}")
     private String accessTokenKey;
@@ -62,8 +65,8 @@ public class AuthServiceImpl implements AuthService {
                     new UsernamePasswordAuthenticationToken(req.getUsername(), req.getPassword())
             );
             CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-            var permissions = permissionRepository.getPermissionsByUserId(userDetails.getId());
-            return buildLoginRes(userDetails.getId(),userDetails.getUsername(),permissions);
+            List<ModuleDto> modules = moduleService.getModulesByUserId(userDetails.getId());
+            return buildLoginRes(userDetails.getId(),userDetails.getUsername(), modules);
         } catch (BadCredentialsException e) {
             throw new BadCredentialsException("Invalid info");
         }
@@ -100,23 +103,28 @@ public class AuthServiceImpl implements AuthService {
     public LoginRes refreshToken(RefreshTokenReq req) {
         String username = jwtTokenProvider.getUsername(req.getRefreshToken(), refreshTokenKey);
         var id = jwtTokenProvider.getId(req.getRefreshToken(), refreshTokenKey);
-        var permissions = permissionRepository.getPermissionsByUserId(id);
-        return buildLoginRes(id, username, permissions);
+        List<ModuleDto> modules = moduleService.getModulesByUserId(id);
+        return buildLoginRes(id, username, modules);
     }
 
-    private LoginRes buildLoginRes(Long id, String username, List<PermissionDto> permissions ){
+    private LoginRes buildLoginRes(Long id, String username, List<ModuleDto> moduleDtos ){
         Map<String, Object> claims = new HashMap<>();
         claims.put("id", id);
-        var permissionCodes = permissions.stream().map(e->e.getCode()).toList();
+
+        LoginRes data = LoginRes.builder()
+                .username(username)
+                .modules(moduleDtos)
+                .build();
+
+        var permissionCodes = data.getPermissionCodes();
+
         claims.put("permissions", permissionCodes);
+
         String accessToken = jwtTokenProvider.generateToken(username, claims, accessTokenKey, accessTokenExpirationMs);
         String refreshToken = jwtTokenProvider.generateToken(username, claims, refreshTokenKey, refreshTokenExpirationMs);
 
-        return LoginRes.builder()
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
-                .username(username)
-                .permissions(permissions)
-                .build();
+        data.setAccessToken(accessToken);
+        data.setRefreshToken(refreshToken);
+        return data;
     }
 }

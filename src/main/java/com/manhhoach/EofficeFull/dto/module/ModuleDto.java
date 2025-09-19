@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -16,6 +18,8 @@ public class ModuleDto {
     private String name;
     private String code;
     private Boolean isDisplayed;
+    private List<PermissionDto> permissions;
+
 
     public static ModuleDto map(Module module){
         return ModuleDto.builder()

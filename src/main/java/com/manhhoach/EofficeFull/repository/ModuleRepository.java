@@ -1,9 +1,12 @@
 package com.manhhoach.EofficeFull.repository;
 
+import com.manhhoach.EofficeFull.dto.module.ModuleDto;
 import com.manhhoach.EofficeFull.entity.Module;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface ModuleRepository extends JpaRepository<Module, Long> {
@@ -12,4 +15,14 @@ public interface ModuleRepository extends JpaRepository<Module, Long> {
             FROM Module r WHERE r.code = :code AND (:id IS NULL OR r.id != :id)
             """)
     boolean existCode(Long id, String code);
+
+
+    @Query("""
+            SELECT DISTINCT m FROM User u 
+            JOIN u.roles r
+            JOIN r.modules m
+            LEFT JOIN FETCH m.permissions
+            WHERE u.id = :userId
+            """)
+    List<Module> getModulesByUserId(Long userId);
 }
