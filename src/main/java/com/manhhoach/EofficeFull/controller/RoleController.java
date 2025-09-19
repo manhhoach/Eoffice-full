@@ -19,7 +19,7 @@ public class RoleController {
     private final RoleService roleService;
 
     @GetMapping("/paged")
-    public ApiResponse<PagedResponse<RoleDto>> getPagedTours(PagingRequest request) {
+    public ApiResponse<PagedResponse<RoleDto>> getPaged(PagingRequest request) {
         return ApiResponse.success(
                 roleService.getPaged(request.getPage(), request.getSize())
         );

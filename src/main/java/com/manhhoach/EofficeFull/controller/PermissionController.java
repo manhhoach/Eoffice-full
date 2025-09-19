@@ -19,7 +19,7 @@ public class PermissionController {
     private final PermissionService permissionService;
 
     @GetMapping("/paged")
-    public ApiResponse<PagedResponse<PermissionDto>> getPagedTours(PagingRequest request) {
+    public ApiResponse<PagedResponse<PermissionDto>> getPaged(PagingRequest request) {
         return ApiResponse.success(
                 permissionService.getPaged(request.getPage(), request.getSize())
         );
