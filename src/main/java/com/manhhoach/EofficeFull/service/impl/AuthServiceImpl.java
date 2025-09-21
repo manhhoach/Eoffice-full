@@ -111,28 +111,10 @@ public class AuthServiceImpl implements AuthService {
 
         List<Permission> permissions = permissionRepository.getPermissionsByUserId(id);
         List<String> permissionCodes = permissions.stream().map(per->per.getCode()).toList();
-        Map<Long, ModuleDto> moduleMap = new LinkedHashMap<>();
 
-        for (Permission p : permissions) {
-            Module module = p.getModule();
-            if (module == null) {
-                continue; // hoặc gán vào module "SYSTEM" tùy thiết kế
-            }
-
-            // Nếu module chưa có trong map thì thêm mới
-            ModuleDto moduleDto = moduleMap.computeIfAbsent(module.getId(), k -> ModuleDto.map(module));
-
-            // Thêm permissionDto vào moduleDto
-            if (moduleDto.getPermissions() == null) {
-                moduleDto.setPermissions(new ArrayList<>());
-            }
-            moduleDto.getPermissions().add(PermissionDto.map(p));
-        }
-
-        List<ModuleDto> result = new ArrayList<>(moduleMap.values());
         LoginRes data = LoginRes.builder()
                 .username(username)
-                .modules(result)
+                .modules(groupPermissions(permissions))
                 .permissionCodes(permissionCodes)
                 .build();
 
@@ -145,4 +127,26 @@ public class AuthServiceImpl implements AuthService {
         data.setRefreshToken(refreshToken);
         return data;
     }
+
+    List<ModuleDto> groupPermissions(List<Permission> permissions){
+        Map<Long, ModuleDto> moduleMap = new LinkedHashMap<>();
+
+        for (Permission p : permissions) {
+            Module module = p.getModule();
+            if (module == null) {
+                continue;
+            }
+
+            ModuleDto moduleDto = moduleMap.computeIfAbsent(module.getId(), k -> ModuleDto.map(module));
+
+            if (moduleDto.getPermissions() == null) {
+                moduleDto.setPermissions(new ArrayList<>());
+            }
+            moduleDto.getPermissions().add(PermissionDto.map(p));
+        }
+
+        List<ModuleDto> result = new ArrayList<>(moduleMap.values());
+        return result;
+    }
+
 }
