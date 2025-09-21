@@ -1,10 +1,7 @@
 package com.manhhoach.EofficeFull.entity;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,7 +20,7 @@ public class Permission extends BaseEntity {
     private Boolean isDisplayed;
     private Integer priority;
 
-    @ManyToOne
-    @JoinColumn(name = "moduleId")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "moduleId", nullable = false)
     private Module module;
 }

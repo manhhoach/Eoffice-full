@@ -65,8 +65,7 @@ public class AuthServiceImpl implements AuthService {
                     new UsernamePasswordAuthenticationToken(req.getUsername(), req.getPassword())
             );
             CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-            List<ModuleDto> modules = moduleService.getModulesByUserId(userDetails.getId());
-            return buildLoginRes(userDetails.getId(),userDetails.getUsername(), modules);
+            return buildLoginRes(userDetails.getId(), userDetails.getUsername());
         } catch (BadCredentialsException e) {
             throw new BadCredentialsException("Invalid info");
         }
@@ -82,10 +81,11 @@ public class AuthServiceImpl implements AuthService {
         Role defaultRole = roleRepository.findByName(RoleConstant.USER)
                 .orElseThrow(() -> new RuntimeException("Default role is not exists"));
 
-        User user = new User();
-        user.setUsername(req.getUsername());
-        user.setPassword(hashedPassword);
-        user.setRoles(List.of(defaultRole));
+        User user = User.builder()
+                .username(req.getUsername())
+                .password(hashedPassword)
+                .roles(List.of(defaultRole))
+                .build();
 
         userRepository.save(user);
         return true;
@@ -103,20 +103,24 @@ public class AuthServiceImpl implements AuthService {
     public LoginRes refreshToken(RefreshTokenReq req) {
         String username = jwtTokenProvider.getUsername(req.getRefreshToken(), refreshTokenKey);
         var id = jwtTokenProvider.getId(req.getRefreshToken(), refreshTokenKey);
-        List<ModuleDto> modules = moduleService.getModulesByUserId(id);
-        return buildLoginRes(id, username, modules);
+        return buildLoginRes(id, username);
     }
 
-    private LoginRes buildLoginRes(Long id, String username, List<ModuleDto> moduleDtos ){
+    private LoginRes buildLoginRes(Long id, String username) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("id", id);
+        List<ModuleDto> moduleDtos = moduleService.getModulesByUserId(id);
 
+        var permissionCodes = moduleDtos.stream()
+                .flatMap(module -> module.getPermissions().stream())
+                .map(e->e.getCode())
+                .distinct()
+                .toList();
         LoginRes data = LoginRes.builder()
                 .username(username)
                 .modules(moduleDtos)
+                .permissionCodes(permissionCodes)
                 .build();
-
-        var permissionCodes = data.getPermissionCodes();
 
         claims.put("permissions", permissionCodes);
 

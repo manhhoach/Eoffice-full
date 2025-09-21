@@ -26,13 +26,4 @@ public class Role extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "permissionId")
     )
     private List<Permission> permissions;
-
-
-    @ManyToMany(fetch=FetchType.LAZY)
-    @JoinTable(
-            name="role_module",
-            joinColumns = @JoinColumn(name="roleId"),
-            inverseJoinColumns = @JoinColumn(name="moduleId")
-    )
-    private List<Module> modules;
 }

@@ -1,6 +1,7 @@
 package com.manhhoach.EofficeFull.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.Set;
 
 @Entity
 @Data
+@Builder
 @Table(name = "user")
 public class User extends BaseEntity {
 
@@ -24,4 +26,12 @@ public class User extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "roleId")
     )
     private List<Role> roles;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "user_permission",
+            joinColumns = @JoinColumn(name = "userId"),
+            inverseJoinColumns = @JoinColumn(name = "permissionId")
+    )
+    private List<Permission> permissions;
 }

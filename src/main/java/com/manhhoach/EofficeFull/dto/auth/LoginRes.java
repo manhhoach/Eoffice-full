@@ -16,12 +16,4 @@ public class LoginRes {
     private List<ModuleDto> modules;
     private List<String> permissionCodes;
 
-    public List<String> getPermissionCodes() {
-        if (modules == null) return List.of();
-        return modules.stream()
-                .flatMap(module -> module.getPermissions().stream())
-                .map(PermissionDto::getCode)
-                .distinct()
-                .toList();
-    }
 }
