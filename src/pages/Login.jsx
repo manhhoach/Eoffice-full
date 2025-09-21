@@ -13,15 +13,22 @@ function Login() {
     auto: false,
   })
   const navigate = useNavigate();
-  const { setUser, setPermissions } = useContext(AuthContext);
+  const { setUser, setPermissionCodes, setModules } = useContext(AuthContext);
 
   const onFinish = async (values) => {
     try {
       const res = await refetch({ body: values });
-      localStorage.setItem("accessToken", res.data.accessToken);
-      setPermissions(res.data.permissions)
-      setUser(res.data.username);
-      navigate("/");
+      if (res.success) {
+        console.log(res.data)
+        localStorage.setItem("accessToken", res.data.accessToken);
+        setPermissionCodes(res.data.permissionCodes)
+        setUser(res.data.username);
+        setModules(res.data.modules);
+        navigate("/");
+      }
+      else {
+        alert(res.message)
+      }
     } catch (err) {
       console.error("Login failed:", err);
     }

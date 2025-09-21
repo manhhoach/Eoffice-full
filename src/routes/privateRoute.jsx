@@ -4,15 +4,14 @@ import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 
 export default function PrivateRoute({ permissionCode, children }) {
-    const { user, permissions } = useContext(AuthContext);
-
-    // chưa login → quay về /login
+    const { user, permissionCodes } = useContext(AuthContext);
+    console.log(user, permissionCodes);
     if (!user) return <Navigate to="/login" replace />;
 
-    // không có quyền → sang /403
-    const hasPermission = permissions.some(p => p.code === permissionCode);
+
+    const hasPermission = permissionCodes.some(p => p === permissionCode);
     if (!hasPermission) return <Navigate to="/403" replace />;
 
-    // có quyền → render trang
+
     return children;
 }

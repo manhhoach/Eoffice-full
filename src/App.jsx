@@ -15,6 +15,7 @@ import Login from './pages/Login';
 import Forbidden from './pages/Forbidden';
 import PrivateRoute from './routes/privateRoute';
 import { AuthProvider } from './contexts/AuthContext';
+import permissionCodes from './constants/permissionCodes';
 
 function App() {
 
@@ -33,7 +34,7 @@ function App() {
         <Route
           path="/"
           element={
-            <PrivateRoute permissionCode="DASHBOARD">
+            <PrivateRoute permissionCode={permissionCodes.VIEW_DASHBOARD}>
               <Dashboard />
             </PrivateRoute>
           }

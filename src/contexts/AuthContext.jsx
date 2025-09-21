@@ -1,21 +1,23 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState } from "react";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [permissions, setPermissions] = useState([]);
+  const [permissionCodes, setPermissionCodes] = useState([]);
   const [token, setToken] = useState(localStorage.getItem("token") || null);
-
+  const [modules, setModules] = useState([]);
 
   return (
     <AuthContext.Provider
       value={{
         user,
-        permissions,
+        permissionCodes,
         token,
         setUser,
-        setPermissions
+        setPermissionCodes,
+        modules,
+        setModules
       }}
     >
       {children}
