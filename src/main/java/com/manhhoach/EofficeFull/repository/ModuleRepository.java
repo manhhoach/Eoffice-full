@@ -15,14 +15,4 @@ public interface ModuleRepository extends JpaRepository<Module, Long> {
             FROM Module r WHERE r.code = :code AND (:id IS NULL OR r.id != :id)
             """)
     boolean existCode(Long id, String code);
-
-
-    @Query("""
-            SELECT DISTINCT m FROM User u 
-            JOIN u.roles r
-            JOIN r.modules m
-            LEFT JOIN FETCH m.permissions
-            WHERE u.id = :userId
-            """)
-    List<Module> getModulesByUserId(Long userId);
 }

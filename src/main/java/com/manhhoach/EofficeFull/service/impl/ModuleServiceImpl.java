@@ -75,29 +75,7 @@ public class ModuleServiceImpl implements ModuleService {
         );
     }
 
-    @Override
-    public List<ModuleDto> getModulesByUserId(Long userId) {
-        List<Module> modules = moduleRepository.getModulesByUserId(userId);
-        return modules.stream().map(module->{
-            ModuleDto moduleDto = ModuleDto.builder()
-                    .name(module.getName())
-                    //.id(module.getId())
-                    .isDisplayed(module.getIsDisplayed())
-                    .code(module.getCode())
-                    .build();
-            List<PermissionDto> permissionDtos=module.getPermissions().stream().map(per->{
-                return PermissionDto.builder()
-                        .url(per.getUrl())
-                        .code(per.getCode())
-                        .name(per.getName())
-                        .isDisplayed(per.getIsDisplayed())
-                        .priority(per.getPriority())
-                        .build();
-            }).sorted(Comparator.comparing(PermissionDto::getPriority)).toList();
-            moduleDto.setPermissions(permissionDtos);
-            return moduleDto;
-        }).toList();
-    }
+
 
     private void validate(Long id, String code){
         if(moduleRepository.existCode(id, code)){

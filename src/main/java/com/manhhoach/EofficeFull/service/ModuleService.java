@@ -16,5 +16,4 @@ public interface ModuleService {
     PagedResponse<ModuleDto> getPaged(int page, int size);
 
 
-    List<ModuleDto> getModulesByUserId(Long userId);
 }

@@ -21,6 +21,6 @@ public class Permission extends BaseEntity {
     private Integer priority;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "moduleId", nullable = false)
+    @JoinColumn(name = "moduleId", nullable = true)
     private Module module;
 }

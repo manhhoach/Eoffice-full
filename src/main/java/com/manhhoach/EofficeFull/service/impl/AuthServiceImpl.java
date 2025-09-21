@@ -109,20 +109,19 @@ public class AuthServiceImpl implements AuthService {
     private LoginRes buildLoginRes(Long id, String username) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("id", id);
-        List<ModuleDto> moduleDtos = moduleService.getModulesByUserId(id);
 
-        var permissionCodes = moduleDtos.stream()
-                .flatMap(module -> module.getPermissions().stream())
-                .map(e->e.getCode())
-                .distinct()
-                .toList();
+//        var permissionCodes = moduleDtos.stream()
+//                .flatMap(module -> module.getPermissions().stream())
+//                .map(e->e.getCode())
+//                .distinct()
+//                .toList();
         LoginRes data = LoginRes.builder()
                 .username(username)
-                .modules(moduleDtos)
-                .permissionCodes(permissionCodes)
+            //    .modules(moduleDtos)
+             //   .permissionCodes(permissionCodes)
                 .build();
 
-        claims.put("permissions", permissionCodes);
+     //   claims.put("permissions", permissionCodes);
 
         String accessToken = jwtTokenProvider.generateToken(username, claims, accessTokenKey, accessTokenExpirationMs);
         String refreshToken = jwtTokenProvider.generateToken(username, claims, refreshTokenKey, refreshTokenExpirationMs);

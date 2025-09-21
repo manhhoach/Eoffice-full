@@ -7,6 +7,7 @@ import com.manhhoach.EofficeFull.dto.auth.LoginRes;
 import com.manhhoach.EofficeFull.dto.user.UserDto;
 
 public interface AuthService {
+
     LoginRes login(LoginReq req);
 
     boolean register(RegisterReq req);
