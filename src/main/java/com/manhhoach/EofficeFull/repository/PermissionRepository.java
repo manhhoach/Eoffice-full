@@ -11,20 +11,14 @@ import java.util.List;
 @Repository
 public interface PermissionRepository extends JpaRepository<Permission, Long> {
     @Query(value = """
-            SELECT new com.manhhoach.EofficeFull.dto.permission.PermissionDto( 
-                p.id,
-                p.name,
-                p.code,
-                p.url,
-                p.isDisplayed,
-                p.priority
-                )
+            SELECT DISTINCT p
             FROM User u
             JOIN u.roles r
             JOIN r.permissions p
+            LEFT JOIN FETCH p.module m
             WHERE u.id = :userId
             """)
-    List<PermissionDto> getPermissionsByUserId(Long userId);
+    List<Permission> getPermissionsByUserId(Long userId);
 
     @Query("""
             SELECT CASE WHEN COUNT(r) > 0 THEN true ELSE false END

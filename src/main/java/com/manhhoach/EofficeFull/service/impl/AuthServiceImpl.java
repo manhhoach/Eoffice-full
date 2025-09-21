@@ -9,6 +9,8 @@ import com.manhhoach.EofficeFull.dto.auth.LoginRes;
 import com.manhhoach.EofficeFull.dto.module.ModuleDto;
 import com.manhhoach.EofficeFull.dto.permission.PermissionDto;
 import com.manhhoach.EofficeFull.dto.user.UserDto;
+import com.manhhoach.EofficeFull.entity.Module;
+import com.manhhoach.EofficeFull.entity.Permission;
 import com.manhhoach.EofficeFull.entity.Role;
 import com.manhhoach.EofficeFull.entity.User;
 import com.manhhoach.EofficeFull.provider.JwtTokenProvider;
@@ -29,10 +31,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -110,15 +109,31 @@ public class AuthServiceImpl implements AuthService {
         Map<String, Object> claims = new HashMap<>();
         claims.put("id", id);
 
-//        var permissionCodes = moduleDtos.stream()
-//                .flatMap(module -> module.getPermissions().stream())
-//                .map(e->e.getCode())
-//                .distinct()
-//                .toList();
+        List<Permission> permissions = permissionRepository.getPermissionsByUserId(id);
+        List<String> permissionCodes = permissions.stream().map(per->per.getCode()).toList();
+        Map<Long, ModuleDto> moduleMap = new LinkedHashMap<>();
+
+        for (Permission p : permissions) {
+            Module module = p.getModule();
+            if (module == null) {
+                continue; // hoặc gán vào module "SYSTEM" tùy thiết kế
+            }
+
+            // Nếu module chưa có trong map thì thêm mới
+            ModuleDto moduleDto = moduleMap.computeIfAbsent(module.getId(), k -> ModuleDto.map(module));
+
+            // Thêm permissionDto vào moduleDto
+            if (moduleDto.getPermissions() == null) {
+                moduleDto.setPermissions(new ArrayList<>());
+            }
+            moduleDto.getPermissions().add(PermissionDto.map(p));
+        }
+
+        List<ModuleDto> result = new ArrayList<>(moduleMap.values());
         LoginRes data = LoginRes.builder()
                 .username(username)
-            //    .modules(moduleDtos)
-             //   .permissionCodes(permissionCodes)
+                .modules(result)
+                .permissionCodes(permissionCodes)
                 .build();
 
      //   claims.put("permissions", permissionCodes);
