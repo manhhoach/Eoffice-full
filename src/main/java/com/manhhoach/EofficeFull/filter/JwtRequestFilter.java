@@ -1,5 +1,6 @@
 package com.manhhoach.EofficeFull.filter;
 
+import com.manhhoach.EofficeFull.config.CustomUserDetails;
 import com.manhhoach.EofficeFull.provider.JwtTokenProvider;
 import com.manhhoach.EofficeFull.repository.UserRepository;
 import jakarta.servlet.FilterChain;
@@ -42,8 +43,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 if (jwtTokenProvider.validateToken(accessToken, accessTokenKey) && SecurityContextHolder.getContext().getAuthentication() == null) {
                     String username = jwtTokenProvider.getUsername(accessToken, accessTokenKey);
                     var permissions = jwtTokenProvider.getPermissions(accessToken, accessTokenKey);
+                    Long id = jwtTokenProvider.getId(accessToken, accessTokenKey);
                     var grantedAuthorities = permissions.stream().map(e->new SimpleGrantedAuthority(e)).toList();
-                    UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(username, null, grantedAuthorities);
+                    UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(new CustomUserDetails(id, username), null, grantedAuthorities);
                     SecurityContextHolder.getContext().setAuthentication(auth);
                 }
             }

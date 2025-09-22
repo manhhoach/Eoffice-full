@@ -93,9 +93,14 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public UserDto getMe() {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getPrincipal().toString();
-        var permissions = authentication.getAuthorities().stream().map(e -> e.getAuthority()).toList();
-        return UserDto.builder().username(username).permissions(permissions).build();
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+
+        LoginRes loginRes = buildLoginRes(userDetails.getId(), userDetails.getUsername());
+        return UserDto.builder()
+                .permissionCodes(loginRes.getPermissionCodes())
+                .modules(loginRes.getModules())
+                .username(userDetails.getUsername())
+                .build();
     }
 
     @Override
@@ -118,7 +123,7 @@ public class AuthServiceImpl implements AuthService {
                 .permissionCodes(permissionCodes)
                 .build();
 
-     //   claims.put("permissions", permissionCodes);
+        claims.put("permissions", permissionCodes);
 
         String accessToken = jwtTokenProvider.generateToken(username, claims, accessTokenKey, accessTokenExpirationMs);
         String refreshToken = jwtTokenProvider.generateToken(username, claims, refreshTokenKey, refreshTokenExpirationMs);

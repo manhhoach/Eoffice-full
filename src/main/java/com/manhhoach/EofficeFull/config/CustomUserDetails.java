@@ -8,9 +8,9 @@ import java.util.List;
 
 @Data
 public class CustomUserDetails implements UserDetails {
-    private final String username;
-    private final String password;
-    private final Long id;
+    private String username;
+    private String password;
+    private Long id;
     private List<GrantedAuthority> authorities;
 
     public CustomUserDetails(Long id, String username, String password, List<GrantedAuthority> authorities) {
@@ -18,6 +18,11 @@ public class CustomUserDetails implements UserDetails {
         this.username = username;
         this.password = password;
         this.authorities = authorities;
+    }
+
+    public CustomUserDetails(Long id, String username) {
+        this.id = id;
+        this.username = username;
     }
 
 }

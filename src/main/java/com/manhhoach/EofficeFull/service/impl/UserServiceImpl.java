@@ -14,22 +14,5 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
-    @Override
-    public UserDto getDetail(Long id) {
-        var user = userRepository.getDetail(id).orElseThrow(() -> new RuntimeException());
-        var roles = user.getRoles().stream().map(r -> {
-            var permissions = r.getPermissions().stream().map(p ->
-                    PermissionDto.builder().code(p.getCode()).build()
-            ).toList();
 
-            return RoleDto.builder().name(r.getName()).permissions(permissions).build();
-        }).toList();
-
-
-        var result = UserDto.builder()
-                .username(user.getUsername())
-                .roles(roles)
-                .build();
-        return result;
-    }
 }
