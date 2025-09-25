@@ -1,15 +1,15 @@
 import { createContext, useState } from "react";
 
-export const AuthContext = createContext();
+export const MainContext = createContext();
 
-export const AuthProvider = ({ children }) => {
+export const MainProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [permissionCodes, setPermissionCodes] = useState([]);
   const [token, setToken] = useState(localStorage.getItem("token") || null);
   const [modules, setModules] = useState([]);
-
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   return (
-    <AuthContext.Provider
+    <MainContext.Provider
       value={{
         user,
         permissionCodes,
@@ -17,10 +17,12 @@ export const AuthProvider = ({ children }) => {
         setUser,
         setPermissionCodes,
         modules,
-        setModules
+        setModules,
+        sidebarOpen,
+        setSidebarOpen
       }}
     >
       {children}
-    </AuthContext.Provider>
+    </MainContext.Provider>
   );
 }

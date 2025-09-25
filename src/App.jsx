@@ -14,8 +14,9 @@ import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
 import Forbidden from './pages/Forbidden';
 import PrivateRoute from './routes/privateRoute';
-import { AuthProvider } from './contexts/AuthContext';
+import { MainProvider } from './contexts/MainContext';
 import permissionCodes from './constants/permissionCodes';
+import Layout from './pages/Layout';
 
 function App() {
 
@@ -28,20 +29,23 @@ function App() {
   }, [location.pathname]); // triggered on route change
 
   return (
-    <AuthProvider>
+    <MainProvider>
       <Routes>
         <Route path="/login" element={<Login />} />
-        <Route
-          path="/"
-          element={
-            <PrivateRoute permissionCode={permissionCodes.VIEW_DASHBOARD}>
-              <Dashboard />
-            </PrivateRoute>
-          }
-        />
+        <Route path="/" element={<Layout />}>
+          <Route
+            path="/"
+            element={
+              <PrivateRoute permissionCode={permissionCodes.VIEW_DASHBOARD}>
+                <Dashboard />
+              </PrivateRoute>
+            }
+          />
+        </Route>
+
         <Route path="/403" element={<Forbidden />} />
       </Routes>
-    </AuthProvider>
+    </MainProvider>
   );
 }
 
