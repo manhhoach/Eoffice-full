@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface RoleRepository extends JpaRepository<Role, Long> {
-    Optional<Role> findByName(String name);
+    Optional<Role> findByCode(String code);
 
     @Query("""
             SELECT CASE WHEN COUNT(r) > 0 THEN true ELSE false END
