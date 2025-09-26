@@ -1,4 +1,4 @@
-package com.manhhoach.EofficeFull.config;
+package com.manhhoach.EofficeFull.seeds;
 
 import com.manhhoach.EofficeFull.constant.RoleConstant;
 import com.manhhoach.EofficeFull.entity.*;
