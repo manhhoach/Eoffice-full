@@ -1,3 +1,3 @@
 export default {
-   VIEW_DASHBOARD: 'VIEW_DASHBOARD',
+   VIEW_ROLES: 'VIEW_ROLES',
 }

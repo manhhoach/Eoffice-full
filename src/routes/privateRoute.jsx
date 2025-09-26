@@ -7,7 +7,7 @@ export default function PrivateRoute({ permissionCode, children }) {
     const { user, permissionCodes } = useContext(MainContext);
     if (!user) return <Navigate to="/login" replace />;
 
-    const hasPermission = permissionCodes.some(p => p === permissionCode);
+    const hasPermission = permissionCodes.some(p => p === permissionCode) || !permissionCode;
     if (!hasPermission) return <Navigate to="/403" replace />;
 
     return children;

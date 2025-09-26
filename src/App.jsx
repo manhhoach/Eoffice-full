@@ -17,6 +17,7 @@ import PrivateRoute from './routes/privateRoute';
 import { MainProvider } from './contexts/MainContext';
 import permissionCodes from './constants/permissionCodes';
 import Layout from './pages/Layout';
+import RoleManagement from './pages/RoleManagement';
 
 function App() {
 
@@ -34,11 +35,20 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<Layout />}>
           <Route
+            path="/roles"
+            element={
+              <PrivateRoute permissionCode={permissionCodes.VIEW_ROLES}>
+                <RoleManagement />
+              </PrivateRoute>
+            }
+          />
+          <Route
             path="/"
             element={
-              <PrivateRoute permissionCode={permissionCodes.VIEW_DASHBOARD}>
+              <PrivateRoute>
                 <Dashboard />
               </PrivateRoute>
+
             }
           />
         </Route>

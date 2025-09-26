@@ -8,6 +8,7 @@ export const MainProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("token") || null);
   const [modules, setModules] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  
   return (
     <MainContext.Provider
       value={{
