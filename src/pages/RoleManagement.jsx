@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Table, Button, Space, Modal, Form, Input } from "antd";
+import { Table, Button, Space, Modal, Form, Input, Popconfirm } from "antd";
 import useApi from "../hooks/useApi";
 import CreateRole from "../partials/role/CreateRole";
 import { BiEdit, BiPlus, BiTrash } from "react-icons/bi";
@@ -10,11 +10,23 @@ export default function RoleManagement() {
     const [pagination, setPagination] = useState({ page: 1, size: 10 });
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [searchText, setSearchText] = useState("");
+    const [currentRole, setCurrentRole] = useState(null);
 
     const { data, loading, error, refetch } = useApi({
         url: "roles/paged",
         params: { page: pagination.current, size: pagination.pageSize, search: searchText },
     });
+
+    const { refetch: deleteRole } = useApi({
+        method: 'DELETE',
+        auto: false,
+    });
+
+    const handleDelete = async (id) => {
+        await deleteRole({ url: 'roles/' + id });
+        refetch();
+    }
+
 
     const columns = [
         {
@@ -32,17 +44,20 @@ export default function RoleManagement() {
             key: "actions",
             render: (_, record) => (
                 <Space>
-                    <Button icon={<BiEdit />} type="link" onClick={() => console.log("Edit", record)}>
+                    <Button icon={<BiEdit />} type="link" onClick={() => setCurrentRole(record)}>
 
                     </Button>
-                    <Button
-                        type="link"
-                        icon={<BiTrash />}
-                        danger
-                        onClick={() => console.log("Delete", record)}
+                    <Popconfirm
+                        title={`Bạn có chắc muốn xoá role "${record.name}"?`}
+                        okText="Xoá"
+                        cancelText="Huỷ"
+                        okType="danger"
+                        onConfirm={() => {
+                            handleDelete(record.id);
+                        }}
                     >
-
-                    </Button>
+                        <Button danger icon={<BiTrash />} />
+                    </Popconfirm>
                 </Space>
             ),
         },
@@ -96,7 +111,7 @@ export default function RoleManagement() {
                 bordered
             />
 
-            <CreateRole initialData={null}></CreateRole>
+            <CreateRole refetch={refetch} onCancel={() => setIsModalOpen(false)} open={isModalOpen} initialData={currentRole}></CreateRole>
         </div>
     );
 }
