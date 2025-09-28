@@ -3,6 +3,7 @@ package com.manhhoach.EofficeFull.service.impl;
 import com.manhhoach.EofficeFull.common.PagedResponse;
 import com.manhhoach.EofficeFull.dto.module.CreateModuleReq;
 import com.manhhoach.EofficeFull.dto.module.ModuleDto;
+import com.manhhoach.EofficeFull.dto.module.ModulePagingReq;
 import com.manhhoach.EofficeFull.dto.permission.PermissionDto;
 import com.manhhoach.EofficeFull.entity.Module;
 import com.manhhoach.EofficeFull.repository.ModuleRepository;
@@ -60,9 +61,10 @@ public class ModuleServiceImpl implements ModuleService {
     }
 
     @Override
-    public PagedResponse<ModuleDto> getPaged(int page, int size) {
-        Pageable pageable = PageRequest.of(page - 1, size, Sort.by("id").descending());
-        Page<Module> data = moduleRepository.findAll(pageable);
+    public PagedResponse<ModuleDto> getPaged(ModulePagingReq request) {
+        Pageable pageable = PageRequest.of(request.getPage() - 1, request.getSize(), Sort.by("id").descending());
+        Page<Module> data = moduleRepository.searchModules(request, pageable);
+
         var res = data.getContent().stream().map(d->{
             return ModuleDto.map(d);
         }).toList();

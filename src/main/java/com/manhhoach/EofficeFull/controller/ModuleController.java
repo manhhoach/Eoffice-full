@@ -5,6 +5,7 @@ import com.manhhoach.EofficeFull.common.PagedResponse;
 import com.manhhoach.EofficeFull.common.PagingRequest;
 import com.manhhoach.EofficeFull.dto.module.CreateModuleReq;
 import com.manhhoach.EofficeFull.dto.module.ModuleDto;
+import com.manhhoach.EofficeFull.dto.module.ModulePagingReq;
 import com.manhhoach.EofficeFull.service.ModuleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -16,9 +17,9 @@ public class ModuleController {
     private final ModuleService moduleService;
 
     @GetMapping("/paged")
-    public ApiResponse<PagedResponse<ModuleDto>> getPaged(PagingRequest request) {
+    public ApiResponse<PagedResponse<ModuleDto>> getPaged(ModulePagingReq request) {
         return ApiResponse.success(
-                moduleService.getPaged(request.getPage(), request.getSize())
+                moduleService.getPaged(request)
         );
     }
 
