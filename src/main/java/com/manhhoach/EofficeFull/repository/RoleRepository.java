@@ -1,6 +1,8 @@
 package com.manhhoach.EofficeFull.repository;
 
 import com.manhhoach.EofficeFull.entity.Role;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -16,4 +18,7 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
             FROM Role r WHERE r.code = :code AND (:id IS NULL OR r.id != :id)
             """)
     boolean existCode(Long id, String code);
+
+    Page<Role> findByNameContainingIgnoreCaseOrCodeContainingIgnoreCase(
+            String name, String code, Pageable pageable);
 }

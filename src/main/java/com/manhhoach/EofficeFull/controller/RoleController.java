@@ -5,6 +5,7 @@ import com.manhhoach.EofficeFull.common.PagedResponse;
 import com.manhhoach.EofficeFull.common.PagingRequest;
 import com.manhhoach.EofficeFull.dto.role.CreateRoleReq;
 import com.manhhoach.EofficeFull.dto.role.RoleDto;
+import com.manhhoach.EofficeFull.dto.role.RolePagingReq;
 import com.manhhoach.EofficeFull.entity.Role;
 import com.manhhoach.EofficeFull.service.RoleService;
 import lombok.RequiredArgsConstructor;
@@ -19,9 +20,9 @@ public class RoleController {
     private final RoleService roleService;
 
     @GetMapping("/paged")
-    public ApiResponse<PagedResponse<RoleDto>> getPaged(PagingRequest request) {
+    public ApiResponse<PagedResponse<RoleDto>> getPaged(RolePagingReq request) {
         return ApiResponse.success(
-                roleService.getPaged(request.getPage(), request.getSize())
+                roleService.getPaged(request)
         );
     }
 

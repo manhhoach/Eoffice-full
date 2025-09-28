@@ -3,6 +3,7 @@ package com.manhhoach.EofficeFull.service.impl;
 import com.manhhoach.EofficeFull.common.PagedResponse;
 import com.manhhoach.EofficeFull.dto.role.CreateRoleReq;
 import com.manhhoach.EofficeFull.dto.role.RoleDto;
+import com.manhhoach.EofficeFull.dto.role.RolePagingReq;
 import com.manhhoach.EofficeFull.entity.Role;
 import com.manhhoach.EofficeFull.repository.RoleRepository;
 import com.manhhoach.EofficeFull.service.RoleService;
@@ -53,9 +54,15 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public PagedResponse<RoleDto> getPaged(int page, int size) {
-        Pageable pageable = PageRequest.of(page - 1, size, Sort.by("id").descending());
-        Page<Role> rolePage = roleRepository.findAll(pageable);
+    public PagedResponse<RoleDto> getPaged(RolePagingReq request) {
+        Pageable pageable = PageRequest.of(request.getPage() - 1, request.getSize(), Sort.by("id").descending());
+        Page<Role> rolePage;
+        if (request.getSearch() == null || request.getSearch().isBlank()) {
+            rolePage = roleRepository.findAll(pageable);
+        } else {
+            rolePage = roleRepository.findByNameContainingIgnoreCaseOrCodeContainingIgnoreCase(
+                    request.getSearch(), request.getSearch(), pageable);
+        }
         var roleDtos = rolePage.getContent().stream().map(role->{
             return RoleDto.map(role);
         }).toList();
