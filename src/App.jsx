@@ -19,6 +19,7 @@ import permissionCodes from './constants/permissionCodes';
 import Layout from './pages/Layout';
 import RoleManagement from './pages/RoleManagement';
 import ModuleManagement from './pages/ModuleManagement';
+import PermissionManagement from './pages/PermissionManagement';
 
 function App() {
 
@@ -51,6 +52,16 @@ function App() {
               </PrivateRoute>
             }
           />
+
+          <Route
+            path="/modules/:id/permissions"
+            element={
+              <PrivateRoute permissionCode={permissionCodes.VIEW_PERMISSIONS}>
+                <PermissionManagement />
+              </PrivateRoute>
+            }
+          />
+
           <Route
             path="/"
             element={

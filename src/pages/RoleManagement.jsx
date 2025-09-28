@@ -45,7 +45,11 @@ export default function RoleManagement() {
             key: "actions",
             render: (_, record) => (
                 <Space>
-                    <Button icon={<BiEdit />} type="link" onClick={() => setCurrentRole(record)}>
+                    <Button icon={<BiEdit />} type="link" onClick={() => {
+                        setCurrentRole(record);
+                        setIsModalOpen(true);
+                    }}
+                    >
 
                     </Button>
                     <Popconfirm

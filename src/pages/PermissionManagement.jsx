@@ -1,32 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { Table, Button, Space, Modal, Form, Input, Popconfirm } from "antd";
 import useApi from "../hooks/useApi";
-import CreateModule from "../partials/module/CreateModule";
+import CreatePermission from "../partials/permission/CreatePermission";
 import { BiCheck, BiCog, BiEdit, BiPlus, BiTrash, BiX } from "react-icons/bi";
 import DEFAULT_PAGINATION from "../constants/pagination";
-import { useNavigate } from "react-router-dom";
 
 const { Search } = Input;
 
-export default function ModuleManagement() {
+export default function PermissionManagement() {
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [searchText, setSearchText] = useState("");
-    const [currentModule, setCurrentModule] = useState(null);
-    const navigate = useNavigate();
+    const [currentPermission, setCurrentPermission] = useState(null);
 
     const { data, loading, error, refetch } = useApi({
-        url: "modules/paged",
+        url: "permissions/paged",
         params: { page: pagination.current, size: pagination.pageSize, search: searchText },
     });
 
-    const { refetch: deleteModule } = useApi({
+    const { refetch: deletePermission } = useApi({
         method: 'DELETE',
         auto: false,
     });
 
     const handleDelete = async (id) => {
-        await deleteModule({ url: 'modules/' + id });
+        await deletePermission({ url: 'permissions/' + id });
         refetch();
     }
 
@@ -63,19 +61,13 @@ export default function ModuleManagement() {
             render: (_, record) => (
                 <Space>
                     <Button icon={<BiEdit />} type="link" onClick={() => {
-                        setCurrentModule(record)
+                        setCurrentPermission(record)
                         setIsModalOpen(true);
                     }}>
                     </Button>
 
-                    <Button icon={<BiCog />} type="link" onClick={() => {
-                        navigate('/modules/' + record.id + '/permissions')
-                    }}>
-
-                    </Button>
-
                     <Popconfirm
-                        title={`Bạn có chắc muốn xoá Module "${record.name}"?`}
+                        title={`Bạn có chắc muốn xoá Permission "${record.name}"?`}
                         okText="Xoá"
                         cancelText="Huỷ"
                         okType="danger"
@@ -110,7 +102,7 @@ export default function ModuleManagement() {
     return (
         <div style={{ padding: 16 }}>
             <h1 style={{ fontSize: 20, fontWeight: "bold", marginBottom: 16 }}>
-                Module Management
+                Permission Management
             </h1>
             <div style={{ gap: 16, display: "flex", justifyContent: "space-between" }}>
                 <Search onChange={(e) => { setSearchText(e.target.value) }}></Search>
@@ -138,7 +130,7 @@ export default function ModuleManagement() {
                 bordered
             />
 
-            <CreateModule refetch={refetch} onCancel={() => setIsModalOpen(false)} open={isModalOpen} initialData={currentModule}></CreateModule>
+            <CreatePermission refetch={refetch} onCancel={() => setIsModalOpen(false)} open={isModalOpen} initialData={currentPermission}></CreatePermission>
         </div>
     );
 }
