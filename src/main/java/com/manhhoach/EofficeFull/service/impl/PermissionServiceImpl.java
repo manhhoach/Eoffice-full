@@ -3,6 +3,7 @@ package com.manhhoach.EofficeFull.service.impl;
 import com.manhhoach.EofficeFull.common.PagedResponse;
 import com.manhhoach.EofficeFull.dto.permission.CreatePermissionReq;
 import com.manhhoach.EofficeFull.dto.permission.PermissionDto;
+import com.manhhoach.EofficeFull.dto.permission.PermissionPagingReq;
 import com.manhhoach.EofficeFull.dto.role.CreateRoleReq;
 import com.manhhoach.EofficeFull.dto.role.RoleDto;
 import com.manhhoach.EofficeFull.entity.Permission;
@@ -63,9 +64,9 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
-    public PagedResponse<PermissionDto> getPaged(int page, int size) {
-        Pageable pageable = PageRequest.of(page - 1, size, Sort.by("id").descending());
-        Page<Permission> perPage = permisionRepository.findAll(pageable);
+    public PagedResponse<PermissionDto> getPaged(PermissionPagingReq request) {
+        Pageable pageable = PageRequest.of(request.getPage() - 1, request.getSize(), Sort.by("id").descending());
+        Page<Permission> perPage = permisionRepository.searchPermissions(request, pageable);
         var perDtos = perPage.getContent().stream().map(per->{
             return PermissionDto.map(per);
         }).toList();

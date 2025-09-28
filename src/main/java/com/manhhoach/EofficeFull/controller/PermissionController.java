@@ -5,6 +5,7 @@ import com.manhhoach.EofficeFull.common.PagedResponse;
 import com.manhhoach.EofficeFull.common.PagingRequest;
 import com.manhhoach.EofficeFull.dto.permission.CreatePermissionReq;
 import com.manhhoach.EofficeFull.dto.permission.PermissionDto;
+import com.manhhoach.EofficeFull.dto.permission.PermissionPagingReq;
 import com.manhhoach.EofficeFull.dto.role.CreateRoleReq;
 import com.manhhoach.EofficeFull.dto.role.RoleDto;
 import com.manhhoach.EofficeFull.service.PermissionService;
@@ -19,9 +20,9 @@ public class PermissionController {
     private final PermissionService permissionService;
 
     @GetMapping("/paged")
-    public ApiResponse<PagedResponse<PermissionDto>> getPaged(PagingRequest request) {
+    public ApiResponse<PagedResponse<PermissionDto>> getPaged(PermissionPagingReq request) {
         return ApiResponse.success(
-                permissionService.getPaged(request.getPage(), request.getSize())
+                permissionService.getPaged(request)
         );
     }
 

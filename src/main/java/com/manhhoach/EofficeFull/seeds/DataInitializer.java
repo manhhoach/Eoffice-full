@@ -32,12 +32,13 @@ public class DataInitializer {
                 Permission p1 = Permission.builder().name("User Management").code("VIEW_USERS").isDisplayed(true).url("/users").priority(1).module(adminModule).build();
                 Permission p2 = Permission.builder().name("Role Management").code("VIEW_ROLES").isDisplayed(true).url("/roles").priority(2).module(adminModule).build();
                 Permission p3 = Permission.builder().name("Module Management").code("VIEW_MODULES").isDisplayed(true).url("/modules").priority(3).module(adminModule).build();
+                Permission p4 = Permission.builder().name("Permission Management").code("VIEW_PERMISSIONS").isDisplayed(false).priority(4).module(adminModule).build();
 
                 // 3. Tạo Roles
                 Role adminRole = Role.builder()
                         .name("Administrator")
                         .code(RoleConstant.ADMIN)
-                        .permissions(List.of(p1, p2, p3))
+                        .permissions(List.of(p1, p2, p3, p4))
                         .build();
 
                 Role userRole = Role.builder()
@@ -47,7 +48,7 @@ public class DataInitializer {
 
                 // 4. Lưu dữ liệu
                 moduleRepository.saveAll(List.of(adminModule));
-                permissionRepository.saveAll(List.of(p1,p2,p3));
+                permissionRepository.saveAll(List.of(p1,p2,p3,p4));
                 roleRepository.saveAll(List.of(adminRole, userRole));
 
 
