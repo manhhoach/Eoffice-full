@@ -1,30 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { Table, Button, Space, Modal, Form, Input, Popconfirm } from "antd";
 import useApi from "../hooks/useApi";
-import CreateRole from "../partials/role/CreateRole";
-import { BiEdit, BiPlus, BiTrash } from "react-icons/bi";
+import CreateModule from "../partials/module/CreateModule";
+import { BiCheck, BiEdit, BiPlus, BiTrash, BiX } from "react-icons/bi";
 import DEFAULT_PAGINATION from "../constants/pagination";
 
 const { Search } = Input;
 
-export default function RoleManagement() {
+export default function ModuleManagement() {
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [searchText, setSearchText] = useState("");
-    const [currentRole, setCurrentRole] = useState(null);
+    const [currentModule, setCurrentModule] = useState(null);
 
     const { data, loading, error, refetch } = useApi({
-        url: "roles/paged",
+        url: "modules/paged",
         params: { page: pagination.current, size: pagination.pageSize, search: searchText },
     });
 
-    const { refetch: deleteRole } = useApi({
+    const { refetch: deleteModule } = useApi({
         method: 'DELETE',
         auto: false,
     });
 
     const handleDelete = async (id) => {
-        await deleteRole({ url: 'roles/' + id });
+        await deleteModule({ url: 'modules/' + id });
         refetch();
     }
 
@@ -41,15 +41,30 @@ export default function RoleManagement() {
             key: "name",
         },
         {
+            title: "Displayed",
+            dataIndex: "isDisplayed",
+            key: "isDisplayed",
+            render: (value) =>
+                value ? (
+                    <span style={{ color: "green" }}>
+                        <BiCheck />
+                    </span>
+                ) : (
+                    <span style={{ color: "red" }}>
+                        <BiX />
+                    </span>
+                ),
+        },
+        {
             title: "Actions",
             key: "actions",
             render: (_, record) => (
                 <Space>
-                    <Button icon={<BiEdit />} type="link" onClick={() => setCurrentRole(record)}>
+                    <Button icon={<BiEdit />} type="link" onClick={() => setCurrentModule(record)}>
 
                     </Button>
                     <Popconfirm
-                        title={`Bạn có chắc muốn xoá role "${record.name}"?`}
+                        title={`Bạn có chắc muốn xoá Module "${record.name}"?`}
                         okText="Xoá"
                         cancelText="Huỷ"
                         okType="danger"
@@ -84,7 +99,7 @@ export default function RoleManagement() {
     return (
         <div style={{ padding: 16 }}>
             <h1 style={{ fontSize: 20, fontWeight: "bold", marginBottom: 16 }}>
-                Role Management
+                Module Management
             </h1>
             <div style={{ gap: 16, display: "flex", justifyContent: "space-between" }}>
                 <Search onChange={(e) => { setSearchText(e.target.value) }}></Search>
@@ -112,7 +127,7 @@ export default function RoleManagement() {
                 bordered
             />
 
-            <CreateRole refetch={refetch} onCancel={() => setIsModalOpen(false)} open={isModalOpen} initialData={currentRole}></CreateRole>
+            <CreateModule refetch={refetch} onCancel={() => setIsModalOpen(false)} open={isModalOpen} initialData={currentModule}></CreateModule>
         </div>
     );
 }

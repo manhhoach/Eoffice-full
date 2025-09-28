@@ -1,3 +1,4 @@
 export default {
    VIEW_ROLES: 'VIEW_ROLES',
+   VIEW_MODULES: 'VIEW_MODULES',
 }

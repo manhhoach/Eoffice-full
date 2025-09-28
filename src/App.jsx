@@ -18,6 +18,7 @@ import { MainProvider } from './contexts/MainContext';
 import permissionCodes from './constants/permissionCodes';
 import Layout from './pages/Layout';
 import RoleManagement from './pages/RoleManagement';
+import ModuleManagement from './pages/ModuleManagement';
 
 function App() {
 
@@ -39,6 +40,14 @@ function App() {
             element={
               <PrivateRoute permissionCode={permissionCodes.VIEW_ROLES}>
                 <RoleManagement />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/modules"
+            element={
+              <PrivateRoute permissionCode={permissionCodes.VIEW_MODULES}>
+                <ModuleManagement />
               </PrivateRoute>
             }
           />
