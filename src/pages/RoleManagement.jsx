@@ -4,12 +4,16 @@ import useApi from "../hooks/useApi";
 import CreateRole from "../partials/role/CreateRole";
 import { BiEdit, BiPlus, BiTrash } from "react-icons/bi";
 import DEFAULT_PAGINATION from "../constants/pagination";
+import SetPermission from "../partials/role/SetPermission";
 
 const { Search } = Input;
 
 export default function RoleManagement() {
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalOpen, setIsModalOpen] = useState({
+        createRole: false,
+        setPermission: false
+    });
     const [searchText, setSearchText] = useState("");
     const [currentRole, setCurrentRole] = useState(null);
 
@@ -47,11 +51,18 @@ export default function RoleManagement() {
                 <Space>
                     <Button icon={<BiEdit />} type="link" onClick={() => {
                         setCurrentRole(record);
-                        setIsModalOpen(true);
+                        setIsModalOpen(modalOpen => ({ ...modalOpen, createRole: true }));
                     }}
-                    >
+                    ></Button>
+
+
+                    <Button icon={<BiCog />} type="link" onClick={() => {
+                        setCurrentRole(record);
+                        setIsModalOpen(modalOpen => ({ ...modalOpen, setPermission: true }));
+                    }}>
 
                     </Button>
+
                     <Popconfirm
                         title={`Bạn có chắc muốn xoá role "${record.name}"?`}
                         okText="Xoá"
@@ -94,7 +105,7 @@ export default function RoleManagement() {
                 <Search onChange={(e) => { setSearchText(e.target.value) }}></Search>
                 <Button
                     type="primary"
-                    onClick={() => setIsModalOpen(true)}
+                    onClick={() => setIsModalOpen(modalOpen => ({ ...modalOpen, createRole: true }))}
                     icon={<BiPlus />}
                     style={{ marginBottom: 16 }}
                 >
@@ -116,7 +127,9 @@ export default function RoleManagement() {
                 bordered
             />
 
-            <CreateRole refetch={refetch} onCancel={() => setIsModalOpen(false)} open={isModalOpen} initialData={currentRole}></CreateRole>
+            <CreateRole refetch={refetch} onCancel={() => setIsModalOpen(modalOpen => ({ ...modalOpen, createRole: false }))} open={modalOpen.createRole} initialData={currentRole} />
+
+            <SetPermission onCancel={() => setIsModalOpen(modalOpen => ({ ...modalOpen, setPermission: false }))} open={modalOpen.setPermission} roleId={currentRole?.id} />
         </div>
     );
 }
