@@ -1,19 +1,19 @@
 import { useEffect } from "react";
-import { Modal, Form, Input, message, Checkbox } from 'antd';
+import { Modal, Form, Input, message, Checkbox, InputNumber } from 'antd';
 import { generateCodeFromName } from '../../utils/Utils';
 import useApi from "../../hooks/useApi";
 
 
-export default function CreateModule({ open, onCancel, initialData, refetch }) {
+export default function CreatePermission({ open, onCancel, initialData, refetch, moduleId }) {
     const [form] = Form.useForm();
 
-    const { refetch: createModule } = useApi({
-        url: 'modules',
+    const { refetch: createPermission } = useApi({
+        url: 'permissions',
         method: 'POST',
         auto: false,
     });
-    const { refetch: editModule } = useApi({
-        url: 'modules/' + initialData?.id,
+    const { refetch: editPermission } = useApi({
+        url: 'permissions/' + initialData?.id,
         method: 'PUT',
         auto: false,
     });
@@ -23,7 +23,9 @@ export default function CreateModule({ open, onCancel, initialData, refetch }) {
             form.setFieldsValue({
                 name: initialData.name,
                 code: initialData.code,
-                isDisplayed: initialData.isDisplayed
+                url: initialData.url,
+                isDisplayed: initialData.isDisplayed,
+                priority: initialData.priority
             });
         } else {
             form.resetFields();
@@ -31,16 +33,18 @@ export default function CreateModule({ open, onCancel, initialData, refetch }) {
     }, [initialData, form]);
 
     const handleFinish = async (values) => {
-        console.log(values)
         const formData = {
             name: values.name,
             code: values.code,
-            isDisplayed: values.isDisplayed
+            url: values.url,
+            isDisplayed: values.isDisplayed,
+            priority: values.priority,
+            moduleId: moduleId
         };
 
         try {
-            initialData != null ? await editModule({ body: formData }) : await createModule({ body: formData });
-            message.success("Module update successfully!");
+            initialData != null ? await editPermission({ body: formData }) : await createPermission({ body: formData });
+            message.success("Permission update successfully!");
             form.resetFields();
             onCancel();
             await refetch();
@@ -52,7 +56,7 @@ export default function CreateModule({ open, onCancel, initialData, refetch }) {
 
     return (
         <Modal
-            title="Create/Edit Module"
+            title="Create/Edit Permission"
             destroyOnHidden
             open={open}
             onCancel={() => {
@@ -71,7 +75,7 @@ export default function CreateModule({ open, onCancel, initialData, refetch }) {
                 <Form.Item
                     label="Name"
                     name="name"
-                    rules={[{ required: true, message: "Please input Module name!" }]}
+                    rules={[{ required: true, message: "Please input Permission name!" }]}
                 >
                     <Input />
                 </Form.Item>
@@ -80,6 +84,19 @@ export default function CreateModule({ open, onCancel, initialData, refetch }) {
                     name="code"
                 >
                     <Input />
+                </Form.Item>
+                <Form.Item
+                    label="Url"
+                    name="url"
+                >
+                    <Input />
+
+                </Form.Item>
+                <Form.Item
+                    label="Priority"
+                    name="priority"
+                >
+                    <InputNumber min={0} />
                 </Form.Item>
                 <Form.Item
                     valuePropName="checked"

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { Table, Button, Space, Modal, Form, Input, Popconfirm } from "antd";
 import useApi from "../hooks/useApi";
 import CreatePermission from "../partials/permission/CreatePermission";
@@ -8,6 +9,7 @@ import DEFAULT_PAGINATION from "../constants/pagination";
 const { Search } = Input;
 
 export default function PermissionManagement() {
+    const { id } = useParams();
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [searchText, setSearchText] = useState("");
@@ -15,7 +17,7 @@ export default function PermissionManagement() {
 
     const { data, loading, error, refetch } = useApi({
         url: "permissions/paged",
-        params: { page: pagination.current, size: pagination.pageSize, search: searchText },
+        params: { page: pagination.current, size: pagination.pageSize, search: searchText, moduleId: id },
     });
 
     const { refetch: deletePermission } = useApi({
@@ -39,6 +41,11 @@ export default function PermissionManagement() {
             title: "Name",
             dataIndex: "name",
             key: "name",
+        },
+        {
+            title: "Url",
+            dataIndex: "url",
+            key: "url",
         },
         {
             title: "Displayed",
@@ -85,13 +92,13 @@ export default function PermissionManagement() {
     const handleTableChange = (newPagination) => {
         setPagination(newPagination);
         refetch({
-            params: { page: newPagination.page, size: newPagination.size, search: searchText },
+            params: { page: newPagination.page, size: newPagination.size, search: searchText, moduleId: id },
         });
     };
 
     useEffect(() => {
         refetch({
-            params: { page: pagination.page, size: pagination.size, search: searchText },
+            params: { page: pagination.page, size: pagination.size, search: searchText, moduleId: id },
         });
     }, [searchText]);
 
@@ -130,7 +137,7 @@ export default function PermissionManagement() {
                 bordered
             />
 
-            <CreatePermission refetch={refetch} onCancel={() => setIsModalOpen(false)} open={isModalOpen} initialData={currentPermission}></CreatePermission>
+            <CreatePermission moduleId={id} refetch={refetch} onCancel={() => setIsModalOpen(false)} open={isModalOpen} initialData={currentPermission}></CreatePermission>
         </div>
     );
 }

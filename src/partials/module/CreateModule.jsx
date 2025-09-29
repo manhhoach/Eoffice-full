@@ -31,7 +31,6 @@ export default function CreateModule({ open, onCancel, initialData, refetch }) {
     }, [initialData, form]);
 
     const handleFinish = async (values) => {
-        console.log(values)
         const formData = {
             name: values.name,
             code: values.code,
