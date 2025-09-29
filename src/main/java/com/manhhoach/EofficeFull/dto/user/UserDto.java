@@ -1,7 +1,6 @@
 package com.manhhoach.EofficeFull.dto.user;
 
 import com.manhhoach.EofficeFull.dto.module.ModuleDto;
-import com.manhhoach.EofficeFull.dto.role.RoleDto;
 import lombok.Builder;
 import lombok.Data;
 

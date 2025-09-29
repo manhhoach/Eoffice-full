@@ -1,6 +1,5 @@
 package com.manhhoach.EofficeFull.repository;
 
-import com.manhhoach.EofficeFull.dto.permission.PermissionDto;
 import com.manhhoach.EofficeFull.dto.permission.PermissionPagingReq;
 import com.manhhoach.EofficeFull.entity.Permission;
 import org.springframework.data.domain.Page;

@@ -1,8 +1,9 @@
 package com.manhhoach.EofficeFull.seeds;
 
 import com.manhhoach.EofficeFull.constant.RoleConstant;
-import com.manhhoach.EofficeFull.entity.*;
 import com.manhhoach.EofficeFull.entity.Module;
+import com.manhhoach.EofficeFull.entity.Permission;
+import com.manhhoach.EofficeFull.entity.Role;
 import com.manhhoach.EofficeFull.repository.ModuleRepository;
 import com.manhhoach.EofficeFull.repository.PermissionRepository;
 import com.manhhoach.EofficeFull.repository.RoleRepository;
@@ -11,7 +12,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.*;
+import java.util.List;
 
 @Configuration
 public class DataInitializer {
@@ -48,7 +49,7 @@ public class DataInitializer {
 
                 // 4. Lưu dữ liệu
                 moduleRepository.saveAll(List.of(adminModule));
-                permissionRepository.saveAll(List.of(p1,p2,p3,p4));
+                permissionRepository.saveAll(List.of(p1, p2, p3, p4));
                 roleRepository.saveAll(List.of(adminRole, userRole));
 
 

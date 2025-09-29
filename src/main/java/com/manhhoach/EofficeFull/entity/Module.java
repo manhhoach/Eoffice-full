@@ -1,7 +1,10 @@
 package com.manhhoach.EofficeFull.entity;
 
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +17,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="module")
+@Table(name = "module")
 public class Module extends BaseEntity {
     private String name;
     private String code;

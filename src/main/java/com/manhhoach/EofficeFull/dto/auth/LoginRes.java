@@ -1,7 +1,6 @@
 package com.manhhoach.EofficeFull.dto.auth;
 
 import com.manhhoach.EofficeFull.dto.module.ModuleDto;
-import com.manhhoach.EofficeFull.dto.permission.PermissionDto;
 import lombok.Builder;
 import lombok.Data;
 

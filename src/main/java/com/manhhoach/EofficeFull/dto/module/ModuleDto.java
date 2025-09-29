@@ -21,7 +21,7 @@ public class ModuleDto {
     private List<PermissionDto> permissions;
 
 
-    public static ModuleDto map(Module module){
+    public static ModuleDto map(Module module) {
         return ModuleDto.builder()
                 .code(module.getCode())
                 .name(module.getName())

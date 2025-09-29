@@ -1,9 +1,7 @@
 package com.manhhoach.EofficeFull.dto.permission;
 
 
-import com.manhhoach.EofficeFull.dto.role.RoleDto;
 import com.manhhoach.EofficeFull.entity.Permission;
-import com.manhhoach.EofficeFull.entity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,7 +19,7 @@ public class PermissionDto {
     private Boolean isDisplayed;
     private Integer priority;
 
-    public static PermissionDto map(Permission permission){
+    public static PermissionDto map(Permission permission) {
         return PermissionDto.builder()
                 .code(permission.getCode())
                 .name(permission.getName())

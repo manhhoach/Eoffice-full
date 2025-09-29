@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="permission")
+@Table(name = "permission")
 public class Permission extends BaseEntity {
     private String name;
     private String code;

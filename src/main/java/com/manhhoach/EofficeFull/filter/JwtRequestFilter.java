@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -44,7 +43,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                     String username = jwtTokenProvider.getUsername(accessToken, accessTokenKey);
                     var permissions = jwtTokenProvider.getPermissions(accessToken, accessTokenKey);
                     Long id = jwtTokenProvider.getId(accessToken, accessTokenKey);
-                    var grantedAuthorities = permissions.stream().map(e->new SimpleGrantedAuthority(e)).toList();
+                    var grantedAuthorities = permissions.stream().map(e -> new SimpleGrantedAuthority(e)).toList();
                     UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(new CustomUserDetails(id, username), null, grantedAuthorities);
                     SecurityContextHolder.getContext().setAuthentication(auth);
                 }

@@ -16,7 +16,7 @@ public class RoleDto {
     private String name;
     private List<PermissionDto> permissions;
 
-    public static RoleDto map(Role role){
+    public static RoleDto map(Role role) {
         return RoleDto.builder().code(role.getCode()).name(role.getName()).id(role.getId()).build();
     }
 }

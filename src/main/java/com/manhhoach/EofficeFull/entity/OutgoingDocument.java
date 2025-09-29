@@ -14,8 +14,8 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="outgoing_document")
-public class OutgoingDocument extends Document{
+@Table(name = "outgoing_document")
+public class OutgoingDocument extends Document {
     private String outgoingNumber;
     private LocalDate sentDate;
 }

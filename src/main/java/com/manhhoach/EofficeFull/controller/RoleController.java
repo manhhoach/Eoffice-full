@@ -2,16 +2,12 @@ package com.manhhoach.EofficeFull.controller;
 
 import com.manhhoach.EofficeFull.common.ApiResponse;
 import com.manhhoach.EofficeFull.common.PagedResponse;
-import com.manhhoach.EofficeFull.common.PagingRequest;
 import com.manhhoach.EofficeFull.dto.role.CreateRoleReq;
 import com.manhhoach.EofficeFull.dto.role.RoleDto;
 import com.manhhoach.EofficeFull.dto.role.RolePagingReq;
-import com.manhhoach.EofficeFull.entity.Role;
 import com.manhhoach.EofficeFull.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/roles")

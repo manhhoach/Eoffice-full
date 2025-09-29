@@ -3,9 +3,9 @@ package com.manhhoach.EofficeFull.service.impl;
 import com.manhhoach.EofficeFull.config.CustomUserDetails;
 import com.manhhoach.EofficeFull.constant.RoleConstant;
 import com.manhhoach.EofficeFull.dto.auth.LoginReq;
+import com.manhhoach.EofficeFull.dto.auth.LoginRes;
 import com.manhhoach.EofficeFull.dto.auth.RefreshTokenReq;
 import com.manhhoach.EofficeFull.dto.auth.RegisterReq;
-import com.manhhoach.EofficeFull.dto.auth.LoginRes;
 import com.manhhoach.EofficeFull.dto.module.ModuleDto;
 import com.manhhoach.EofficeFull.dto.permission.PermissionDto;
 import com.manhhoach.EofficeFull.dto.user.UserDto;
@@ -14,7 +14,6 @@ import com.manhhoach.EofficeFull.entity.Permission;
 import com.manhhoach.EofficeFull.entity.Role;
 import com.manhhoach.EofficeFull.entity.User;
 import com.manhhoach.EofficeFull.provider.JwtTokenProvider;
-import com.manhhoach.EofficeFull.repository.ModuleRepository;
 import com.manhhoach.EofficeFull.repository.PermissionRepository;
 import com.manhhoach.EofficeFull.repository.RoleRepository;
 import com.manhhoach.EofficeFull.repository.UserRepository;
@@ -26,7 +25,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -116,7 +114,7 @@ public class AuthServiceImpl implements AuthService {
         claims.put("id", id);
 
         List<Permission> permissions = permissionRepository.getPermissionsByUserId(id);
-        List<String> permissionCodes = permissions.stream().map(per->per.getCode()).toList();
+        List<String> permissionCodes = permissions.stream().map(per -> per.getCode()).toList();
 
         LoginRes data = LoginRes.builder()
                 .username(username)
@@ -134,7 +132,7 @@ public class AuthServiceImpl implements AuthService {
         return data;
     }
 
-    List<ModuleDto> groupPermissions(List<Permission> permissions){
+    List<ModuleDto> groupPermissions(List<Permission> permissions) {
         Map<Long, ModuleDto> moduleMap = new LinkedHashMap<>();
 
         for (Permission p : permissions) {

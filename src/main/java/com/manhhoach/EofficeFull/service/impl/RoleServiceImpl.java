@@ -13,7 +13,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -63,7 +62,7 @@ public class RoleServiceImpl implements RoleService {
             rolePage = roleRepository.findByNameContainingIgnoreCaseOrCodeContainingIgnoreCase(
                     request.getSearch(), request.getSearch(), pageable);
         }
-        var roleDtos = rolePage.getContent().stream().map(role->{
+        var roleDtos = rolePage.getContent().stream().map(role -> {
             return RoleDto.map(role);
         }).toList();
 
@@ -75,8 +74,8 @@ public class RoleServiceImpl implements RoleService {
         );
     }
 
-    private void validate(Long id, String code){
-        if(roleRepository.existCode(id, code)){
+    private void validate(Long id, String code) {
+        if (roleRepository.existCode(id, code)) {
             throw new IllegalArgumentException("Role code already exist");
         }
     }

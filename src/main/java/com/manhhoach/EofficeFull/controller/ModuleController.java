@@ -2,13 +2,14 @@ package com.manhhoach.EofficeFull.controller;
 
 import com.manhhoach.EofficeFull.common.ApiResponse;
 import com.manhhoach.EofficeFull.common.PagedResponse;
-import com.manhhoach.EofficeFull.common.PagingRequest;
 import com.manhhoach.EofficeFull.dto.module.CreateModuleReq;
 import com.manhhoach.EofficeFull.dto.module.ModuleDto;
 import com.manhhoach.EofficeFull.dto.module.ModulePagingReq;
 import com.manhhoach.EofficeFull.service.ModuleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/modules")
@@ -42,5 +43,10 @@ public class ModuleController {
     public ApiResponse<Void> delete(@PathVariable Long id) {
         moduleService.delete(id);
         return ApiResponse.success(null);
+    }
+
+    @GetMapping
+    public ApiResponse<List<ModuleDto>> getDetailModules() {
+        return ApiResponse.success(moduleService.getDetailModules());
     }
 }

@@ -1,7 +1,6 @@
 package com.manhhoach.EofficeFull.service.impl;
 
 import com.manhhoach.EofficeFull.config.CustomUserDetails;
-import com.manhhoach.EofficeFull.dto.permission.PermissionDto;
 import com.manhhoach.EofficeFull.entity.Permission;
 import com.manhhoach.EofficeFull.repository.PermissionRepository;
 import com.manhhoach.EofficeFull.repository.UserRepository;
