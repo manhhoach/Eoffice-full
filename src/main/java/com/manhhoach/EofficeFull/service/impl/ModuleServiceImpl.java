@@ -18,7 +18,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -108,8 +110,21 @@ public class ModuleServiceImpl implements ModuleService {
     public void setSelectedModules(SelectedModuleReq req) {
         Role role = roleRepository.findById(req.getRoleId())
                 .orElseThrow(() -> new RuntimeException("Role not found"));
+
         List<Permission> newPermissions = permissionRepository.findAllById(req.getPermissionIds());
-        role.setPermissions(newPermissions);
+
+        // Xác định permissions cần xoá
+        Set<Permission> toRemove = new HashSet<>(role.getPermissions());
+        toRemove.removeAll(newPermissions); // còn lại là những permission không có trong newPermissions
+
+        // Xoá những permission dư
+        role.getPermissions().removeAll(toRemove);
+
+        // Thêm permission mới
+        Set<Permission> toAdd = new HashSet<>(newPermissions);
+        toAdd.removeAll(role.getPermissions()); // loại bỏ những permission đã có
+        role.getPermissions().addAll(toAdd);
+
         roleRepository.save(role);
     }
 
