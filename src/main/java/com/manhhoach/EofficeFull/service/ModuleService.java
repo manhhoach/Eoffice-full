@@ -4,6 +4,8 @@ import com.manhhoach.EofficeFull.common.PagedResponse;
 import com.manhhoach.EofficeFull.dto.module.CreateModuleReq;
 import com.manhhoach.EofficeFull.dto.module.ModuleDto;
 import com.manhhoach.EofficeFull.dto.module.ModulePagingReq;
+import com.manhhoach.EofficeFull.dto.module.ModuleSelectionDto;
+import com.manhhoach.EofficeFull.dto.module.SelectedModuleReq;
 
 import java.util.List;
 
@@ -18,5 +20,6 @@ public interface ModuleService {
 
     PagedResponse<ModuleDto> getPaged(ModulePagingReq request);
 
-    List<ModuleDto> getDetailModules();
+    List<ModuleSelectionDto> getSelectedModules(Long roleId);
+    void setSelectedModules(SelectedModuleReq req);
 }

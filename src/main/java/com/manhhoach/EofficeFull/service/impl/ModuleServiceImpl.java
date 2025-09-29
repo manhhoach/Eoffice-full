@@ -1,12 +1,15 @@
 package com.manhhoach.EofficeFull.service.impl;
 
 import com.manhhoach.EofficeFull.common.PagedResponse;
-import com.manhhoach.EofficeFull.dto.module.CreateModuleReq;
-import com.manhhoach.EofficeFull.dto.module.ModuleDto;
-import com.manhhoach.EofficeFull.dto.module.ModulePagingReq;
+import com.manhhoach.EofficeFull.dto.module.*;
 import com.manhhoach.EofficeFull.dto.permission.PermissionDto;
+import com.manhhoach.EofficeFull.dto.permission.PermissionSelectionDto;
 import com.manhhoach.EofficeFull.entity.Module;
+import com.manhhoach.EofficeFull.entity.Permission;
+import com.manhhoach.EofficeFull.entity.Role;
 import com.manhhoach.EofficeFull.repository.ModuleRepository;
+import com.manhhoach.EofficeFull.repository.PermissionRepository;
+import com.manhhoach.EofficeFull.repository.RoleRepository;
 import com.manhhoach.EofficeFull.service.ModuleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,6 +24,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ModuleServiceImpl implements ModuleService {
     private final ModuleRepository moduleRepository;
+    private final RoleRepository roleRepository;
+    private final PermissionRepository permissionRepository;
 
     @Override
     public ModuleDto create(CreateModuleReq req) {
@@ -75,15 +80,37 @@ public class ModuleServiceImpl implements ModuleService {
     }
 
     @Override
-    public List<ModuleDto> getDetailModules() {
+    public List<ModuleSelectionDto> getSelectedModules(Long roleId) {
         List<Module> modules = moduleRepository.findAllWithPermissions();
-        List<ModuleDto> data = modules.stream().map(module -> {
-            ModuleDto mDto = ModuleDto.map(module);
-            List<PermissionDto> pDtos = module.getPermissions().stream().map(p -> PermissionDto.map(p)).toList();
-            mDto.setPermissions(pDtos);
-            return mDto;
+        List<Long> selectedPermissionIds = roleRepository.findPermissionIdsByRoleId(roleId);
+        List<ModuleSelectionDto> data = modules.stream().map(module -> {
+            ModuleSelectionDto selectedM = ModuleSelectionDto.builder().name(module.getName()).build();
+
+            List<PermissionSelectionDto> pDtos = module.getPermissions().stream().map(p -> {
+                boolean isSelected = selectedPermissionIds.contains(p.getId());
+                PermissionSelectionDto selectedP = PermissionSelectionDto.builder()
+                        .id(p.getId())
+                        .selected(isSelected)
+                        .name(p.getName())
+                        .build();
+
+                return selectedP;
+
+            }).toList();
+
+            selectedM.setPermissionSelectionDtos(pDtos);
+            return selectedM;
         }).toList();
         return data;
+    }
+
+    @Override
+    public void setSelectedModules(SelectedModuleReq req) {
+        Role role = roleRepository.findById(req.getRoleId())
+                .orElseThrow(() -> new RuntimeException("Role not found"));
+        List<Permission> newPermissions = permissionRepository.findAllById(req.getPermissionIds());
+        role.setPermissions(newPermissions);
+        roleRepository.save(role);
     }
 
 
