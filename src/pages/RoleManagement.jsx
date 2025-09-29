@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Table, Button, Space, Modal, Form, Input, Popconfirm } from "antd";
 import useApi from "../hooks/useApi";
 import CreateRole from "../partials/role/CreateRole";
-import { BiEdit, BiPlus, BiTrash } from "react-icons/bi";
+import { BiCog, BiEdit, BiPlus, BiTrash } from "react-icons/bi";
 import DEFAULT_PAGINATION from "../constants/pagination";
 import SetPermission from "../partials/role/SetPermission";
 
