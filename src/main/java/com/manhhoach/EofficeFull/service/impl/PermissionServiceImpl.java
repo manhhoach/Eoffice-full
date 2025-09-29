@@ -6,8 +6,10 @@ import com.manhhoach.EofficeFull.dto.permission.PermissionDto;
 import com.manhhoach.EofficeFull.dto.permission.PermissionPagingReq;
 import com.manhhoach.EofficeFull.dto.role.CreateRoleReq;
 import com.manhhoach.EofficeFull.dto.role.RoleDto;
+import com.manhhoach.EofficeFull.entity.Module;
 import com.manhhoach.EofficeFull.entity.Permission;
 import com.manhhoach.EofficeFull.entity.Role;
+import com.manhhoach.EofficeFull.repository.ModuleRepository;
 import com.manhhoach.EofficeFull.repository.PermissionRepository;
 import com.manhhoach.EofficeFull.repository.RoleRepository;
 import com.manhhoach.EofficeFull.service.PermissionService;
@@ -23,16 +25,21 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class PermissionServiceImpl implements PermissionService {
     private final PermissionRepository permisionRepository;
+    private final ModuleRepository moduleRepository;
 
     @Override
     public PermissionDto create(CreatePermissionReq req) {
         validate(null, req.getCode());
+        Module md = getModule(req.getModuleId());
+
         Permission per = new Permission();
         per.setName(req.getName());
         per.setCode(req.getCode());
         per.setUrl(req.getUrl());
         per.setPriority(req.getPriority());
         per.setIsDisplayed(req.getIsDisplayed());
+        per.setModule(md);
+
         permisionRepository.save(per);
         return PermissionDto.map(per);
     }
@@ -40,13 +47,17 @@ public class PermissionServiceImpl implements PermissionService {
     @Override
     public PermissionDto update(Long id, CreatePermissionReq req) {
         validate(id, req.getCode());
+
         Permission per = permisionRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Permission not found"));
+
+        Module md = getModule(req.getModuleId());
         per.setName(req.getName());
         per.setCode(req.getCode());
         per.setUrl(req.getUrl());
         per.setPriority(req.getPriority());
         per.setIsDisplayed(req.getIsDisplayed());
+        per.setModule(md);
         permisionRepository.save(per);
         return PermissionDto.map(per);
     }
@@ -83,5 +94,9 @@ public class PermissionServiceImpl implements PermissionService {
         if(permisionRepository.existCode(id, code)){
             throw new IllegalArgumentException("Permission code already exist");
         }
+    }
+
+    Module getModule(Long id){
+        return moduleRepository.findById(id).orElseThrow(()-> new RuntimeException("Module not found"));
     }
 }

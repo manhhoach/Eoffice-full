@@ -9,4 +9,5 @@ public class CreatePermissionReq {
     private String url;
     private Boolean isDisplayed;
     private Integer priority;
+    private Long moduleId;
 }
