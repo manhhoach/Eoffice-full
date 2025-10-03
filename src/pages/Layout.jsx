@@ -1,6 +1,8 @@
 import { Outlet } from "react-router-dom";
 import Sidebar from '../partials/Sidebar';
 import Header from '../partials/Header';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Layout() {
    return (
@@ -12,6 +14,16 @@ export default function Layout() {
                <Outlet />
             </main>
          </div>
+         <ToastContainer
+            position="top-right"
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop
+            closeOnClick
+            pauseOnHover
+            draggable
+            theme="light"
+         />
       </div>
    );
 }

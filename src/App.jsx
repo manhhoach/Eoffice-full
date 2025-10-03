@@ -4,9 +4,7 @@ import {
   Route,
   useLocation
 } from 'react-router-dom';
-
 import './css/style.css';
-
 import './charts/ChartjsConfig';
 
 // Import pages
@@ -20,6 +18,7 @@ import Layout from './pages/Layout';
 import RoleManagement from './pages/RoleManagement';
 import ModuleManagement from './pages/ModuleManagement';
 import PermissionManagement from './pages/PermissionManagement';
+
 
 function App() {
 
