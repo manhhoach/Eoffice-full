@@ -27,4 +27,12 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
             SELECT p.id FROM Role r JOIN r.permissions p  WHERE r.id = :roleId
             """)
     List<Long> findPermissionIdsByRoleId(Long roleId);
+
+
+    @Query("""
+            SELECT r.id from User u join u.roles r WHERE u.id = :userId
+            """)
+    List<Long> findRoleIdsByUserId(Long userId);
+
+
 }
