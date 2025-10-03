@@ -18,6 +18,7 @@ import Layout from './pages/Layout';
 import RoleManagement from './pages/RoleManagement';
 import ModuleManagement from './pages/ModuleManagement';
 import PermissionManagement from './pages/PermissionManagement';
+import UserManagement from './pages/UserManagement';
 
 
 function App() {
@@ -60,6 +61,13 @@ function App() {
               </PrivateRoute>
             }
           />
+          <Route path='/users' element={
+            <PrivateRoute permissionCode={permissionCodes.VIEW_USERS}>
+              <UserManagement />
+            </PrivateRoute>
+          }>
+
+          </Route>
 
           <Route
             path="/"
