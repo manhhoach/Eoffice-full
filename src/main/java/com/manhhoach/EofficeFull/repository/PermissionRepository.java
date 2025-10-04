@@ -39,4 +39,10 @@ public interface PermissionRepository extends JpaRepository<Permission, Long> {
                     AND p.module.id = :#{#req.moduleId}
             """)
     Page<Permission> searchPermissions(PermissionPagingReq req, Pageable pageable);
+
+
+    @Query("""
+            SELECT p.id FROM User u join u.permissions p WHERE u.id = :userId
+            """)
+    List<Long> getPermissionIdsByUserId(Long userId);
 }

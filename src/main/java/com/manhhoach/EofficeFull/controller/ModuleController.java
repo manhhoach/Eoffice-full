@@ -47,12 +47,12 @@ public class ModuleController {
         return ApiResponse.success(null);
     }
 
-    @GetMapping("/selected")
+    @GetMapping("/get-selected")
     public ApiResponse<List<ModuleSelectionDto>> getSelectedModules(Long roleId) {
         return ApiResponse.success(moduleService.getSelectedModules(roleId));
     }
 
-    @PostMapping("/selected")
+    @PostMapping("/set-selected")
     public ApiResponse<Void> setSelectedModules(@RequestBody SelectedModuleReq req){
         moduleService.setSelectedModules(req);
         return ApiResponse.success(null);

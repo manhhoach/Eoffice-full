@@ -2,8 +2,6 @@ package com.manhhoach.EofficeFull.controller;
 
 import com.manhhoach.EofficeFull.common.ApiResponse;
 import com.manhhoach.EofficeFull.common.PagedResponse;
-import com.manhhoach.EofficeFull.dto.module.ModuleSelectionDto;
-import com.manhhoach.EofficeFull.dto.module.SelectedModuleReq;
 import com.manhhoach.EofficeFull.dto.role.*;
 import com.manhhoach.EofficeFull.dto.user.CreateUserReq;
 import com.manhhoach.EofficeFull.dto.user.UserDto;
@@ -44,17 +42,6 @@ public class UserController {
     @DeleteMapping("/{id}")
     public ApiResponse<Void> delete(@PathVariable Long id) {
         userService.delete(id);
-        return ApiResponse.success(null);
-    }
-
-    @GetMapping("/selected")
-    public ApiResponse<List<RoleSelectionDto>> getSelectedRoles(Long userId) {
-        return ApiResponse.success(userService.getSelectedRoles(userId));
-    }
-
-    @PostMapping("/selected")
-    public ApiResponse<Void> setSelectedRoles(@RequestBody SelectedRoleReq req){
-        userService.setSelectedRoles(req);
         return ApiResponse.success(null);
     }
 }

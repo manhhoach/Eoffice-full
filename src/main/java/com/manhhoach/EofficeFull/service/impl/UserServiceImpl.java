@@ -83,29 +83,6 @@ public class UserServiceImpl implements UserService {
         );
     }
 
-    @Override
-    public List<RoleSelectionDto> getSelectedRoles(Long userId) {
-        var selectedRoleIds = roleRepository.findRoleIdsByUserId(userId);
-        var roles = roleRepository.findAll();
-        return roles.stream().map(e-> {
-            var roleItem = RoleSelectionDto.builder()
-                    .id(e.getId())
-                    .name(e.getName())
-                    .selected(selectedRoleIds.contains(e.getId()))
-                    .build();
-            return roleItem;
-        }).toList();
-    }
-
-    @Override
-    public void setSelectedRoles(SelectedRoleReq req) {
-        User user = userRepository.findById(req.getUserId())
-                .orElseThrow(() -> new RuntimeException("Role not found"));
-        List<Role> roles = roleRepository.findAllById(req.getRoleIds());
-        user.setRoles(roles);
-        userRepository.save(user);
-    }
-
     private void validate(Long id,String username) {
         if (userRepository.checkExistUsername(id, username)) {
             throw new IllegalArgumentException("Role code already exist");

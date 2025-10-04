@@ -1,9 +1,9 @@
 package com.manhhoach.EofficeFull.service;
 
 import com.manhhoach.EofficeFull.common.PagedResponse;
-import com.manhhoach.EofficeFull.dto.role.CreateRoleReq;
-import com.manhhoach.EofficeFull.dto.role.RoleDto;
-import com.manhhoach.EofficeFull.dto.role.RolePagingReq;
+import com.manhhoach.EofficeFull.dto.role.*;
+
+import java.util.List;
 
 public interface RoleService {
     RoleDto create(CreateRoleReq req);
@@ -15,4 +15,8 @@ public interface RoleService {
     RoleDto getById(Long id);
 
     PagedResponse<RoleDto> getPaged(RolePagingReq request);
+
+    List<RoleSelectionDto> getSelectedRoles(Long userId);
+
+    void setSelectedRoles(SelectedRoleReq req);
 }

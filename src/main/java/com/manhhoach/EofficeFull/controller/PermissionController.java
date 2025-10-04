@@ -2,12 +2,14 @@ package com.manhhoach.EofficeFull.controller;
 
 import com.manhhoach.EofficeFull.common.ApiResponse;
 import com.manhhoach.EofficeFull.common.PagedResponse;
-import com.manhhoach.EofficeFull.dto.permission.CreatePermissionReq;
-import com.manhhoach.EofficeFull.dto.permission.PermissionDto;
-import com.manhhoach.EofficeFull.dto.permission.PermissionPagingReq;
+import com.manhhoach.EofficeFull.dto.permission.*;
+import com.manhhoach.EofficeFull.dto.role.RoleSelectionDto;
+import com.manhhoach.EofficeFull.dto.role.SelectedRoleReq;
 import com.manhhoach.EofficeFull.service.PermissionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/permissions")
@@ -40,6 +42,17 @@ public class PermissionController {
     @DeleteMapping("/{id}")
     public ApiResponse<Void> delete(@PathVariable Long id) {
         permissionService.delete(id);
+        return ApiResponse.success(null);
+    }
+
+    @GetMapping("/get-selected")
+    public ApiResponse<List<PermissionSelectionDto>> getSelectedPermissions(Long userId) {
+        return ApiResponse.success(permissionService.getSelectedPermissions(userId));
+    }
+
+    @PostMapping("/set-selected")
+    public ApiResponse<Void> setSelectedPermissions(@RequestBody SelectedPermissionReq req){
+        permissionService.setSelectedPermissions(req);
         return ApiResponse.success(null);
     }
 }

@@ -1,9 +1,9 @@
 package com.manhhoach.EofficeFull.service;
 
 import com.manhhoach.EofficeFull.common.PagedResponse;
-import com.manhhoach.EofficeFull.dto.permission.CreatePermissionReq;
-import com.manhhoach.EofficeFull.dto.permission.PermissionDto;
-import com.manhhoach.EofficeFull.dto.permission.PermissionPagingReq;
+import com.manhhoach.EofficeFull.dto.permission.*;
+
+import java.util.List;
 
 public interface PermissionService {
     PermissionDto create(CreatePermissionReq req);
@@ -15,4 +15,8 @@ public interface PermissionService {
     PermissionDto getById(Long id);
 
     PagedResponse<PermissionDto> getPaged(PermissionPagingReq request);
+
+    List<PermissionSelectionDto> getSelectedPermissions(Long userId);
+
+    void setSelectedPermissions(SelectedPermissionReq req);
 }

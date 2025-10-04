@@ -1,11 +1,11 @@
 package com.manhhoach.EofficeFull.service.impl;
 
 import com.manhhoach.EofficeFull.common.PagedResponse;
-import com.manhhoach.EofficeFull.dto.role.CreateRoleReq;
-import com.manhhoach.EofficeFull.dto.role.RoleDto;
-import com.manhhoach.EofficeFull.dto.role.RolePagingReq;
+import com.manhhoach.EofficeFull.dto.role.*;
 import com.manhhoach.EofficeFull.entity.Role;
+import com.manhhoach.EofficeFull.entity.User;
 import com.manhhoach.EofficeFull.repository.RoleRepository;
+import com.manhhoach.EofficeFull.repository.UserRepository;
 import com.manhhoach.EofficeFull.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -14,10 +14,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class RoleServiceImpl implements RoleService {
     private final RoleRepository roleRepository;
+    private final UserRepository userRepository;
 
     @Override
     public RoleDto create(CreateRoleReq req) {
@@ -72,6 +75,29 @@ public class RoleServiceImpl implements RoleService {
                 rolePage.getTotalPages(),
                 rolePage.getTotalElements()
         );
+    }
+
+    @Override
+    public List<RoleSelectionDto> getSelectedRoles(Long userId) {
+        var selectedRoleIds = roleRepository.findRoleIdsByUserId(userId);
+        var roles = roleRepository.findAll();
+        return roles.stream().map(e-> {
+            var roleItem = RoleSelectionDto.builder()
+                    .id(e.getId())
+                    .name(e.getName())
+                    .selected(selectedRoleIds.contains(e.getId()))
+                    .build();
+            return roleItem;
+        }).toList();
+    }
+
+    @Override
+    public void setSelectedRoles(SelectedRoleReq req) {
+        User user = userRepository.findById(req.getUserId())
+                .orElseThrow(() -> new RuntimeException("Role not found"));
+        List<Role> roles = roleRepository.findAllById(req.getRoleIds());
+        user.setRoles(roles);
+        userRepository.save(user);
     }
 
     private void validate(Long id, String code) {

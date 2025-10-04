@@ -18,7 +18,4 @@ public interface UserService {
 
     PagedResponse<UserDto> getPaged(UserPagingReq request);
 
-    List<RoleSelectionDto> getSelectedRoles(Long userId);
-
-    void setSelectedRoles(SelectedRoleReq req);
 }

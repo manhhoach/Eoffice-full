@@ -2,12 +2,12 @@ package com.manhhoach.EofficeFull.controller;
 
 import com.manhhoach.EofficeFull.common.ApiResponse;
 import com.manhhoach.EofficeFull.common.PagedResponse;
-import com.manhhoach.EofficeFull.dto.role.CreateRoleReq;
-import com.manhhoach.EofficeFull.dto.role.RoleDto;
-import com.manhhoach.EofficeFull.dto.role.RolePagingReq;
+import com.manhhoach.EofficeFull.dto.role.*;
 import com.manhhoach.EofficeFull.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/roles")
@@ -40,6 +40,17 @@ public class RoleController {
     @DeleteMapping("/{id}")
     public ApiResponse<Void> delete(@PathVariable Long id) {
         roleService.delete(id);
+        return ApiResponse.success(null);
+    }
+
+    @GetMapping("/get-selected")
+    public ApiResponse<List<RoleSelectionDto>> getSelectedRoles(Long userId) {
+        return ApiResponse.success(roleService.getSelectedRoles(userId));
+    }
+
+    @PostMapping("/set-selected")
+    public ApiResponse<Void> setSelectedRoles(@RequestBody SelectedRoleReq req){
+        roleService.setSelectedRoles(req);
         return ApiResponse.success(null);
     }
 }
