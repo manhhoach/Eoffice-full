@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import { useContext } from "react";
 import { Form, Input, Button, Card, Typography } from "antd";
 import useApi from "../hooks/useApi";
 import { MainContext } from "../contexts/MainContext";
@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 const { Title } = Typography;
 
 function Login() {
-  const { data, loading, error, refetch } = useApi({
+  const { loading, refetch } = useApi({
     url: 'auth/login',
     method: 'POST',
     auto: false,

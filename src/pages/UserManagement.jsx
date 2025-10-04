@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { Table, Button, Space, Modal, Form, Input, Popconfirm } from "antd";
+import { useEffect, useState } from "react";
+import { Table, Button, Space, Input, Popconfirm } from "antd";
 import useApi from "../hooks/useApi";
 import CreateUser from "./../partials/user/CreateUser";
-import { BiCheck, BiCog, BiEdit, BiPlus, BiTrash, BiX } from "react-icons/bi";
+import { BiColor, BiCog, BiEdit, BiPlus, BiTrash } from "react-icons/bi";
 import DEFAULT_PAGINATION from "../constants/pagination";
-import { useNavigate } from "react-router-dom";
 import SetRole from "../partials/user/SetRole";
+import SetPermissionForUser from "../partials/user/SetPermissionForUser";
+
 
 const { Search } = Input;
 
@@ -13,11 +14,11 @@ export default function UserManagement() {
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
     const [modalOpen, setIsModalOpen] = useState({
         createUser: false,
-        setRole: false
+        setRole: false,
+        setPermission: false
     });
     const [searchText, setSearchText] = useState("");
     const [currentUser, setCurrentUser] = useState(null);
-    const navigate = useNavigate();
 
     const { data, loading, error, refetch } = useApi({
         url: "users/paged",
@@ -56,8 +57,12 @@ export default function UserManagement() {
                         setCurrentUser(record)
                         setIsModalOpen(modalOpen => ({ ...modalOpen, setRole: true }));
                     }}>
-
                     </Button>
+
+                    <Button icon={<BiColor />} type="link" onClick={() => {
+                        setCurrentUser(record)
+                        setIsModalOpen(modalOpen => ({ ...modalOpen, setPermission: true }));
+                    }}></Button>
 
                     <Popconfirm
                         title={`Bạn có chắc muốn xoá User "${record.username}"?`}
@@ -101,7 +106,11 @@ export default function UserManagement() {
                 <Search onChange={(e) => { setSearchText(e.target.value) }}></Search>
                 <Button
                     type="primary"
-                    onClick={() => setIsModalOpen(modalOpen => ({ ...modalOpen, createUser: true }))}
+                    onClick={() => {
+                        setIsModalOpen(modalOpen => ({ ...modalOpen, createUser: true }))
+                        setCurrentUser(null)
+                    }
+                    }
                     icon={<BiPlus />}
                     style={{ marginBottom: 16 }}
                 >
@@ -123,8 +132,9 @@ export default function UserManagement() {
                 bordered
             />
 
-            <CreateUser refetch={refetch} onCancel={() => setIsModalOpen(modalOpen => ({ ...modalOpen, createUser: false }))} open={modalOpen.createUser} initialData={currentUser}></CreateUser>
+            <CreateUser refetch={refetch} onCancel={() => setIsModalOpen(modalOpen => ({ ...modalOpen, createUser: false }))} open={modalOpen.createUser} initialData={currentUser} />
             <SetRole onCancel={() => setIsModalOpen(modalOpen => ({ ...modalOpen, setRole: false }))} open={modalOpen.setRole} userId={currentUser?.id} />
+            <SetPermissionForUser onCancel={() => setIsModalOpen(modalOpen => ({ ...modalOpen, setPermission: false }))} open={modalOpen.setPermission} userId={currentUser?.id} />
         </div>
     );
 }

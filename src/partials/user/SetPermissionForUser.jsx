@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { toast } from "react-toastify";
 
 
-export default function SetRole({ open, onCancel, userId }) {
+export default function SetPermissionForUser({ open, onCancel, userId }) {
    const { data } = useApi({
       url: "users/selected?userId=" + userId,
    });

@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Table, Button, Space, Modal, Form, Input, Popconfirm } from "antd";
+import { Table, Button, Space, Input, Popconfirm } from "antd";
 import useApi from "../hooks/useApi";
 import CreatePermission from "../partials/permission/CreatePermission";
-import { BiCheck, BiCog, BiEdit, BiPlus, BiTrash, BiX } from "react-icons/bi";
+import { BiCheck, BiEdit, BiPlus, BiTrash, BiX } from "react-icons/bi";
 import DEFAULT_PAGINATION from "../constants/pagination";
 
 const { Search } = Input;
@@ -137,7 +137,7 @@ export default function PermissionManagement() {
                 bordered
             />
 
-            <CreatePermission moduleId={id} refetch={refetch} onCancel={() => setIsModalOpen(false)} open={isModalOpen} initialData={currentPermission}></CreatePermission>
+            <CreatePermission moduleId={id} refetch={refetch} onCancel={() => setIsModalOpen(false)} open={isModalOpen} initialData={currentPermission} />
         </div>
     );
 }

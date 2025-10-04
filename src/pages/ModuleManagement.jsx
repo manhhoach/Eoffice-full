@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Table, Button, Space, Modal, Form, Input, Popconfirm } from "antd";
+import { useEffect, useState } from "react";
+import { Table, Button, Space, Input, Popconfirm } from "antd";
 import useApi from "../hooks/useApi";
 import CreateModule from "../partials/module/CreateModule";
 import { BiCheck, BiCog, BiEdit, BiPlus, BiTrash, BiX } from "react-icons/bi";
@@ -138,7 +138,7 @@ export default function ModuleManagement() {
                 bordered
             />
 
-            <CreateModule refetch={refetch} onCancel={() => setIsModalOpen(false)} open={isModalOpen} initialData={currentModule}></CreateModule>
+            <CreateModule refetch={refetch} onCancel={() => setIsModalOpen(false)} open={isModalOpen} initialData={currentModule} />
         </div>
     );
 }
