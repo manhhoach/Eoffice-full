@@ -6,12 +6,12 @@ import { toast } from "react-toastify";
 
 export default function SetPermission({ open, onCancel, roleId }) {
    const { data, loading, error, refetch } = useApi({
-      url: "modules/selected?roleId=" + roleId,
+      url: "modules/get-selected?roleId=" + roleId,
    });
 
    const { refetch: setPermissions } = useApi({
       method: 'POST',
-      url: "modules/selected",
+      url: "modules/set-selected",
       auto: false,
    })
 

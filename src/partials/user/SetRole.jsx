@@ -6,12 +6,12 @@ import { toast } from "react-toastify";
 
 export default function SetRole({ open, onCancel, userId }) {
    const { data } = useApi({
-      url: "users/selected?userId=" + userId,
+      url: "roles/get-selected?userId=" + userId,
    });
 
    const { refetch: setRoles } = useApi({
       method: 'POST',
-      url: "users/selected",
+      url: "roles/set-selected",
       auto: false,
    })
 
