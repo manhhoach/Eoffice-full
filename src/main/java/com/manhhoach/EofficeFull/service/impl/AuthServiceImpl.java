@@ -41,7 +41,6 @@ public class AuthServiceImpl implements AuthService {
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationManager authenticationManager;
     private final PermissionRepository permissionRepository;
-    private final ModuleService moduleService;
 
     @Value("${security.jwt.access-token.key}")
     private String accessTokenKey;
