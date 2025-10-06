@@ -91,7 +91,7 @@ public class PermissionServiceImpl implements PermissionService {
     public List<PermissionSelectionDto> getSelectedPermissions(Long userId) {
         var permissions = permissionRepository.findAll();
         var selectedPermissionIds = permissionRepository.getPermissionIdsByUserId(userId);
-        return permissions.stream().map(e->{
+        return permissions.stream().map(e -> {
             var item = PermissionSelectionDto.builder()
                     .name(e.getName())
                     .id(e.getId())
@@ -104,7 +104,7 @@ public class PermissionServiceImpl implements PermissionService {
     @Override
     public void setSelectedPermissions(SelectedPermissionReq req) {
         var user = userRepository.findById(req.getUserId())
-                .orElseThrow(()-> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
         var permissions = permissionRepository.findAllById(req.getPermissionIds());
         user.setPermissions(permissions);
         userRepository.save(user);

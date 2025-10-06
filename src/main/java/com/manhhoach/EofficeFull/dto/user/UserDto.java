@@ -16,7 +16,7 @@ public class UserDto {
     private List<String> permissionCodes;
 
 
-    public static UserDto map(User user){
+    public static UserDto map(User user) {
         return UserDto.builder().id(user.getId()).username(user.getUsername()).build();
     }
 }

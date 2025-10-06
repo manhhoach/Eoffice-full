@@ -2,11 +2,7 @@ package com.manhhoach.EofficeFull.controller;
 
 import com.manhhoach.EofficeFull.common.ApiResponse;
 import com.manhhoach.EofficeFull.common.PagedResponse;
-import com.manhhoach.EofficeFull.dto.module.CreateModuleReq;
-import com.manhhoach.EofficeFull.dto.module.ModuleDto;
-import com.manhhoach.EofficeFull.dto.module.ModulePagingReq;
-import com.manhhoach.EofficeFull.dto.module.ModuleSelectionDto;
-import com.manhhoach.EofficeFull.dto.module.SelectedModuleReq;
+import com.manhhoach.EofficeFull.dto.module.*;
 import com.manhhoach.EofficeFull.service.ModuleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -53,7 +49,7 @@ public class ModuleController {
     }
 
     @PostMapping("/set-selected")
-    public ApiResponse<Void> setSelectedModules(@RequestBody SelectedModuleReq req){
+    public ApiResponse<Void> setSelectedModules(@RequestBody SelectedModuleReq req) {
         moduleService.setSelectedModules(req);
         return ApiResponse.success(null);
     }

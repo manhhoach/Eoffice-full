@@ -2,7 +2,6 @@ package com.manhhoach.EofficeFull.controller;
 
 import com.manhhoach.EofficeFull.common.ApiResponse;
 import com.manhhoach.EofficeFull.common.PagedResponse;
-import com.manhhoach.EofficeFull.dto.role.*;
 import com.manhhoach.EofficeFull.dto.user.CreateUserReq;
 import com.manhhoach.EofficeFull.dto.user.UserDto;
 import com.manhhoach.EofficeFull.dto.user.UserPagingReq;
@@ -10,13 +9,12 @@ import com.manhhoach.EofficeFull.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+
     @GetMapping("/paged")
     public ApiResponse<PagedResponse<UserDto>> getPaged(UserPagingReq request) {
         return ApiResponse.success(

@@ -16,7 +16,7 @@ public class PermissionModuleDto {
 
 
     public PermissionModuleDto(Long id, String name, String code, String url, Boolean isDisplayed, Integer priority,
-                           Long moduleId, String moduleName, String moduleCode, Boolean moduleIsDisplayed    ) {
+                               Long moduleId, String moduleName, String moduleCode, Boolean moduleIsDisplayed) {
         this.id = id;
         this.name = name;
         this.code = code;
@@ -28,6 +28,6 @@ public class PermissionModuleDto {
                 .name(moduleName)
                 .id(moduleId)
                 .isDisplayed(moduleIsDisplayed)
-                .build();;
+                .build();
     }
 }

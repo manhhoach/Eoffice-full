@@ -3,8 +3,6 @@ package com.manhhoach.EofficeFull.controller;
 import com.manhhoach.EofficeFull.common.ApiResponse;
 import com.manhhoach.EofficeFull.common.PagedResponse;
 import com.manhhoach.EofficeFull.dto.permission.*;
-import com.manhhoach.EofficeFull.dto.role.RoleSelectionDto;
-import com.manhhoach.EofficeFull.dto.role.SelectedRoleReq;
 import com.manhhoach.EofficeFull.service.PermissionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -51,7 +49,7 @@ public class PermissionController {
     }
 
     @PostMapping("/set-selected")
-    public ApiResponse<Void> setSelectedPermissions(@RequestBody SelectedPermissionReq req){
+    public ApiResponse<Void> setSelectedPermissions(@RequestBody SelectedPermissionReq req) {
         permissionService.setSelectedPermissions(req);
         return ApiResponse.success(null);
     }

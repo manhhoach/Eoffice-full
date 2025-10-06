@@ -10,8 +10,6 @@ import com.manhhoach.EofficeFull.dto.module.ModuleDto;
 import com.manhhoach.EofficeFull.dto.permission.PermissionDto;
 import com.manhhoach.EofficeFull.dto.permission.PermissionModuleDto;
 import com.manhhoach.EofficeFull.dto.user.UserDto;
-import com.manhhoach.EofficeFull.entity.Module;
-import com.manhhoach.EofficeFull.entity.Permission;
 import com.manhhoach.EofficeFull.entity.Role;
 import com.manhhoach.EofficeFull.entity.User;
 import com.manhhoach.EofficeFull.provider.JwtTokenProvider;
@@ -19,7 +17,6 @@ import com.manhhoach.EofficeFull.repository.PermissionRepository;
 import com.manhhoach.EofficeFull.repository.RoleRepository;
 import com.manhhoach.EofficeFull.repository.UserRepository;
 import com.manhhoach.EofficeFull.service.AuthService;
-import com.manhhoach.EofficeFull.service.ModuleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -141,7 +138,7 @@ public class AuthServiceImpl implements AuthService {
                 continue;
             }
 
-            ModuleDto moduleDto = moduleMap.computeIfAbsent(module.getId(), k->module);
+            ModuleDto moduleDto = moduleMap.computeIfAbsent(module.getId(), k -> module);
 
             if (moduleDto.getPermissions() == null) {
                 moduleDto.setPermissions(new ArrayList<>());

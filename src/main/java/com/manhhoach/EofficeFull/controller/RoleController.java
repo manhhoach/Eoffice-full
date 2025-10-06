@@ -49,7 +49,7 @@ public class RoleController {
     }
 
     @PostMapping("/set-selected")
-    public ApiResponse<Void> setSelectedRoles(@RequestBody SelectedRoleReq req){
+    public ApiResponse<Void> setSelectedRoles(@RequestBody SelectedRoleReq req) {
         roleService.setSelectedRoles(req);
         return ApiResponse.success(null);
     }

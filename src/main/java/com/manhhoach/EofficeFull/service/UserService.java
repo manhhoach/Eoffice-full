@@ -1,11 +1,9 @@
 package com.manhhoach.EofficeFull.service;
 
 import com.manhhoach.EofficeFull.common.PagedResponse;
-import com.manhhoach.EofficeFull.dto.role.*;
 import com.manhhoach.EofficeFull.dto.user.CreateUserReq;
-import com.manhhoach.EofficeFull.dto.user.*;
-
-import java.util.List;
+import com.manhhoach.EofficeFull.dto.user.UserDto;
+import com.manhhoach.EofficeFull.dto.user.UserPagingReq;
 
 public interface UserService {
     UserDto create(CreateUserReq req);

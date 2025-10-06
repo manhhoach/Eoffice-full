@@ -2,11 +2,9 @@ package com.manhhoach.EofficeFull.service.impl;
 
 import com.manhhoach.EofficeFull.common.PagedResponse;
 import com.manhhoach.EofficeFull.constant.SystemConstant;
-import com.manhhoach.EofficeFull.dto.role.*;
 import com.manhhoach.EofficeFull.dto.user.CreateUserReq;
 import com.manhhoach.EofficeFull.dto.user.UserDto;
 import com.manhhoach.EofficeFull.dto.user.UserPagingReq;
-import com.manhhoach.EofficeFull.entity.Role;
 import com.manhhoach.EofficeFull.entity.User;
 import com.manhhoach.EofficeFull.repository.RoleRepository;
 import com.manhhoach.EofficeFull.repository.UserRepository;
@@ -17,8 +15,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -83,7 +79,7 @@ public class UserServiceImpl implements UserService {
         );
     }
 
-    private void validate(Long id,String username) {
+    private void validate(Long id, String username) {
         if (userRepository.checkExistUsername(id, username)) {
             throw new IllegalArgumentException("Role code already exist");
         }

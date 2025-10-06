@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class SelectedRoleReq{
+public class SelectedRoleReq {
     private Long userId;
     private List<Long> roleIds;
 }

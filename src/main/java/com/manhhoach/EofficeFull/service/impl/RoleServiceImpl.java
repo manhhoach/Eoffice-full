@@ -81,7 +81,7 @@ public class RoleServiceImpl implements RoleService {
     public List<RoleSelectionDto> getSelectedRoles(Long userId) {
         var selectedRoleIds = roleRepository.findRoleIdsByUserId(userId);
         var roles = roleRepository.findAll();
-        return roles.stream().map(e-> {
+        return roles.stream().map(e -> {
             var roleItem = RoleSelectionDto.builder()
                     .id(e.getId())
                     .name(e.getName())
