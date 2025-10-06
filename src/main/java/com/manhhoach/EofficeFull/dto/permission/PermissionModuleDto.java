@@ -1,7 +1,10 @@
 package com.manhhoach.EofficeFull.dto.permission;
 
 import com.manhhoach.EofficeFull.dto.module.ModuleDto;
+import lombok.Data;
 
+
+@Data
 public class PermissionModuleDto {
     private Long id;
     private String name;

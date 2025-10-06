@@ -7,31 +7,49 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
 public interface PermissionRepository extends JpaRepository<Permission, Long> {
-    @Query(value = """
-            SELECT DISTINCT new com.manhhoach.EofficeFull.dto.permission.PermissionModuleDto( p.id, p.name, p.code, p.url, p.is_displayed, p.priority,
-                                      m.id as moduleId, m.name as moduleName, m.code as moduleCode, m.is_displayed as moduleIsDisplayed)
-                                FROM user_permission up
-                                JOIN permission p ON up.permission_id = p.id
-                                LEFT JOIN module m ON p.module_id = m.id
-                                WHERE up.user_id = :userId
-            
-                                UNION
-            
-            SELECT DISTINCT new com.manhhoach.EofficeFull.dto.permission.PermissionModuleDto( p2.id, p2.name, p2.code, p2.url, p2.is_displayed, p2.priority,
-                                      m2.id as moduleId, m2.name as moduleName, m2.code as moduleCode, m2.is_displayed as moduleIsDisplayed)
-                                FROM user_role ur
-                                JOIN role_permission rp ON ur.role_id = rp.role_id
-                                JOIN permission p2 ON rp.permission_id = p2.id
-                                LEFT JOIN module m2 ON p2.module_id = m2.id
-                                WHERE ur.user_id = :userId;
-            """)
-    List<PermissionModuleDto> getPermissionsByUserId(Long userId);
+    @Query(nativeQuery = true, value = """
+        SELECT DISTINCT p.id, p.name, p.code, p.url, p.is_displayed, p.priority,
+               m.id AS moduleId, m.name AS moduleName, m.code AS moduleCode, m.is_displayed AS moduleIsDisplayed
+        FROM user_permission up
+        JOIN permission p ON up.permission_id = p.id
+        LEFT JOIN module m ON p.module_id = m.id
+        WHERE up.user_id = :userId
+
+        UNION
+
+        SELECT DISTINCT p2.id, p2.name, p2.code, p2.url, p2.is_displayed, p2.priority,
+               m2.id AS moduleId, m2.name AS moduleName, m2.code AS moduleCode, m2.is_displayed AS moduleIsDisplayed
+        FROM user_role ur
+        JOIN role_permission rp ON ur.role_id = rp.role_id
+        JOIN permission p2 ON rp.permission_id = p2.id
+        LEFT JOIN module m2 ON p2.module_id = m2.id
+        WHERE ur.user_id = :userId
+    """)
+    List<PermissionModuleDto> getPermissionsWithModuleByUserId(@Param("userId") Long userId);
+
+
+    @Query(nativeQuery = true, value = """
+        SELECT DISTINCT p.*
+        FROM user_permission up
+        JOIN permission p ON up.permission_id = p.id
+        WHERE up.user_id = :userId
+
+        UNION
+
+        SELECT DISTINCT p2.*
+        FROM user_role ur
+        JOIN role_permission rp ON ur.role_id = rp.role_id
+        JOIN permission p2 ON rp.permission_id = p2.id
+        WHERE ur.user_id = :userId
+    """)
+    List<Permission> getPermissionsByUserId(@Param("userId") Long userId);
 
     @Query("""
             SELECT CASE WHEN COUNT(r) > 0 THEN true ELSE false END

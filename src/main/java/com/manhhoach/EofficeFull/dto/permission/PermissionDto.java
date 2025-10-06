@@ -29,4 +29,15 @@ public class PermissionDto {
                 .url(permission.getUrl())
                 .build();
     }
+
+    public static PermissionDto map(PermissionModuleDto permission) {
+        return PermissionDto.builder()
+                .code(permission.getCode())
+                .name(permission.getName())
+                .id(permission.getId())
+                .isDisplayed(permission.getIsDisplayed())
+                .priority(permission.getPriority())
+                .url(permission.getUrl())
+                .build();
+    }
 }

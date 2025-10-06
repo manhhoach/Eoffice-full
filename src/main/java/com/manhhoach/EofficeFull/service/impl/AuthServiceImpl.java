@@ -8,6 +8,7 @@ import com.manhhoach.EofficeFull.dto.auth.RefreshTokenReq;
 import com.manhhoach.EofficeFull.dto.auth.RegisterReq;
 import com.manhhoach.EofficeFull.dto.module.ModuleDto;
 import com.manhhoach.EofficeFull.dto.permission.PermissionDto;
+import com.manhhoach.EofficeFull.dto.permission.PermissionModuleDto;
 import com.manhhoach.EofficeFull.dto.user.UserDto;
 import com.manhhoach.EofficeFull.entity.Module;
 import com.manhhoach.EofficeFull.entity.Permission;
@@ -112,7 +113,7 @@ public class AuthServiceImpl implements AuthService {
         Map<String, Object> claims = new HashMap<>();
         claims.put("id", id);
 
-        List<Permission> permissions = permissionRepository.getPermissionsByUserId(id);
+        List<PermissionModuleDto> permissions = permissionRepository.getPermissionsWithModuleByUserId(id);
         List<String> permissionCodes = permissions.stream().map(per -> per.getCode()).toList();
 
         LoginRes data = LoginRes.builder()
@@ -131,16 +132,16 @@ public class AuthServiceImpl implements AuthService {
         return data;
     }
 
-    List<ModuleDto> groupPermissions(List<Permission> permissions) {
+    List<ModuleDto> groupPermissions(List<PermissionModuleDto> permissions) {
         Map<Long, ModuleDto> moduleMap = new LinkedHashMap<>();
 
-        for (Permission p : permissions) {
-            Module module = p.getModule();
+        for (PermissionModuleDto p : permissions) {
+            var module = p.getModule();
             if (module == null) {
                 continue;
             }
 
-            ModuleDto moduleDto = moduleMap.computeIfAbsent(module.getId(), k -> ModuleDto.map(module));
+            ModuleDto moduleDto = moduleMap.computeIfAbsent(module.getId(), k->module);
 
             if (moduleDto.getPermissions() == null) {
                 moduleDto.setPermissions(new ArrayList<>());
