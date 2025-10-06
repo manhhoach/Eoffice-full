@@ -22,6 +22,6 @@ public class Department extends BaseEntity {
     private Integer priority;
 
     @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UserRole> userRoles;
+    private List<UserRoleDepartment> userRoleDepartments;
 }
 

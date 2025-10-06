@@ -12,10 +12,12 @@ import com.manhhoach.EofficeFull.dto.permission.PermissionModuleDto;
 import com.manhhoach.EofficeFull.dto.user.UserDto;
 import com.manhhoach.EofficeFull.entity.Role;
 import com.manhhoach.EofficeFull.entity.User;
+import com.manhhoach.EofficeFull.entity.UserRoleDepartment;
 import com.manhhoach.EofficeFull.provider.JwtTokenProvider;
 import com.manhhoach.EofficeFull.repository.PermissionRepository;
 import com.manhhoach.EofficeFull.repository.RoleRepository;
 import com.manhhoach.EofficeFull.repository.UserRepository;
+import com.manhhoach.EofficeFull.repository.UserRoleDepartmentRepository;
 import com.manhhoach.EofficeFull.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,6 +41,7 @@ public class AuthServiceImpl implements AuthService {
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationManager authenticationManager;
     private final PermissionRepository permissionRepository;
+    private final UserRoleDepartmentRepository userRoleDepartmentRepository;
 
     @Value("${security.jwt.access-token.key}")
     private String accessTokenKey;
@@ -79,10 +82,18 @@ public class AuthServiceImpl implements AuthService {
         User user = User.builder()
                 .username(req.getUsername())
                 .password(hashedPassword)
-                //.roles(List.of(defaultRole))
                 .build();
 
         userRepository.save(user);
+
+        UserRoleDepartment assignment = UserRoleDepartment.builder()
+                .user(user)
+                .role(defaultRole)
+                .isActive(true)
+                .build();
+
+        userRoleDepartmentRepository.save(assignment);
+
         return true;
     }
 

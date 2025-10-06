@@ -23,7 +23,7 @@ public class User extends BaseEntity {
     private String password;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UserRole> userRoles;
+    private List<UserRoleDepartment> userRoleDepartments;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
