@@ -43,13 +43,13 @@ public class RoleController {
         return ApiResponse.success(null);
     }
 
-    @GetMapping("/get-selected")
-    public ApiResponse<List<RoleSelectionDto>> getSelectedRoles(Long userId) {
+    @GetMapping("/get-current-roles")
+    public ApiResponse<List<AssignRoleDto>> getSelectedRoles(Long userId) {
         return ApiResponse.success(roleService.getSelectedRoles(userId));
     }
 
-    @PostMapping("/set-selected")
-    public ApiResponse<Void> setSelectedRoles(@RequestBody SelectedRoleReq req) {
+    @PostMapping("/set-roles")
+    public ApiResponse<Void> setSelectedRoles(@RequestBody SetRoleReq req) {
         roleService.setSelectedRoles(req);
         return ApiResponse.success(null);
     }

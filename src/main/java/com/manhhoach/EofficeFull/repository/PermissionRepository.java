@@ -26,11 +26,11 @@ public interface PermissionRepository extends JpaRepository<Permission, Long> {
             
                 SELECT DISTINCT p2.id, p2.name, p2.code, p2.url, p2.is_displayed, p2.priority,
                        m2.id AS moduleId, m2.name AS moduleName, m2.code AS moduleCode, m2.is_displayed AS moduleIsDisplayed
-                FROM user_role ur
-                JOIN role_permission rp ON ur.role_id = rp.role_id
+                FROM user_role_department urd
+                JOIN role_permission rp ON urd.role_id = rp.role_id
                 JOIN permission p2 ON rp.permission_id = p2.id
                 LEFT JOIN module m2 ON p2.module_id = m2.id
-                WHERE ur.user_id = :userId
+                WHERE urd.user_id = :userId
             """)
     List<PermissionModuleDto> getPermissionsWithModuleByUserId(@Param("userId") Long userId);
 
@@ -44,10 +44,10 @@ public interface PermissionRepository extends JpaRepository<Permission, Long> {
                 UNION
             
                 SELECT DISTINCT p2.*
-                FROM user_role ur
-                JOIN role_permission rp ON ur.role_id = rp.role_id
+                FROM user_role_department urd
+                JOIN role_permission rp ON urd.role_id = rp.role_id
                 JOIN permission p2 ON rp.permission_id = p2.id
-                WHERE ur.user_id = :userId
+                WHERE urd.user_id = :userId
             """)
     List<Permission> getPermissionsByUserId(@Param("userId") Long userId);
 

@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Builder
 @Data
-public class RoleSelectionDto {
+public class UserRoleStatusDto {
     private String name;
     private Long id;
     private Boolean selected;
