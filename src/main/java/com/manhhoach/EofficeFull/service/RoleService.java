@@ -16,7 +16,7 @@ public interface RoleService {
 
     PagedResponse<RoleDto> getPaged(RolePagingReq request);
 
-    List<RoleSelectionDto> getSelectedRoles(Long userId);
+    List<DepartmentRolesDto> getCurrentRoles(Long userId);
 
-    void setSelectedRoles(SelectedRoleReq req);
+    void assignRoles(AssignUserRolesReq req);
 }

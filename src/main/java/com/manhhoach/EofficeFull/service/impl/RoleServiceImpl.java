@@ -2,10 +2,14 @@ package com.manhhoach.EofficeFull.service.impl;
 
 import com.manhhoach.EofficeFull.common.PagedResponse;
 import com.manhhoach.EofficeFull.dto.role.*;
+import com.manhhoach.EofficeFull.entity.Department;
 import com.manhhoach.EofficeFull.entity.Role;
 import com.manhhoach.EofficeFull.entity.User;
+import com.manhhoach.EofficeFull.entity.UserRoleDepartment;
+import com.manhhoach.EofficeFull.repository.DepartmentRepository;
 import com.manhhoach.EofficeFull.repository.RoleRepository;
 import com.manhhoach.EofficeFull.repository.UserRepository;
+import com.manhhoach.EofficeFull.repository.UserRoleDepartmentRepository;
 import com.manhhoach.EofficeFull.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,6 +25,8 @@ import java.util.List;
 public class RoleServiceImpl implements RoleService {
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
+    private final UserRoleDepartmentRepository userRoleDepartmentRepository;
+    private final DepartmentRepository departmentRepository;
 
     @Override
     public RoleDto create(CreateRoleReq req) {
@@ -78,26 +84,56 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public List<RoleSelectionDto> getSelectedRoles(Long userId) {
-        var selectedRoleIds = List.of();// roleRepository.findRoleIdsByUserId(userId);
+    public List<DepartmentRolesDto> getCurrentRoles(Long userId) {
+        var assignedRoles = userRoleDepartmentRepository.findByUserId(userId);
         var roles = roleRepository.findAll();
-        return roles.stream().map(e -> {
-            var roleItem = RoleSelectionDto.builder()
-                    .id(e.getId())
-                    .name(e.getName())
-                    .selected(selectedRoleIds.contains(e.getId()))
+        var departments = departmentRepository.findAll();
+        return departments.stream().map(dep -> {
+            var statuses = roles.stream().map(role -> {
+                Boolean selected = assignedRoles.stream()
+                        .anyMatch(ar -> ar.getRole().getId().equals(role.getId())
+                                && (ar.getDepartment() == null || ar.getDepartment().getId().equals(dep.getId()))
+                                && ar.getIsActive() == true);
+                return UserRoleStatusDto.builder()
+                        .id(role.getId())
+                        .name(role.getName())
+                        .selected(selected)
+                        .build();
+            }).toList();
+            return DepartmentRolesDto.builder()
+                    .userRoleStatuses(statuses)
+                    .departmentId(dep.getId())
+                    .departmentName(dep.getName())
                     .build();
-            return roleItem;
         }).toList();
     }
 
     @Override
-    public void setSelectedRoles(SelectedRoleReq req) {
+    public void assignRoles(AssignUserRolesReq req) {
         User user = userRepository.findById(req.getUserId())
                 .orElseThrow(() -> new RuntimeException("Role not found"));
-        List<Role> roles = roleRepository.findAllById(req.getRoleIds());
-       // user.setRoles(roles);
-        userRepository.save(user);
+
+        var roleIds = req.getAssignments().stream().map(e -> e.getRoleId()).toList();
+        var departmentIds = req.getAssignments().stream().map(e -> e.getDepartmentId()).toList();
+        List<Role> roles = roleRepository.findAllById(roleIds);
+        List<Department> departments = departmentRepository.findAllById(departmentIds);
+
+        var data = req.getAssignments().stream().map(e -> {
+                    Role role = roles.stream().filter(r -> r.getId().equals(e.getRoleId())).findFirst().get();
+                    Department department = departments.stream()
+                            .filter(d -> d.getId().equals(e.getDepartmentId()))
+                            .findFirst()
+                            .orElse(null);
+                    return UserRoleDepartment.builder()
+                            .user(user)
+                            .role(role)
+                            .department(department)
+                            .isActive(true)
+                            .build();
+                }
+        ).toList();
+        userRoleDepartmentRepository.deleteAll();
+        userRoleDepartmentRepository.saveAll(data);
     }
 
     private void validate(Long id, String code) {
