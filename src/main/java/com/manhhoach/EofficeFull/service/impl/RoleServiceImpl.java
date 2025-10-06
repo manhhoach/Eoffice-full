@@ -79,7 +79,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public List<RoleSelectionDto> getSelectedRoles(Long userId) {
-        var selectedRoleIds = roleRepository.findRoleIdsByUserId(userId);
+        var selectedRoleIds = List.of();// roleRepository.findRoleIdsByUserId(userId);
         var roles = roleRepository.findAll();
         return roles.stream().map(e -> {
             var roleItem = RoleSelectionDto.builder()
@@ -96,7 +96,7 @@ public class RoleServiceImpl implements RoleService {
         User user = userRepository.findById(req.getUserId())
                 .orElseThrow(() -> new RuntimeException("Role not found"));
         List<Role> roles = roleRepository.findAllById(req.getRoleIds());
-        user.setRoles(roles);
+       // user.setRoles(roles);
         userRepository.save(user);
     }
 

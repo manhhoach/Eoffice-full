@@ -29,10 +29,10 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
     List<Long> findPermissionIdsByRoleId(Long roleId);
 
 
-    @Query("""
-            SELECT r.id from User u join u.roles r WHERE u.id = :userId
-            """)
-    List<Long> findRoleIdsByUserId(Long userId);
+//    @Query("""
+//            SELECT r.id from User u join u.roles r WHERE u.id = :userId
+//            """)
+//    List<Long> findRoleIdsByUserId(Long userId);
 
 
 }

@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -25,4 +26,7 @@ public class Role extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "permissionId")
     )
     private List<Permission> permissions;
+
+    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserRole> userRoles;
 }

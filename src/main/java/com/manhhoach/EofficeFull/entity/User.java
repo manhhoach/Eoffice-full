@@ -22,13 +22,8 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String password;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "user_role",
-            joinColumns = @JoinColumn(name = "userId"),
-            inverseJoinColumns = @JoinColumn(name = "roleId")
-    )
-    private List<Role> roles;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserRole> userRoles;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
