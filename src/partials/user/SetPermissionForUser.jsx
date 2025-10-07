@@ -6,12 +6,12 @@ import { toast } from "react-toastify";
 
 export default function SetPermissionForUser({ open, onCancel, userId }) {
    const { data } = useApi({
-      url: "users/selected?userId=" + userId,
+      url: "permissions/get-current-permissions?userId=" + userId,
    });
 
    const { refetch: setRoles } = useApi({
       method: 'POST',
-      url: "users/selected",
+      url: "permissions/assign-permissions",
       auto: false,
    })
 
@@ -20,14 +20,19 @@ export default function SetPermissionForUser({ open, onCancel, userId }) {
    const [form] = Form.useForm();
 
    const handleSubmit = async (values) => {
-      const roleIds = Object.keys(values).filter(key => values[key]).map(id => parseInt(id));
-      const body = {
-         userId: userId,
-         roleIds: roleIds
+      try {
+         const roleIds = Object.keys(values).filter(key => values[key]).map(id => parseInt(id));
+         const body = {
+            userId: userId,
+            roleIds: roleIds
+         }
+         await setRoles({ body });
+         onCancel()
+         toast.success("Successfully");
       }
-      await setRoles({ body });
-      onCancel()
-      toast.success("Successfully");
+      catch (error) {
+         toast.error("Failed to set permissions");
+      }
    }
    useEffect(() => {
       form.resetFields();
@@ -44,7 +49,7 @@ export default function SetPermissionForUser({ open, onCancel, userId }) {
 
    return (
       <Modal
-         title="Set roles"
+         title="Set Permission"
          destroyOnHidden
          open={open}
          maskClosable={false}

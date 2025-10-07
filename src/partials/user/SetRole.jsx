@@ -1,46 +1,77 @@
-import { Checkbox, Col, Form, Modal, Row } from "antd";
+import { Checkbox, Form, Modal, Select } from "antd";
 import useApi from "../../hooks/useApi";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-
+const { Option } = Select;
 
 export default function SetRole({ open, onCancel, userId }) {
+   const [form] = Form.useForm();
    const { data } = useApi({
-      url: "roles/get-selected?userId=" + userId,
+      url: "roles/get-current-roles?userId=" + userId,
    });
-
    const { refetch: setRoles } = useApi({
       method: 'POST',
-      url: "roles/set-selected",
+      url: "roles/assign-roles",
       auto: false,
    })
+   const departments = data?.data || [];
 
-   const roles = data?.data || [];
+   const [selectedDeptId, setSelectedDeptId] = useState();
+   const [departmentsState, setDepartmentsState] = useState([]);
+   const selectedDept = departmentsState.find(
+      (d) => d.departmentId === selectedDeptId
+   );
 
-   const [form] = Form.useForm();
-
-   const handleSubmit = async (values) => {
-      const roleIds = Object.keys(values).filter(key => values[key]).map(id => parseInt(id));
-      const body = {
-         userId: userId,
-         roleIds: roleIds
-      }
-      await setRoles({ body });
-      onCancel()
-      toast.success("Successfully");
-   }
    useEffect(() => {
-      form.resetFields();
-      form.setFieldsValue(
-         roles?.reduce(
-            (acc, role) => {
-               acc[role.id] = role.selected;
-               return acc;
-            }, {}
-         )
-      )
+      if (departments.length) {
+         setDepartmentsState(departments);
+         setSelectedDeptId(departments[0].departmentId);
+      }
+   }, [departments]);
 
-   }, [userId, roles]);
+   const handleRoleChange = (deptId, roleId, checked) => {
+      setDepartmentsState((prev) =>
+         prev.map((dept) =>
+            dept.departmentId === deptId
+               ? {
+                  ...dept,
+                  userRoleStatuses: dept.userRoleStatuses.map((role) =>
+                     role.id === roleId ? { ...role, selected: checked } : role
+                  ),
+               }
+               : dept
+         )
+      );
+   };
+
+
+   const handleSubmit = async () => {
+      try {
+         let assignments = [];
+         departmentsState.forEach((dept) => {
+            if (dept.userRoleStatuses && dept.userRoleStatuses.length > 0) {
+               dept.userRoleStatuses.forEach((role) => {
+                  if (role.selected) {
+                     assignments.push({
+                        departmentId: dept.departmentId,
+                        roleId: role.id
+                     })
+                  }
+               })
+            }
+         });
+         const body = {
+            userId: userId,
+            assignments: assignments
+         }
+         await setRoles({ body });
+         onCancel()
+         toast.success("Successfully");
+      }
+      catch (err) {
+         toast.error(err.message);
+      }
+   }
 
    return (
       <Modal
@@ -56,30 +87,32 @@ export default function SetRole({ open, onCancel, userId }) {
             form.submit();
          }}
       >
-         <Form
-            form={form}
-            onFinish={handleSubmit}
-            layout="vertical"
-            initialValues={roles?.reduce(
-               (acc, role) => {
-                  acc[role.id] = role.selected;
-                  return acc;
-               }, {}
-            )}
-         >
-            <Row>
-               {roles?.map(role => (
-                  <Col span={12} key={role.id}>
-                     <Form.Item
-                        key={role.id}
-                        name={role.id}
-                        valuePropName="checked"
-                     >
-                        <Checkbox>{role.name}</Checkbox>
-                     </Form.Item>
-                  </Col>
+         <Form form={form} onFinish={handleSubmit} layout="vertical">
+            <Select
+               style={{ width: "100%", marginBottom: 16 }}
+               value={selectedDeptId}
+               onChange={(value) => setSelectedDeptId(value)}
+            >
+               {departments.map((dept) => (
+                  <Option key={dept.departmentId} value={dept.departmentId}>
+                     {dept.departmentName}
+                  </Option>
                ))}
-            </Row>
+            </Select>
+
+
+            {selectedDept?.userRoleStatuses.map((role) => (
+               <div key={role.id}>
+                  <Checkbox
+                     checked={role.selected}
+                     onChange={(e) =>
+                        handleRoleChange(selectedDept.departmentId, role.id, e.target.checked)
+                     }
+                  >
+                     {role.name}
+                  </Checkbox>
+               </div>
+            ))}
          </Form>
       </Modal>
    )
