@@ -18,7 +18,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -112,28 +116,44 @@ public class RoleServiceImpl implements RoleService {
     public void assignRoles(AssignUserRolesReq req) {
         User user = userRepository.findById(req.getUserId())
                 .orElseThrow(() -> new RuntimeException("Role not found"));
+        List<UserRoleDepartment> currentAssignments = userRoleDepartmentRepository.findByUserId(req.getUserId());
+        Map<String, UserRoleDepartment> currentMap = currentAssignments.stream()
+                .collect(Collectors.toMap(
+                        e -> e.getRole().getId() + "_" + (e.getDepartment() != null ? e.getDepartment().getId() : "null"),
+                        Function.identity()
+                ));
+        List<UserRoleDepartment> result = new ArrayList<>();
 
         var roleIds = req.getAssignments().stream().map(e -> e.getRoleId()).toList();
         var departmentIds = req.getAssignments().stream().map(e -> e.getDepartmentId()).toList();
         List<Role> roles = roleRepository.findAllById(roleIds);
         List<Department> departments = departmentRepository.findAllById(departmentIds);
 
-        var data = req.getAssignments().stream().map(e -> {
-                    Role role = roles.stream().filter(r -> r.getId().equals(e.getRoleId())).findFirst().get();
-                    Department department = departments.stream()
-                            .filter(d -> d.getId().equals(e.getDepartmentId()))
-                            .findFirst()
-                            .orElse(null);
-                    return UserRoleDepartment.builder()
-                            .user(user)
-                            .role(role)
-                            .department(department)
-                            .isActive(true)
-                            .build();
-                }
-        ).toList();
-        userRoleDepartmentRepository.deleteAll();
-        userRoleDepartmentRepository.saveAll(data);
+        for(var a: req.getAssignments()){
+            Role role = roles.stream().filter(r -> r.getId().equals(a.getRoleId())).findFirst().get();
+            Department department = departments.stream()
+                    .filter(d -> d.getId().equals(a.getDepartmentId()))
+                    .findFirst()
+                    .orElse(null);
+            String key = role.getId() + "_" + (department != null ? department.getId() : "null");
+            UserRoleDepartment existing = currentMap.remove(key);
+            if(existing!=null){
+                existing.setIsActive(true);
+                result.add(existing);
+            }else{
+                result.add(
+                        UserRoleDepartment.builder()
+                        .user(user)
+                        .role(role)
+                        .department(department)
+                        .isActive(true)
+                        .build());
+            }
+
+        }
+        currentMap.values().forEach(e -> e.setIsActive(false));
+        result.addAll(currentMap.values());
+        userRoleDepartmentRepository.saveAll(result);
     }
 
     private void validate(Long id, String code) {

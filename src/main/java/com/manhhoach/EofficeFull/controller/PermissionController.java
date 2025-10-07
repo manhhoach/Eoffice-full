@@ -43,13 +43,13 @@ public class PermissionController {
         return ApiResponse.success(null);
     }
 
-    @GetMapping("/get-selected")
-    public ApiResponse<List<PermissionSelectionDto>> getSelectedPermissions(Long userId) {
+    @GetMapping("/get-current-permissions")
+    public ApiResponse<List<PermissionSelectionDto>> getCurrentPermissions(Long userId) {
         return ApiResponse.success(permissionService.getSelectedPermissions(userId));
     }
 
-    @PostMapping("/set-selected")
-    public ApiResponse<Void> setSelectedPermissions(@RequestBody SelectedPermissionReq req) {
+    @PostMapping("/assign-permissions")
+    public ApiResponse<Void> assignPermissions(@RequestBody SelectedPermissionReq req) {
         permissionService.setSelectedPermissions(req);
         return ApiResponse.success(null);
     }
