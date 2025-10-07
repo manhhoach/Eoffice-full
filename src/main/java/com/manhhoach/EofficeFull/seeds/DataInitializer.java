@@ -12,6 +12,7 @@ import com.manhhoach.EofficeFull.repository.RoleRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.core.parameters.P;
 
 import java.util.List;
 
@@ -38,6 +39,12 @@ public class DataInitializer {
                         .url("/modules").priority(3).module(adminModule).build();
                 Permission p4 = Permission.builder().name("Permission Management").code("VIEW_PERMISSIONS").isDisplayed(false)
                         .module(adminModule).build();
+                Permission p7 = Permission.builder().name("Flow Management").code("VIEW_FLOWS").isDisplayed(true)
+                        .module(adminModule).build();
+                Permission p8 = Permission.builder().name("Step Flow Management").code("VIEW_STEPS").isDisplayed(false)
+                        .module(adminModule).build();
+                Permission p9 = Permission.builder().name("Status Flow Management").code("VIEW_STATUSES").isDisplayed(false)
+                        .module(adminModule).build();
 
                 Module officeModule = Module.builder().name("Document Management").code("DOC_MGMT").isDisplayed(true).build();
                 Permission p5 = Permission.builder().name("Outgoing docs").code("VIEW_OUT_GOING_DOCS")
@@ -46,21 +53,37 @@ public class DataInitializer {
                         .isDisplayed(true).url("/in-coming-docs").priority(2).module(officeModule).build();
 
                 // 3. Tạo Roles
-                Role adminRole = Role.builder()
-                        .name("Administrator")
+                Role admin = Role.builder()
+                        .name("Admin")
                         .code(RoleConstant.ADMIN)
-                        .permissions(List.of(p1, p2, p3, p4, p5, p6))
+                        .permissions(List.of(p1, p2, p3, p4, p7, p8, p9))
                         .build();
 
-                Role userRole = Role.builder()
-                        .name("User")
-                        .code(RoleConstant.USER)
+                Role director = Role.builder()
+                        .name("Director")
+                        .code(RoleConstant.DIRECTOR)
+                        .permissions(List.of(p5, p6))
+                        .build();
+                Role manager = Role.builder()
+                        .name("Manager")
+                        .code(RoleConstant.MANAGER)
+                        .permissions(List.of(p5, p6))
+                        .build();
+                Role specialist = Role.builder()
+                        .name("Specialist")
+                        .code(RoleConstant.SPECIALIST)
+                        .permissions(List.of(p5, p6))
+                        .build();
+                Role vice_director = Role.builder()
+                        .name("Vice Director")
+                        .code(RoleConstant.VICE_DIRECTOR)
+                        .permissions(List.of(p5, p6))
                         .build();
 
                 // 4. Lưu dữ liệu
                 moduleRepository.saveAll(List.of(adminModule, officeModule));
-                permissionRepository.saveAll(List.of(p1, p2, p3, p4, p5, p6));
-                roleRepository.saveAll(List.of(adminRole, userRole));
+                permissionRepository.saveAll(List.of(p1, p2, p3, p4, p5, p6, p7, p8, p9));
+                roleRepository.saveAll(List.of(admin, director, vice_director, manager, specialist));
 
                 System.out.println("Default roles, permissions, modules đã được khởi tạo.");
             }
@@ -79,7 +102,27 @@ public class DataInitializer {
                         .name("IT")
                         .priority(3)
                         .build();
-                departmentRepository.saveAll(List.of(dep1, dep2, dep3));
+
+                Department dep4 = Department.builder()
+                        .name("Marketing")
+                        .priority(4)
+                        .build();
+
+                Department dep5 = Department.builder()
+                        .name("Sales")
+                        .priority(5)
+                        .build();
+
+                Department dep6 = Department.builder()
+                        .name("Research and Development")
+                        .priority(6)
+                        .build();
+
+                Department dep7 = Department.builder()
+                        .name("Customer Service")
+                        .priority(7)
+                        .build();
+                departmentRepository.saveAll(List.of(dep1, dep2, dep3, dep4, dep5, dep6, dep7));
                 System.out.println("Default departments đã được khởi tạo.");
 
             }

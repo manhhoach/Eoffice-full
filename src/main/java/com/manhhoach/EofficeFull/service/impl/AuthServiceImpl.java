@@ -75,7 +75,7 @@ public class AuthServiceImpl implements AuthService {
             throw new RuntimeException("Username đã tồn tại");
         }
         String hashedPassword = passwordEncoder.encode(req.getPassword());
-        String defaultCode = "admin".equals(req.getUsername()) ? RoleConstant.ADMIN : RoleConstant.USER;
+        String defaultCode = "admin".equals(req.getUsername()) ? RoleConstant.ADMIN : RoleConstant.SPECIALIST;
         Role defaultRole = roleRepository.findByCode(defaultCode)
                 .orElseThrow(() -> new RuntimeException("Default role is not exists"));
 
