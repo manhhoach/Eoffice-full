@@ -1,30 +1,30 @@
 import { useEffect, useState } from "react";
 import { Table, Button, Space, Input, Popconfirm } from "antd";
-import useApi from "../hooks/useApi";
-import CreateProcessFlow from "../partials/processFlow/CreateProcessFlow.jsx";
+import useApi from "../hooks/useApi.js";
+import CreateDepartment from "../partials/department/CreateDepartment.jsx";
 import { BiEdit, BiPlus, BiTrash } from "react-icons/bi";
-import DEFAULT_PAGINATION from "../constants/pagination";
+import DEFAULT_PAGINATION from "../constants/pagination.js";
 
 const { Search } = Input;
 
-export default function ProcessFlowManagement() {
+export default function DepartmentManagement() {
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [searchText, setSearchText] = useState("");
-    const [currentProcessFlow, setCurrentProcessFlow] = useState(null);
+    const [currentDepartment, setCurrentDepartment] = useState(null);
 
     const { data, loading, error, refetch } = useApi({
-        url: "process-flows/paged",
+        url: "departments/paged",
         params: { page: pagination.current, size: pagination.pageSize, search: searchText },
     });
 
-    const { refetch: deleteProcessFlow } = useApi({
+    const { refetch: deleteDepartment } = useApi({
         method: 'DELETE',
         auto: false,
     });
 
     const handleDelete = async (id) => {
-        await deleteProcessFlow({ url: 'process-flows/' + id });
+        await deleteDepartment({ url: 'departments/' + id });
         refetch();
     }
 
@@ -41,13 +41,13 @@ export default function ProcessFlowManagement() {
             render: (_, record) => (
                 <Space>
                     <Button icon={<BiEdit />} type="link" onClick={() => {
-                        setCurrentProcessFlow(record)
+                        setCurrentDepartment(record)
                         setIsModalOpen(true);
                     }}>
                     </Button>
 
                     <Popconfirm
-                        title={`Bạn có chắc muốn xoá ProcessFlow "${record.name}"?`}
+                        title={`Bạn có chắc muốn xoá Department "${record.name}"?`}
                         okText="Xoá"
                         cancelText="Huỷ"
                         okType="danger"
@@ -82,14 +82,14 @@ export default function ProcessFlowManagement() {
     return (
         <div style={{ padding: 16 }}>
             <h1 style={{ fontSize: 20, fontWeight: "bold", marginBottom: 16 }}>
-                Process Flow Management
+                Department Management
             </h1>
             <div style={{ gap: 16, display: "flex", justifyContent: "space-between" }}>
                 <Search onChange={(e) => { setSearchText(e.target.value) }}></Search>
                 <Button
                     type="primary"
                     onClick={() => {
-                        setCurrentProcessFlow(null)
+                        setCurrentDepartment(null)
                         setIsModalOpen(true)
                     }}
                     icon={<BiPlus />}
@@ -113,7 +113,7 @@ export default function ProcessFlowManagement() {
                 bordered
             />
 
-            <CreateProcessFlow refetch={refetch} onCancel={() => setIsModalOpen(false)} open={isModalOpen} initialData={currentProcessFlow} />
+            <CreateDepartment refetch={refetch} onCancel={() => setIsModalOpen(false)} open={isModalOpen} initialData={currentDepartment} />
         </div>
     );
 }

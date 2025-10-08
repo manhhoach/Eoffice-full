@@ -105,7 +105,10 @@ export default function RoleManagement() {
                 <Search onChange={(e) => { setSearchText(e.target.value) }}></Search>
                 <Button
                     type="primary"
-                    onClick={() => setIsModalOpen(modalOpen => ({ ...modalOpen, createRole: true }))}
+                    onClick={() => {
+                        setCurrentRole(null);
+                        setIsModalOpen(modalOpen => ({ ...modalOpen, createRole: true }))
+                    }}
                     icon={<BiPlus />}
                     style={{ marginBottom: 16 }}
                 >

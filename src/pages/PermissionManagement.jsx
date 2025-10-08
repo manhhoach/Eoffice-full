@@ -115,7 +115,10 @@ export default function PermissionManagement() {
                 <Search onChange={(e) => { setSearchText(e.target.value) }}></Search>
                 <Button
                     type="primary"
-                    onClick={() => setIsModalOpen(true)}
+                    onClick={() => {
+                        setCurrentPermission(null)
+                        setIsModalOpen(true)
+                    }}
                     icon={<BiPlus />}
                     style={{ marginBottom: 16 }}
                 >

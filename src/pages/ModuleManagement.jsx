@@ -116,7 +116,10 @@ export default function ModuleManagement() {
                 <Search onChange={(e) => { setSearchText(e.target.value) }}></Search>
                 <Button
                     type="primary"
-                    onClick={() => setIsModalOpen(true)}
+                    onClick={() => {
+                        setCurrentModule(null)
+                        setIsModalOpen(true)
+                    }}
                     icon={<BiPlus />}
                     style={{ marginBottom: 16 }}
                 >

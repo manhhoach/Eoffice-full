@@ -107,8 +107,8 @@ export default function UserManagement() {
                 <Button
                     type="primary"
                     onClick={() => {
-                        setIsModalOpen(modalOpen => ({ ...modalOpen, createUser: true }))
                         setCurrentUser(null)
+                        setIsModalOpen(modalOpen => ({ ...modalOpen, createUser: true }))
                     }
                     }
                     icon={<BiPlus />}
