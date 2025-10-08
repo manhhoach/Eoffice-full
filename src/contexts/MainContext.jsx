@@ -5,7 +5,6 @@ export const MainContext = createContext();
 export const MainProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [permissionCodes, setPermissionCodes] = useState([]);
-  const [token, setToken] = useState(localStorage.getItem("token") || null);
   const [modules, setModules] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   
@@ -14,7 +13,6 @@ export const MainProvider = ({ children }) => {
       value={{
         user,
         permissionCodes,
-        token,
         setUser,
         setPermissionCodes,
         modules,
