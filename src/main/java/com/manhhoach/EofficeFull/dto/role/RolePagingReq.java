@@ -5,5 +5,4 @@ import lombok.Data;
 
 @Data
 public class RolePagingReq extends PagingRequest {
-    private String search;
 }

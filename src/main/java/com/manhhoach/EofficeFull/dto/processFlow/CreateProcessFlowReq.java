@@ -7,7 +7,7 @@ import lombok.Data;
 public class CreateProcessFlowReq {
     private String name;
 
-    public static ProcessFlow map(CreateProcessFlowReq data){
+    public static ProcessFlow map(CreateProcessFlowReq data) {
         return ProcessFlow.builder().name(data.getName()).build();
     }
 }

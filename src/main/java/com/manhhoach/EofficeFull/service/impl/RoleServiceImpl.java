@@ -129,7 +129,7 @@ public class RoleServiceImpl implements RoleService {
         List<Role> roles = roleRepository.findAllById(roleIds);
         List<Department> departments = departmentRepository.findAllById(departmentIds);
 
-        for(var a: req.getAssignments()){
+        for (var a : req.getAssignments()) {
             Role role = roles.stream().filter(r -> r.getId().equals(a.getRoleId())).findFirst().get();
             Department department = departments.stream()
                     .filter(d -> d.getId().equals(a.getDepartmentId()))
@@ -137,17 +137,17 @@ public class RoleServiceImpl implements RoleService {
                     .orElse(null);
             String key = role.getId() + "_" + (department != null ? department.getId() : "null");
             UserRoleDepartment existing = currentMap.remove(key);
-            if(existing!=null){
+            if (existing != null) {
                 existing.setIsActive(true);
                 result.add(existing);
-            }else{
+            } else {
                 result.add(
                         UserRoleDepartment.builder()
-                        .user(user)
-                        .role(role)
-                        .department(department)
-                        .isActive(true)
-                        .build());
+                                .user(user)
+                                .role(role)
+                                .department(department)
+                                .isActive(true)
+                                .build());
             }
 
         }

@@ -12,7 +12,6 @@ import com.manhhoach.EofficeFull.repository.RoleRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.core.parameters.P;
 
 import java.util.List;
 
@@ -39,8 +38,8 @@ public class DataInitializer {
                         .url("/modules").priority(3).module(adminModule).build();
                 Permission p4 = Permission.builder().name("Permission Management").code("VIEW_PERMISSIONS").isDisplayed(false)
                         .module(adminModule).build();
-                Permission p7 = Permission.builder().name("Flow Management").code("VIEW_FLOWS").isDisplayed(true)
-                        .module(adminModule).build();
+                Permission p7 = Permission.builder().name("Flow Management").code("VIEW_FLOWS").url("/process-flows")
+                        .isDisplayed(true).priority(4).module(adminModule).build();
                 Permission p8 = Permission.builder().name("Step Flow Management").code("VIEW_STEPS").isDisplayed(false)
                         .module(adminModule).build();
                 Permission p9 = Permission.builder().name("Status Flow Management").code("VIEW_STATUSES").isDisplayed(false)

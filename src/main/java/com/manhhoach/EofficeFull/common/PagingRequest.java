@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class PagingRequest {
     private int page = 1;
     private int size = 10;
+    private String search;
 }

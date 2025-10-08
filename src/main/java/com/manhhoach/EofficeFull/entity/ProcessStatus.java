@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "process_status")
-public class ProcessStatus extends BaseEntity{
+public class ProcessStatus extends BaseEntity {
     private String name;
     private Boolean isStart;
     private Boolean isEnd;

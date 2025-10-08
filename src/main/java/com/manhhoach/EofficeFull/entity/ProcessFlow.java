@@ -17,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "process_flow")
-public class ProcessFlow extends BaseEntity{
+public class ProcessFlow extends BaseEntity {
     private String name;
 
     @OneToMany(mappedBy = "processFlow", cascade = CascadeType.ALL, orphanRemoval = true)

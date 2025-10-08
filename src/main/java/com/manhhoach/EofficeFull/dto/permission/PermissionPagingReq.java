@@ -5,7 +5,6 @@ import lombok.Data;
 
 @Data
 public class PermissionPagingReq extends PagingRequest {
-    private String search;
     private Boolean isDisplayed;
     private long moduleId;
 }
