@@ -7,18 +7,12 @@ import {
 import './css/style.css';
 import './charts/ChartjsConfig';
 
-// Import pages
-import Dashboard from './pages/Dashboard';
+import PrivateRoute from './routes/privateRoute'
 import Login from './pages/Login';
 import Forbidden from './pages/Forbidden';
-import PrivateRoute from './routes/privateRoute';
 import { MainProvider } from './contexts/MainContext';
-import permissionCodes from './constants/permissionCodes';
 import Layout from './pages/Layout';
-import RoleManagement from './pages/RoleManagement';
-import ModuleManagement from './pages/ModuleManagement';
-import PermissionManagement from './pages/PermissionManagement';
-import UserManagement from './pages/UserManagement';
+import appRoutes from './routes/routesConfig'
 
 
 function App() {
@@ -36,48 +30,17 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<Layout />}>
-          <Route
-            path="/roles"
-            element={
-              <PrivateRoute permissionCode={permissionCodes.VIEW_ROLES}>
-                <RoleManagement />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/modules"
-            element={
-              <PrivateRoute permissionCode={permissionCodes.VIEW_MODULES}>
-                <ModuleManagement />
-              </PrivateRoute>
-            }
-          />
-
-          <Route
-            path="/modules/:id/permissions"
-            element={
-              <PrivateRoute permissionCode={permissionCodes.VIEW_PERMISSIONS}>
-                <PermissionManagement />
-              </PrivateRoute>
-            }
-          />
-          <Route path='/users' element={
-            <PrivateRoute permissionCode={permissionCodes.VIEW_USERS}>
-              <UserManagement />
-            </PrivateRoute>
-          }>
-
-          </Route>
-
-          <Route
-            path="/"
-            element={
-              <PrivateRoute>
-                <Dashboard />
-              </PrivateRoute>
-
-            }
-          />
+          {appRoutes.map(({ path, component: Component, permission }) => {
+            return <Route
+              key={path}
+              path={path}
+              element={
+                <PrivateRoute permissionCode={permission}>
+                  <Component />
+                </PrivateRoute>
+              }
+            />
+          })}
         </Route>
 
         <Route path="/403" element={<Forbidden />} />
