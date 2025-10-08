@@ -95,8 +95,8 @@ public class RoleServiceImpl implements RoleService {
         return departments.stream().map(dep -> {
             var statuses = roles.stream().map(role -> {
                 Boolean selected = assignedRoles.stream()
-                        .anyMatch(ar -> ar.getRole().getId().equals(role.getId())
-                                && (ar.getDepartment() == null || ar.getDepartment().getId().equals(dep.getId()))
+                        .anyMatch(ar -> role.getId().equals(ar.getRole().getId())
+                                && (ar.getDepartment() == null || dep.getId().equals(ar.getDepartment().getId()))
                                 && ar.getIsActive() == true);
                 return UserRoleStatusDto.builder()
                         .id(role.getId())

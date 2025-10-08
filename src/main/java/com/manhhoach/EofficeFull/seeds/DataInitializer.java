@@ -30,20 +30,27 @@ public class DataInitializer {
 
                 // 1. Tạo Modules
                 Module adminModule = Module.builder().name("System Management").code("SYSTEM_MGMT").isDisplayed(true).build();
+
                 Permission p1 = Permission.builder().name("User Management").code("VIEW_USERS").isDisplayed(true)
                         .url("/users").priority(1).module(adminModule).build();
                 Permission p2 = Permission.builder().name("Role Management").code("VIEW_ROLES").isDisplayed(true)
                         .url("/roles").priority(2).module(adminModule).build();
                 Permission p3 = Permission.builder().name("Module Management").code("VIEW_MODULES").isDisplayed(true)
                         .url("/modules").priority(3).module(adminModule).build();
-                Permission p4 = Permission.builder().name("Permission Management").code("VIEW_PERMISSIONS").isDisplayed(false)
-                        .module(adminModule).build();
                 Permission p7 = Permission.builder().name("Flow Management").code("VIEW_FLOWS").url("/process-flows")
                         .isDisplayed(true).priority(4).module(adminModule).build();
+                Permission p10 = Permission.builder().name("Department Management").priority(5).code("VIEW_DEPARTMENTS")
+                        .isDisplayed(true).module(adminModule).url("/departments").build();
+
+
                 Permission p8 = Permission.builder().name("Step Flow Management").code("VIEW_STEPS").isDisplayed(false)
                         .module(adminModule).build();
                 Permission p9 = Permission.builder().name("Status Flow Management").code("VIEW_STATUSES").isDisplayed(false)
                         .module(adminModule).build();
+                Permission p4 = Permission.builder().name("Permission Management").code("VIEW_PERMISSIONS").isDisplayed(false)
+                        .module(adminModule).build();
+
+
 
                 Module officeModule = Module.builder().name("Document Management").code("DOC_MGMT").isDisplayed(true).build();
                 Permission p5 = Permission.builder().name("Outgoing docs").code("VIEW_OUT_GOING_DOCS")
@@ -55,7 +62,7 @@ public class DataInitializer {
                 Role admin = Role.builder()
                         .name("Admin")
                         .code(RoleConstant.ADMIN)
-                        .permissions(List.of(p1, p2, p3, p4, p7, p8, p9))
+                        .permissions(List.of(p1, p2, p3, p4, p7, p8, p9, p10))
                         .build();
 
                 Role director = Role.builder()
@@ -81,7 +88,7 @@ public class DataInitializer {
 
                 // 4. Lưu dữ liệu
                 moduleRepository.saveAll(List.of(adminModule, officeModule));
-                permissionRepository.saveAll(List.of(p1, p2, p3, p4, p5, p6, p7, p8, p9));
+                permissionRepository.saveAll(List.of(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10));
                 roleRepository.saveAll(List.of(admin, director, vice_director, manager, specialist));
 
                 System.out.println("Default roles, permissions, modules đã được khởi tạo.");
