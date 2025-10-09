@@ -26,7 +26,7 @@ public class ProcessStep extends BaseEntity {
 
     private Long returnType;
 
-    private String receptionRole;
+    private String receptionRoles;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "startProcessStatusId", nullable = true)

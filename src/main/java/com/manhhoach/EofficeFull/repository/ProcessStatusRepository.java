@@ -15,7 +15,7 @@ public interface ProcessStatusRepository extends JpaRepository<ProcessStatus, Lo
     @Query("""
             SELECT f from ProcessStatus f WHERE (
             :#{#req.search} IS NULL OR :#{#req.search} = '' OR LOWER(f.name) LIKE LOWER(CONCAT('%', :#{#req.search}, '%'))
-            )
+            ) AND :#{#req.processFlowId} = f.processFlow.id
             """)
     Page<ProcessStatus> search(ProcessStatusPagingReq req, Pageable pageable);
 }

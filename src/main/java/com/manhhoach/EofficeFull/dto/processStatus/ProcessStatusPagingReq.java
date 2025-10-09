@@ -6,4 +6,5 @@ import lombok.Data;
 
 @Data
 public class ProcessStatusPagingReq extends PagingRequest {
+    private Long processFlowId;
 }
