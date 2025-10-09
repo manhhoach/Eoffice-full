@@ -7,4 +7,7 @@ public class CreateProcessStatusReq {
     private String name;
     private Boolean isStart;
     private Boolean isEnd;
+    private Long processFlowId;
+
+
 }

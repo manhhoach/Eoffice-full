@@ -11,7 +11,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProcessFlowRepository extends JpaRepository<ProcessFlow, Long> {
 
-
     @Query("""
             SELECT f from ProcessFlow f WHERE (
             :#{#req.search} IS NULL OR :#{#req.search} = '' OR LOWER(f.name) LIKE LOWER(CONCAT('%', :#{#req.search}, '%'))
