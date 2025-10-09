@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { Table, Button, Space, Input, Popconfirm } from "antd";
 import useApi from "../hooks/useApi";
 import CreateProcessFlow from "../partials/processFlow/CreateProcessFlow.jsx";
-import { BiEdit, BiPlus, BiTrash } from "react-icons/bi";
+import { BiEdit, BiPlus, BiTrash, BiSolidBookmarkAlt, BiListUl } from "react-icons/bi";
 import DEFAULT_PAGINATION from "../constants/pagination";
-
+import { useNavigate } from "react-router-dom";
 const { Search } = Input;
 
 export default function ProcessFlowManagement() {
@@ -12,7 +12,7 @@ export default function ProcessFlowManagement() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [searchText, setSearchText] = useState("");
     const [currentProcessFlow, setCurrentProcessFlow] = useState(null);
-
+    const navigate = useNavigate();
     const { data, loading, error, refetch } = useApi({
         url: "process-flows/paged",
         params: { page: pagination.current, size: pagination.pageSize, search: searchText },
@@ -45,6 +45,13 @@ export default function ProcessFlowManagement() {
                         setIsModalOpen(true);
                     }}>
                     </Button>
+
+                    <Button icon={<BiListUl />} type="link" onClick={() => {
+                        navigate('/process-flows/' + record.id + '/statuses')
+                    }} />
+                    <Button icon={<BiSolidBookmarkAlt />} type="link" onClick={() => {
+                        navigate('/process-flows/' + record.id + '/steps')
+                    }} />
 
                     <Popconfirm
                         title={`Bạn có chắc muốn xoá ProcessFlow "${record.name}"?`}

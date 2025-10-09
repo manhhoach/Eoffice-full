@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Table, Button, Space, Input, Popconfirm } from "antd";
 import useApi from "../hooks/useApi";
 import CreatePermission from "../partials/permission/CreatePermission";
 import { BiCheck, BiEdit, BiPlus, BiTrash, BiX } from "react-icons/bi";
 import DEFAULT_PAGINATION from "../constants/pagination";
-
+import BackButton from './../components/BackButton'
 const { Search } = Input;
 
 export default function PermissionManagement() {
@@ -14,6 +14,7 @@ export default function PermissionManagement() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [searchText, setSearchText] = useState("");
     const [currentPermission, setCurrentPermission] = useState(null);
+
 
     const { data, loading, error, refetch } = useApi({
         url: "permissions/paged",
@@ -111,6 +112,7 @@ export default function PermissionManagement() {
             <h1 style={{ fontSize: 20, fontWeight: "bold", marginBottom: 16 }}>
                 Permission Management
             </h1>
+            <BackButton />
             <div style={{ gap: 16, display: "flex", justifyContent: "space-between" }}>
                 <Search onChange={(e) => { setSearchText(e.target.value) }}></Search>
                 <Button
