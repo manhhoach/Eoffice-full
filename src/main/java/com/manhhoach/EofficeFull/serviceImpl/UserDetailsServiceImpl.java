@@ -1,4 +1,4 @@
-package com.manhhoach.EofficeFull.service.impl;
+package com.manhhoach.EofficeFull.serviceImpl;
 
 import com.manhhoach.EofficeFull.config.CustomUserDetails;
 import com.manhhoach.EofficeFull.entity.Permission;

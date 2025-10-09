@@ -1,4 +1,4 @@
-package com.manhhoach.EofficeFull.service.impl;
+package com.manhhoach.EofficeFull.serviceImpl;
 
 import com.manhhoach.EofficeFull.common.PagedResponse;
 import com.manhhoach.EofficeFull.dto.role.*;

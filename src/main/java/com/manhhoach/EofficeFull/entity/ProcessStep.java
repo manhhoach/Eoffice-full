@@ -13,8 +13,20 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name = "process_step")
 public class ProcessStep extends BaseEntity {
+
     private String name;
+
     private Boolean isReturn;
+
+    private Boolean needToNote;
+
+    private Boolean needToFile;
+
+    private Boolean isSameDepartment;
+
+    private Long returnType;
+
+    private String receptionRole;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "startProcessStatusId", nullable = true)
