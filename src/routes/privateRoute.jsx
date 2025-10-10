@@ -29,7 +29,7 @@ export default function PrivateRoute({ permissionCode, children }) {
 
     }, [data]);
 
-    if (!user && !accessToken) return <Navigate to="/login" replace />;
+    if (!accessToken) return <Navigate to="/login" replace />;
     const hasPermission = permissionCodes.some(p => p === permissionCode) || !permissionCode;
     if (!hasPermission) return <Navigate to="/403" replace />;
 
