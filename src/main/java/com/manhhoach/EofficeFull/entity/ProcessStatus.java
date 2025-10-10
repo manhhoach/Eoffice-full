@@ -20,4 +20,5 @@ public class ProcessStatus extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "processFlowId", nullable = true)
     private ProcessFlow processFlow;
+
 }

@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ProcessFlowServiceImpl implements ProcessFlowService {
@@ -28,6 +29,7 @@ public class ProcessFlowServiceImpl implements ProcessFlowService {
     }
 
     @Override
+    @Transactional
     public ProcessFlowDto update(Long id, CreateProcessFlowReq req) {
         var data = processFlowRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(""));
         data.setName(req.getName());
@@ -36,6 +38,7 @@ public class ProcessFlowServiceImpl implements ProcessFlowService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         processFlowRepository.deleteById(id);
     }

@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class DepartmentServiceImpl implements DepartmentService {
@@ -28,6 +29,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
+    @Transactional
     public DepartmentDto update(Long id, CreateDepartmentReq req) {
         var data = departmentRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(""));
         data.setName(req.getName());
@@ -36,6 +38,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         departmentRepository.deleteById(id);
     }

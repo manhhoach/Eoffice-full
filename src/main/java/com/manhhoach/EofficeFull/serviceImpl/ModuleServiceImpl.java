@@ -16,6 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
@@ -40,6 +41,7 @@ public class ModuleServiceImpl implements ModuleService {
     }
 
     @Override
+    @Transactional
     public ModuleDto update(Long id, CreateModuleReq req) {
         validate(id, req.getCode());
         Module data = moduleRepository.findById(id)
@@ -52,6 +54,7 @@ public class ModuleServiceImpl implements ModuleService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         moduleRepository.deleteById(id);
     }

@@ -10,21 +10,21 @@ import com.manhhoach.EofficeFull.entity.ProcessStatus;
 import com.manhhoach.EofficeFull.repository.ProcessFlowRepository;
 import com.manhhoach.EofficeFull.repository.ProcessStatusRepository;
 import com.manhhoach.EofficeFull.service.ProcessStatusService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+@RequiredArgsConstructor
 @Service
 public class ProcessStatusServiceImpl implements ProcessStatusService {
+    private final ProcessStatusRepository processStatusRepository;
 
-    @Autowired
-    private ProcessStatusRepository processStatusRepository;
-
-    @Autowired
-    private ProcessFlowRepository processFlowRepository;
+    private final ProcessFlowRepository processFlowRepository;
 
     @Override
     public ProcessStatusDto create(CreateProcessStatusReq req) {
@@ -40,6 +40,7 @@ public class ProcessStatusServiceImpl implements ProcessStatusService {
         return ProcessStatusDto.map(data);
     }
 
+    @Transactional
     @Override
     public ProcessStatusDto update(Long id, CreateProcessStatusReq req) {
         var data = processStatusRepository.findById(id)
@@ -52,6 +53,7 @@ public class ProcessStatusServiceImpl implements ProcessStatusService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         processStatusRepository.deleteById(id);
     }
