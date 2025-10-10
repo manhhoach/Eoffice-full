@@ -16,17 +16,17 @@ import java.util.List;
 @Builder
 public class ProcessStepDto {
 
-    private Long id;
+    private Long id; //
 
-    private String name;
+    private String name;//
 
-    private Boolean isReturn;
+    private Boolean isReturn;//
 
-    private Boolean needToNote;
+    private Boolean needToNote;//
 
-    private Boolean needToFile;
+    private Boolean needToFile;//
 
-    private Boolean isSameDepartment;
+    private Boolean isSameDepartment;//
 
     private ProcessStatusDto end;
 
