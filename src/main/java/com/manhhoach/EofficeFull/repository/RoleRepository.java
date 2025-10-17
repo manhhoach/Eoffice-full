@@ -1,5 +1,6 @@
 package com.manhhoach.EofficeFull.repository;
 
+import com.manhhoach.EofficeFull.dto.role.RoleDto;
 import com.manhhoach.EofficeFull.entity.Role;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,10 +30,10 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
     List<Long> findPermissionIdsByRoleId(Long roleId);
 
 
-//    @Query("""
-//            SELECT r.id from User u join u.roles r WHERE u.id = :userId
-//            """)
-//    List<Long> findRoleIdsByUserId(Long userId);
+    @Query("""
+            SELECT new com.manhhoach.EofficeFull.dto.role.RoleDto(r.id, r.name) from Role r
+            """)
+    List<RoleDto> getAll();
 
 
 }

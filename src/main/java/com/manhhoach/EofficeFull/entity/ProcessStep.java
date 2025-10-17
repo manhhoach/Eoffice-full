@@ -20,7 +20,7 @@ public class ProcessStep extends BaseEntity {
 
     private Boolean needToNote;
 
-    private Boolean needToFile;
+    private Boolean requiredFile;
 
     private Boolean isSameDepartment;
 

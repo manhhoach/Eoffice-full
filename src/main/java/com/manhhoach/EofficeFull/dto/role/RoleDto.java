@@ -2,14 +2,18 @@ package com.manhhoach.EofficeFull.dto.role;
 
 import com.manhhoach.EofficeFull.dto.permission.PermissionDto;
 import com.manhhoach.EofficeFull.entity.Role;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class RoleDto {
     private Long id;
     private String code;
@@ -18,5 +22,10 @@ public class RoleDto {
 
     public static RoleDto map(Role role) {
         return RoleDto.builder().code(role.getCode()).name(role.getName()).id(role.getId()).build();
+    }
+
+    public RoleDto(Long id, String name){
+        this.id = id;
+        this.name = name;
     }
 }

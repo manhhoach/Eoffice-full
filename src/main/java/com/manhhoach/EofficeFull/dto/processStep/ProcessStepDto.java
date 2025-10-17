@@ -24,7 +24,7 @@ public class ProcessStepDto {
 
     private Boolean needToNote;//
 
-    private Boolean needToFile;//
+    private Boolean requiredFile;//
 
     private Boolean isSameDepartment;//
 

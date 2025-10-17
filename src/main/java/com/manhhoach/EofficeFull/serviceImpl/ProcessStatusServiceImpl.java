@@ -1,23 +1,22 @@
 package com.manhhoach.EofficeFull.serviceImpl;
 
 import com.manhhoach.EofficeFull.common.PagedResponse;
-import com.manhhoach.EofficeFull.dto.processFlow.ProcessFlowDto;
 import com.manhhoach.EofficeFull.dto.processStatus.CreateProcessStatusReq;
 import com.manhhoach.EofficeFull.dto.processStatus.ProcessStatusDto;
 import com.manhhoach.EofficeFull.dto.processStatus.ProcessStatusPagingReq;
-import com.manhhoach.EofficeFull.entity.ProcessFlow;
 import com.manhhoach.EofficeFull.entity.ProcessStatus;
 import com.manhhoach.EofficeFull.repository.ProcessFlowRepository;
 import com.manhhoach.EofficeFull.repository.ProcessStatusRepository;
 import com.manhhoach.EofficeFull.service.ProcessStatusService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -29,7 +28,7 @@ public class ProcessStatusServiceImpl implements ProcessStatusService {
     @Override
     public ProcessStatusDto create(CreateProcessStatusReq req) {
         var flow = processFlowRepository.findById(req.getProcessFlowId())
-                .orElseThrow(()-> new IllegalArgumentException(""));
+                .orElseThrow(() -> new IllegalArgumentException(""));
         var data = ProcessStatus.builder()
                 .isStart(req.getIsStart())
                 .isEnd(req.getIsEnd())
@@ -44,7 +43,7 @@ public class ProcessStatusServiceImpl implements ProcessStatusService {
     @Override
     public ProcessStatusDto update(Long id, CreateProcessStatusReq req) {
         var data = processStatusRepository.findById(id)
-                .orElseThrow(()-> new IllegalArgumentException());
+                .orElseThrow(() -> new IllegalArgumentException());
         data.setName(req.getName());
         data.setIsEnd(req.getIsEnd());
         data.setIsStart(req.getIsStart());
@@ -71,5 +70,11 @@ public class ProcessStatusServiceImpl implements ProcessStatusService {
                 data.getTotalPages(),
                 data.getTotalElements()
         );
+    }
+
+    @Override
+    public List<ProcessStatusDto> getListByFlowId(Long flowId) {
+        var data = processStatusRepository.getByFlowId(flowId);
+        return data;
     }
 }

@@ -9,6 +9,8 @@ import com.manhhoach.EofficeFull.service.ProcessStatusService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/process-statuses")
 @RequiredArgsConstructor
@@ -36,5 +38,10 @@ public class ProcessStatusController {
     public ApiResponse<Void> delete(@PathVariable Long id) {
         processStatusService.delete(id);
         return ApiResponse.success(null);
+    }
+
+    @GetMapping("/flow/{flowId}")
+    public ApiResponse<List<ProcessStatusDto>> getListByFlowId(@PathVariable Long flowId){
+        return ApiResponse.success(processStatusService.getListByFlowId(flowId));
     }
 }

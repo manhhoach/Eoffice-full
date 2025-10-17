@@ -5,6 +5,8 @@ import com.manhhoach.EofficeFull.dto.processStatus.CreateProcessStatusReq;
 import com.manhhoach.EofficeFull.dto.processStatus.ProcessStatusDto;
 import com.manhhoach.EofficeFull.dto.processStatus.ProcessStatusPagingReq;
 
+import java.util.List;
+
 public interface ProcessStatusService {
     ProcessStatusDto create(CreateProcessStatusReq req);
 
@@ -13,4 +15,6 @@ public interface ProcessStatusService {
     void delete(Long id);
 
     PagedResponse<ProcessStatusDto> getPaged(ProcessStatusPagingReq request);
+
+    List<ProcessStatusDto> getListByFlowId(Long flowId);
 }

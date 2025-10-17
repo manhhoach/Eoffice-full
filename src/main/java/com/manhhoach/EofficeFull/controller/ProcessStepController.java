@@ -43,4 +43,10 @@ public class ProcessStepController {
         return ApiResponse.success(null);
     }
 
+
+    @GetMapping("/config/{flowId}")
+    public ApiResponse<StepConfig> getConfigStep(@PathVariable Long flowId){
+        return ApiResponse.success(processStepService.getConfigStep(flowId));
+    }
+
 }
