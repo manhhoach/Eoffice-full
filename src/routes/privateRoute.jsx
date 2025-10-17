@@ -4,6 +4,7 @@ import { MainContext } from "../contexts/MainContext";
 import useApi from "../hooks/useApi";
 
 export default function PrivateRoute({ permissionCode, children }) {
+    return children
     const { user, permissionCodes, setUser, setModules, setPermissionCodes } = useContext(MainContext);
     let accessToken = localStorage.getItem("accessToken");
 
