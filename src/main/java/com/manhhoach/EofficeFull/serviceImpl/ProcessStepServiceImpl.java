@@ -7,9 +7,12 @@ import com.manhhoach.EofficeFull.dto.processStep.CreateProcessStepReq;
 import com.manhhoach.EofficeFull.dto.processStep.ProcessStepDto;
 import com.manhhoach.EofficeFull.dto.processStep.ProcessStepPagingReq;
 import com.manhhoach.EofficeFull.dto.processStep.StepConfig;
+import com.manhhoach.EofficeFull.repository.ProcessFlowRepository;
 import com.manhhoach.EofficeFull.repository.ProcessStatusRepository;
+import com.manhhoach.EofficeFull.repository.ProcessStepRepository;
 import com.manhhoach.EofficeFull.repository.RoleRepository;
 import com.manhhoach.EofficeFull.service.ProcessStepService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,25 +22,62 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProcessStepServiceImpl implements ProcessStepService {
 
-
+    private final ProcessStepRepository processStepRepository;
     private final ProcessStatusRepository processStatusRepository;
     private final RoleRepository roleRepository;
+    private final ProcessFlowRepository processFlowRepository;
 
     @Override
-    public ProcessStepDto create(CreateProcessStepReq req) {
-        var startStatus = processStatusRepository.findById(req.getStartProcessStatusId());
-        var endStatus = processStatusRepository.findById(req.getEndProcessStatusId());
-        return null;
+    public void create(CreateProcessStepReq req) {
+        var startStatus = processStatusRepository.findById(req.getStartProcessStatusId())
+                .orElseThrow(() -> new EntityNotFoundException("Start status not found"));
+
+        var endStatus = processStatusRepository.findById(req.getEndProcessStatusId())
+                .orElseThrow(() -> new EntityNotFoundException("End status not found"));
+
+        var flow = processFlowRepository.findById(req.getProcessFlowId())
+                .orElseThrow(() -> new EntityNotFoundException("Process flow not found"));
+
+        var entity = CreateProcessStepReq.map(req);
+        entity.setProcessFlow(flow);
+        entity.setEndProcessStatus(endStatus);
+        entity.setStartProcessStatus(startStatus);
+        processStepRepository.save(entity);
     }
 
     @Override
-    public ProcessStepDto update(Long id, CreateProcessStepReq req) {
-        return null;
+    public void update(Long id, CreateProcessStepReq req) {
+        var entity = processStepRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Step not found"));
+
+        var startStatus = processStatusRepository.findById(req.getStartProcessStatusId())
+                .orElseThrow(() -> new EntityNotFoundException("Start status not found"));
+
+        var endStatus = processStatusRepository.findById(req.getEndProcessStatusId())
+                .orElseThrow(() -> new EntityNotFoundException("End status not found"));
+
+        var flow = processFlowRepository.findById(req.getProcessFlowId())
+                .orElseThrow(() -> new EntityNotFoundException("Process flow not found"));
+
+        entity.setProcessFlow(flow);
+        entity.setEndProcessStatus(endStatus);
+        entity.setStartProcessStatus(startStatus);
+        entity.setName(req.getName());
+        entity.setIsReturn(req.getIsReturn());
+        entity.setIsSameDepartment(req.getIsSameDepartment());
+        entity.setNeedToNote(req.getNeedToNote());
+        entity.setRequiredFile(req.getRequiredFile());
+        entity.setReturnType(req.getReturnType());
+        entity.setReceptionRoles(String.join(",",
+                req.getReceptionRoles().stream().map(e->e.toString()).toList()
+        ));
+
+        processStepRepository.save(entity);
+
     }
 
     @Override
     public void delete(Long id) {
-
+        processStepRepository.deleteById(id);
     }
 
     @Override

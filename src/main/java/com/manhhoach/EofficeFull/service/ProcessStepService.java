@@ -7,9 +7,9 @@ import com.manhhoach.EofficeFull.dto.processStep.ProcessStepPagingReq;
 import com.manhhoach.EofficeFull.dto.processStep.StepConfig;
 
 public interface ProcessStepService {
-    ProcessStepDto create(CreateProcessStepReq req);
+    void create(CreateProcessStepReq req);
 
-    ProcessStepDto update(Long id, CreateProcessStepReq req);
+    void update(Long id, CreateProcessStepReq req);
 
     void delete(Long id);
 

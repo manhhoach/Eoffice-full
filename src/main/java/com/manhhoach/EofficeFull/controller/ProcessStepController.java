@@ -28,13 +28,15 @@ public class ProcessStepController {
     }
 
     @PostMapping
-    public ApiResponse<ProcessStepDto> create(@RequestBody CreateProcessStepReq req) {
-        return ApiResponse.success(processStepService.create(req));
+    public ApiResponse<Void> create(@RequestBody CreateProcessStepReq req) {
+        processStepService.create(req);
+        return ApiResponse.success(null);
     }
 
     @PutMapping("/{id}")
-    public ApiResponse<ProcessStepDto> update(@PathVariable Long id, @RequestBody CreateProcessStepReq req) {
-        return ApiResponse.success(processStepService.update(id, req));
+    public ApiResponse<Void> update(@PathVariable Long id, @RequestBody CreateProcessStepReq req) {
+        processStepService.update(id, req);
+        return ApiResponse.success(null);
     }
 
     @DeleteMapping("/{id}")
