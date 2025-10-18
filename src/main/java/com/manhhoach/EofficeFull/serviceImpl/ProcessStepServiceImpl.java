@@ -24,6 +24,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -74,9 +76,11 @@ public class ProcessStepServiceImpl implements ProcessStepService {
         entity.setNeedToNote(req.getNeedToNote());
         entity.setRequiredFile(req.getRequiredFile());
         entity.setReturnType(req.getReturnType());
-        entity.setReceptionRoles(String.join(",",
-                req.getReceptionRoles().stream().map(e->e.toString()).toList()
-        ));
+        entity.setReceptionRoles(Optional.ofNullable(req.getReceptionRoles())
+                .orElse(List.of())
+                .stream()
+                .map(Object::toString)
+                .collect(Collectors.joining(",")));
 
         processStepRepository.save(entity);
 

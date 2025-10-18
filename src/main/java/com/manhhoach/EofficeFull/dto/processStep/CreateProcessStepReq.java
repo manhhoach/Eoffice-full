@@ -3,6 +3,8 @@ import com.manhhoach.EofficeFull.entity.ProcessStep;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Data
 public class CreateProcessStepReq {
@@ -35,9 +37,11 @@ public class CreateProcessStepReq {
                 .needToNote(data.getNeedToNote())
                 .requiredFile(data.getRequiredFile())
                 .returnType(data.getReturnType())
-                .receptionRoles( String.join(",",
-                        data.getReceptionRoles().stream().map(e->e.toString()).toList()
-                        )
+                .receptionRoles( Optional.ofNullable(data.getReceptionRoles())
+                        .orElse(List.of())
+                        .stream()
+                        .map(Object::toString)
+                        .collect(Collectors.joining(","))
                 ).build();
     }
 }

@@ -5,10 +5,7 @@ import com.manhhoach.EofficeFull.entity.Department;
 import com.manhhoach.EofficeFull.entity.Module;
 import com.manhhoach.EofficeFull.entity.Permission;
 import com.manhhoach.EofficeFull.entity.Role;
-import com.manhhoach.EofficeFull.repository.DepartmentRepository;
-import com.manhhoach.EofficeFull.repository.ModuleRepository;
-import com.manhhoach.EofficeFull.repository.PermissionRepository;
-import com.manhhoach.EofficeFull.repository.RoleRepository;
+import com.manhhoach.EofficeFull.repository.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +20,10 @@ public class DataInitializer {
             RoleRepository roleRepository,
             PermissionRepository permissionRepository,
             ModuleRepository moduleRepository,
-            DepartmentRepository departmentRepository
+            DepartmentRepository departmentRepository,
+            ProcessFlowRepository processFlowRepository,
+            ProcessStepRepository processStepRepository,
+            ProcessStatusRepository processStatusRepository
     ) {
         return args -> {
             if (roleRepository.count() == 0 && permissionRepository.count() == 0 && moduleRepository.count() == 0) {
@@ -130,6 +130,10 @@ public class DataInitializer {
                         .build();
                 departmentRepository.saveAll(List.of(dep1, dep2, dep3, dep4, dep5, dep6, dep7));
                 System.out.println("Default departments đã được khởi tạo.");
+
+            }
+
+            if(processFlowRepository.count()==0){
 
             }
         };
