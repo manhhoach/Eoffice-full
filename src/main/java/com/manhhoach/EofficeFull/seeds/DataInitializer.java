@@ -1,5 +1,6 @@
 package com.manhhoach.EofficeFull.seeds;
 
+import com.manhhoach.EofficeFull.constant.PermissionConstant;
 import com.manhhoach.EofficeFull.constant.RoleConstant;
 import com.manhhoach.EofficeFull.entity.Department;
 import com.manhhoach.EofficeFull.entity.Module;
@@ -31,31 +32,38 @@ public class DataInitializer {
                 // 1. Tạo Modules
                 Module adminModule = Module.builder().name("System Management").code("SYSTEM_MGMT").isDisplayed(true).build();
 
-                Permission p1 = Permission.builder().name("User Management").code("VIEW_USERS").isDisplayed(true)
+                Permission p1 = Permission.builder().name("User Management").code(PermissionConstant.VIEW_USERS).isDisplayed(true)
                         .url("/users").priority(1).module(adminModule).build();
-                Permission p2 = Permission.builder().name("Role Management").code("VIEW_ROLES").isDisplayed(true)
-                        .url("/roles").priority(2).module(adminModule).build();
-                Permission p3 = Permission.builder().name("Module Management").code("VIEW_MODULES").isDisplayed(true)
-                        .url("/modules").priority(3).module(adminModule).build();
-                Permission p7 = Permission.builder().name("Flow Management").code("VIEW_FLOWS").url("/process-flows")
-                        .isDisplayed(true).priority(4).module(adminModule).build();
-                Permission p10 = Permission.builder().name("Department Management").priority(5).code("VIEW_DEPARTMENTS")
-                        .isDisplayed(true).module(adminModule).url("/departments").build();
 
+                Permission p2 = Permission.builder().name("Role Management").code(PermissionConstant.VIEW_ROLES)
+                        .isDisplayed(true).url("/roles").priority(2).module(adminModule).build();
 
-                Permission p8 = Permission.builder().name("Step Flow Management").code("VIEW_STEPS").isDisplayed(false)
-                        .module(adminModule).build();
-                Permission p9 = Permission.builder().name("Status Flow Management").code("VIEW_STATUSES").isDisplayed(false)
-                        .module(adminModule).build();
-                Permission p4 = Permission.builder().name("Permission Management").code("VIEW_PERMISSIONS").isDisplayed(false)
-                        .module(adminModule).build();
+                Permission p3 = Permission.builder().name("Module Management").code(PermissionConstant.VIEW_MODULES)
+                        .isDisplayed(true).url("/modules").priority(3).module(adminModule).build();
+
+                Permission p7 = Permission.builder().name("Flow Management").code(PermissionConstant.VIEW_FLOWS)
+                        .url("/process-flows").isDisplayed(true).priority(4).module(adminModule).build();
+
+                Permission p10 = Permission.builder().name("Department Management").code(PermissionConstant.VIEW_DEPARTMENTS)
+                        .isDisplayed(true).priority(5).module(adminModule).url("/departments").build();
+
+                Permission p8 = Permission.builder().name("Step Flow Management").code(PermissionConstant.VIEW_STEPS)
+                        .isDisplayed(false).module(adminModule).build();
+
+                Permission p9 = Permission.builder().name("Status Flow Management").code(PermissionConstant.VIEW_STATUSES)
+                        .isDisplayed(false).module(adminModule).build();
+
+                Permission p4 = Permission.builder().name("Permission Management").code(PermissionConstant.VIEW_PERMISSIONS)
+                        .isDisplayed(false).module(adminModule).build();
 
 
 
                 Module officeModule = Module.builder().name("Document Management").code("DOC_MGMT").isDisplayed(true).build();
-                Permission p5 = Permission.builder().name("Outgoing docs").code("VIEW_OUT_GOING_DOCS")
+
+                Permission p5 = Permission.builder().name("Outgoing docs").code(PermissionConstant.VIEW_OUT_GOING_DOCS)
                         .isDisplayed(true).url("/out-going-docs").priority(1).module(officeModule).build();
-                Permission p6 = Permission.builder().name("Incoming docs").code("VIEW_IN_COMING_DOCS")
+
+                Permission p6 = Permission.builder().name("Incoming docs").code(PermissionConstant.VIEW_IN_COMING_DOCS)
                         .isDisplayed(true).url("/in-coming-docs").priority(2).module(officeModule).build();
 
                 // 3. Tạo Roles

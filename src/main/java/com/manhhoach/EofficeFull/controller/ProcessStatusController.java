@@ -2,6 +2,8 @@ package com.manhhoach.EofficeFull.controller;
 
 import com.manhhoach.EofficeFull.common.ApiResponse;
 import com.manhhoach.EofficeFull.common.PagedResponse;
+import com.manhhoach.EofficeFull.config.annotations.IsAuthorized;
+import com.manhhoach.EofficeFull.constant.PermissionConstant;
 import com.manhhoach.EofficeFull.dto.processStatus.CreateProcessStatusReq;
 import com.manhhoach.EofficeFull.dto.processStatus.ProcessStatusDto;
 import com.manhhoach.EofficeFull.dto.processStatus.ProcessStatusPagingReq;
@@ -17,6 +19,8 @@ import java.util.List;
 public class ProcessStatusController {
     private final ProcessStatusService processStatusService;
 
+
+    @IsAuthorized(PermissionConstant.VIEW_STATUSES)
     @GetMapping("/paged")
     public ApiResponse<PagedResponse<ProcessStatusDto>> getPaged(ProcessStatusPagingReq request) {
         return ApiResponse.success(

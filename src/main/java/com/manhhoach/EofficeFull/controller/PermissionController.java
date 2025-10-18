@@ -2,6 +2,8 @@ package com.manhhoach.EofficeFull.controller;
 
 import com.manhhoach.EofficeFull.common.ApiResponse;
 import com.manhhoach.EofficeFull.common.PagedResponse;
+import com.manhhoach.EofficeFull.config.annotations.IsAuthorized;
+import com.manhhoach.EofficeFull.constant.PermissionConstant;
 import com.manhhoach.EofficeFull.dto.permission.*;
 import com.manhhoach.EofficeFull.service.PermissionService;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +17,8 @@ import java.util.List;
 public class PermissionController {
     private final PermissionService permissionService;
 
+
+    @IsAuthorized(PermissionConstant.VIEW_PERMISSIONS)
     @GetMapping("/paged")
     public ApiResponse<PagedResponse<PermissionDto>> getPaged(PermissionPagingReq request) {
         return ApiResponse.success(

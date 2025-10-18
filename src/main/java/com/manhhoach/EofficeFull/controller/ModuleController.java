@@ -2,6 +2,8 @@ package com.manhhoach.EofficeFull.controller;
 
 import com.manhhoach.EofficeFull.common.ApiResponse;
 import com.manhhoach.EofficeFull.common.PagedResponse;
+import com.manhhoach.EofficeFull.config.annotations.IsAuthorized;
+import com.manhhoach.EofficeFull.constant.PermissionConstant;
 import com.manhhoach.EofficeFull.dto.module.*;
 import com.manhhoach.EofficeFull.service.ModuleService;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +17,7 @@ import java.util.List;
 public class ModuleController {
     private final ModuleService moduleService;
 
+    @IsAuthorized(PermissionConstant.VIEW_MODULES)
     @GetMapping("/paged")
     public ApiResponse<PagedResponse<ModuleDto>> getPaged(ModulePagingReq request) {
         return ApiResponse.success(

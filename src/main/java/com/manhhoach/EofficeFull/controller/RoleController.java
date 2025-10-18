@@ -2,6 +2,8 @@ package com.manhhoach.EofficeFull.controller;
 
 import com.manhhoach.EofficeFull.common.ApiResponse;
 import com.manhhoach.EofficeFull.common.PagedResponse;
+import com.manhhoach.EofficeFull.config.annotations.IsAuthorized;
+import com.manhhoach.EofficeFull.constant.PermissionConstant;
 import com.manhhoach.EofficeFull.dto.role.*;
 import com.manhhoach.EofficeFull.service.RoleService;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +17,8 @@ import java.util.List;
 public class RoleController {
     private final RoleService roleService;
 
+
+    @IsAuthorized(PermissionConstant.VIEW_ROLES)
     @GetMapping("/paged")
     public ApiResponse<PagedResponse<RoleDto>> getPaged(RolePagingReq request) {
         return ApiResponse.success(

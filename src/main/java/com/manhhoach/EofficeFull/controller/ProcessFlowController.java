@@ -2,6 +2,8 @@ package com.manhhoach.EofficeFull.controller;
 
 import com.manhhoach.EofficeFull.common.ApiResponse;
 import com.manhhoach.EofficeFull.common.PagedResponse;
+import com.manhhoach.EofficeFull.config.annotations.IsAuthorized;
+import com.manhhoach.EofficeFull.constant.PermissionConstant;
 import com.manhhoach.EofficeFull.dto.processFlow.CreateProcessFlowReq;
 import com.manhhoach.EofficeFull.dto.processFlow.ProcessFlowDto;
 import com.manhhoach.EofficeFull.dto.processFlow.ProcessFlowPagingReq;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 public class ProcessFlowController {
     private final ProcessFlowService processFlowService;
 
+    @IsAuthorized(PermissionConstant.VIEW_FLOWS)
     @GetMapping("/paged")
     public ApiResponse<PagedResponse<ProcessFlowDto>> getPaged(ProcessFlowPagingReq request) {
         return ApiResponse.success(

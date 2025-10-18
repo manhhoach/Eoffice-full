@@ -2,6 +2,8 @@ package com.manhhoach.EofficeFull.controller;
 
 import com.manhhoach.EofficeFull.common.ApiResponse;
 import com.manhhoach.EofficeFull.common.PagedResponse;
+import com.manhhoach.EofficeFull.config.annotations.IsAuthorized;
+import com.manhhoach.EofficeFull.constant.PermissionConstant;
 import com.manhhoach.EofficeFull.dto.user.CreateUserReq;
 import com.manhhoach.EofficeFull.dto.user.UserDto;
 import com.manhhoach.EofficeFull.dto.user.UserPagingReq;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
 
+
+    @IsAuthorized(PermissionConstant.VIEW_USERS)
     @GetMapping("/paged")
     public ApiResponse<PagedResponse<UserDto>> getPaged(UserPagingReq request) {
         return ApiResponse.success(
