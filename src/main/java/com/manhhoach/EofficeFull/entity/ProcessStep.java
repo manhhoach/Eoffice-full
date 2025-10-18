@@ -32,11 +32,20 @@ public class ProcessStep extends BaseEntity {
     @JoinColumn(name = "startProcessStatusId", nullable = true)
     private ProcessStatus startProcessStatus;
 
+    @Column(name = "startProcessStatusId", insertable = false, updatable = false)
+    private Long startProcessStatusId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "endProcessStatusId", nullable = true)
     private ProcessStatus endProcessStatus;
 
+    @Column(name = "endProcessStatusId", insertable = false, updatable = false)
+    private Long endProcessStatusId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "processFlowId", nullable = true)
     private ProcessFlow processFlow;
+
+    @Column(name = "processFlowId", insertable = false, updatable = false)
+    private Long processFlowId;
 }

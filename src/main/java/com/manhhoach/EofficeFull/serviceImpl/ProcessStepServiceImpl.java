@@ -3,10 +3,13 @@ package com.manhhoach.EofficeFull.serviceImpl;
 import com.manhhoach.EofficeFull.common.PagedResponse;
 import com.manhhoach.EofficeFull.common.SelectListItem;
 import com.manhhoach.EofficeFull.constant.ReturnTypeConstant;
+import com.manhhoach.EofficeFull.dto.processStatus.ProcessStatusDto;
 import com.manhhoach.EofficeFull.dto.processStep.CreateProcessStepReq;
 import com.manhhoach.EofficeFull.dto.processStep.ProcessStepDto;
 import com.manhhoach.EofficeFull.dto.processStep.ProcessStepPagingReq;
 import com.manhhoach.EofficeFull.dto.processStep.StepConfig;
+import com.manhhoach.EofficeFull.entity.ProcessStatus;
+import com.manhhoach.EofficeFull.entity.ProcessStep;
 import com.manhhoach.EofficeFull.repository.ProcessFlowRepository;
 import com.manhhoach.EofficeFull.repository.ProcessStatusRepository;
 import com.manhhoach.EofficeFull.repository.ProcessStepRepository;
@@ -14,6 +17,10 @@ import com.manhhoach.EofficeFull.repository.RoleRepository;
 import com.manhhoach.EofficeFull.service.ProcessStepService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -87,14 +94,24 @@ public class ProcessStepServiceImpl implements ProcessStepService {
 
     @Override
     public PagedResponse<ProcessStepDto> getPaged(ProcessStepPagingReq request) {
-        return null;
+        Pageable pageable = PageRequest.of(request.getPage() - 1, request.getSize(), Sort.by("id").descending());
+        Page<ProcessStep> data = processStepRepository.search(request, pageable);
+        var res = data.getContent().stream().map(e -> {
+            return ProcessStepDto.map(e);
+        }).toList();
+        return new PagedResponse<>(
+                res,
+                data.getNumber() + 1,
+                data.getTotalPages(),
+                data.getTotalElements()
+        );
     }
 
     @Override
     public StepConfig getConfigStep(Long flowId) {
         StepConfig data = new StepConfig();
-        data.setProcessStatusDtoList(processStatusRepository.getByFlowId(flowId));
-        data.setRoleDtoList(roleRepository.getAll());
+        data.setStatuses(processStatusRepository.getByFlowId(flowId));
+        data.setRoles(roleRepository.getAll());
         data.setReturnTypes(List.of(
                 new SelectListItem(ReturnTypeConstant.RETURN_FIRST_HANDLER, "Return first handler"),
                 new SelectListItem(ReturnTypeConstant.RETURN_PREVIOUS_HANDLER, "Return previous handler")

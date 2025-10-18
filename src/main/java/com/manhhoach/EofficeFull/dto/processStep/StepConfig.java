@@ -10,7 +10,7 @@ import java.util.List;
 
 @Data
 public class StepConfig {
-    private List<RoleDto> RoleDtoList;
-    private List<ProcessStatusDto> processStatusDtoList;
+    private List<RoleDto> roles;
+    private List<ProcessStatusDto> statuses;
     private List<SelectListItem> returnTypes;
 }

@@ -14,8 +14,10 @@ import org.springframework.stereotype.Repository;
 public interface ProcessStepRepository extends JpaRepository<ProcessStep, Long> {
     @Query("""
             SELECT f from ProcessStep f WHERE (
-            :#{#req.search} IS NULL OR :#{#req.search} = '' OR LOWER(f.name) LIKE LOWER(CONCAT('%', :#{#req.search}, '%'))
-            )
+            :#{#req.search} IS NULL 
+            OR :#{#req.search} = '' 
+            OR LOWER(f.name) LIKE LOWER(CONCAT('%', :#{#req.search}, '%'))
+            ) AND f.processFlow.id = :#{#req.processFlowId}
             """)
     Page<ProcessStep> search(ProcessStepPagingReq req, Pageable pageable);
 }
