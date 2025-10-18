@@ -20,6 +20,7 @@ export default function ProcessStepManagement() {
       url: "process-steps/paged",
       params: { page: pagination.current, size: pagination.pageSize, search: searchText, processFlowId: id },
    });
+   console.log(data)
 
    const { refetch: deleteStep } = useApi({
       method: 'DELETE',

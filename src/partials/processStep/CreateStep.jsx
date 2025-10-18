@@ -21,14 +21,9 @@ export default function CreateStep({ open, onCancel, initialData, refetch, proce
    });
 
 
-   const { data: statuses } = useApi({
-      url: 'process-statuses/flow/' + processFlowId,
+   const { data: config } = useApi({
+      url: 'process-steps/config/' + processFlowId,
    })
-
-   const { data: roles } = useApi({
-      url: 'roles',
-   })
-   console.log(roles.data)
 
    useEffect(() => {
       if (initialData) {
@@ -61,12 +56,11 @@ export default function CreateStep({ open, onCancel, initialData, refetch, proce
          endProcessStatusId: values.endProcessStatusId,
          processFlowId
       };
-      console.log(formData)
       try {
-         //  initialData != null ? await editStep({ body: formData }) : await createStep({ body: formData });
+         initialData != null ? await editStep({ body: formData }) : await createStep({ body: formData });
          message.success("Step update successfully!");
-         //  form.resetFields();
-         //  onCancel();
+         form.resetFields();
+         onCancel();
          await refetch();
       } catch (err) {
          message.error("Failed to update tour: " + (err.message || 'Unknown error'));
@@ -98,16 +92,16 @@ export default function CreateStep({ open, onCancel, initialData, refetch, proce
 
 
             <Form.Item label="Start Process Status" name="startProcessStatusId">
-               <Select2 displayKey={'name'} valueKey={'id'} data={statuses?.data} ></Select2>
+               <Select2 displayKey={'name'} valueKey={'id'} data={config?.data.statuses} ></Select2>
             </Form.Item>
 
             <Form.Item label="End Process Status" name="endProcessStatusId">
-               <Select2 displayKey={'name'} valueKey={'id'} data={statuses?.data} ></Select2>
+               <Select2 displayKey={'name'} valueKey={'id'} data={config?.data.statuses} ></Select2>
             </Form.Item>
 
 
             <Form.Item label="Reception Roles" name="receptionRoles">
-               <Select2 displayKey={'name'} valueKey={'id'} data={roles?.data} ></Select2>
+               <Select2 displayKey={'name'} valueKey={'id'} data={config?.data.roles} multiple={true}></Select2>
             </Form.Item>
 
             <Form.Item
