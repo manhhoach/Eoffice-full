@@ -15,6 +15,7 @@
     "chart.js": "^4.4.1",
     "chartjs-adapter-moment": "^1.0.1",
     "clsx": "^2.1.1",
+    "dagre": "^0.8.5",
     "date-fns": "^4.1.0",
     "moment": "^2.29.4",
     "react": "^19.0.0",
@@ -24,6 +25,7 @@
     "react-router-dom": "^7.0.2",
     "react-toastify": "^11.0.5",
     "react-transition-group": "^4.4.5",
+    "reactflow": "^11.11.4",
     "tailwind-merge": "^2.5.5"
   },
   "devDependencies": {

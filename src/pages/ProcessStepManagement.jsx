@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import useApi from "../hooks/useApi";
 import DEFAULT_PAGINATION from "../constants/pagination";
 import { useParams } from "react-router-dom";
-import { BiCheck, BiEdit, BiPlus, BiTrash, BiX } from "react-icons/bi";
+import { BiEdit, BiPlus, BiTrash } from "react-icons/bi";
 import { Button, Popconfirm, Space, Table } from "antd";
 import BackButton from "../components/BackButton";
 import CreateStep from "../partials/processStep/CreateStep";
 import Search from "antd/es/input/Search";
+import ProcessFlowEditor from './../partials/processStep/ProcessFlowEditor'
 
 export default function ProcessStepManagement() {
    const { id } = useParams();
@@ -18,9 +19,8 @@ export default function ProcessStepManagement() {
 
    const { data, loading, error, refetch } = useApi({
       url: "process-steps/paged",
-      params: { page: pagination.current, size: pagination.pageSize, search: searchText, processFlowId: id },
+      params: { page: pagination.page, size: pagination.maxSize, search: searchText, processFlowId: id },
    });
-   console.log(data)
 
    const { refetch: deleteStep } = useApi({
       method: 'DELETE',
@@ -38,36 +38,6 @@ export default function ProcessStepManagement() {
          title: "Name",
          dataIndex: "name",
          key: "name",
-      },
-      {
-         title: "Is Start",
-         dataIndex: "isStart",
-         key: "isStart",
-         render: (value) =>
-            value ? (
-               <span style={{ color: "green" }}>
-                  <BiCheck />
-               </span>
-            ) : (
-               <span style={{ color: "red" }}>
-                  <BiX />
-               </span>
-            ),
-      },
-      {
-         title: "Is End",
-         dataIndex: "isEnd",
-         key: "isEnd",
-         render: (value) =>
-            value ? (
-               <span style={{ color: "green" }}>
-                  <BiCheck />
-               </span>
-            ) : (
-               <span style={{ color: "red" }}>
-                  <BiX />
-               </span>
-            ),
       },
       {
          title: "Actions",
@@ -96,16 +66,9 @@ export default function ProcessStepManagement() {
       },
    ];
 
-   const handleTableChange = (newPagination) => {
-      setPagination(newPagination);
-      refetch({
-         params: { page: newPagination.page, size: newPagination.size, search: searchText, moduleId: id },
-      });
-   };
-
    useEffect(() => {
       refetch({
-         params: { page: pagination.page, size: pagination.size, search: searchText, moduleId: id },
+         params: { page: pagination.page, size: pagination.size, search: searchText, processFlowId: id },
       });
    }, [searchText]);
 
@@ -138,15 +101,12 @@ export default function ProcessStepManagement() {
             columns={columns}
             dataSource={data?.data?.items || []}
             loading={loading}
-            pagination={{
-               current: data?.data?.currentPage || pagination.current,
-               pageSize: pagination.pageSize,
-               total: data?.data?.totalElements || 0,
-               showSizeChanger: true,
-            }}
-            onChange={handleTableChange}
+            pagination={false}
             bordered
          />
+         {data?.success && data?.data?.items && (
+            <ProcessFlowEditor stepsData={data.data.items} />
+         )}
 
          <CreateStep processFlowId={id} refetch={refetch} onCancel={() => setIsModalOpen(false)} open={isModalOpen} initialData={currentStep} />
       </div>

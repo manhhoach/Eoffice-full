@@ -3,7 +3,6 @@ import { Modal, Form, Input, message, Checkbox, InputNumber } from 'antd';
 import useApi from "../../hooks/useApi";
 import { Select } from "antd";
 import Select2 from "../../components/Select2";
-const { Option } = Select;
 
 
 export default function CreateStep({ open, onCancel, initialData, refetch, processFlowId }) {

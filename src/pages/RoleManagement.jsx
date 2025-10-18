@@ -132,7 +132,11 @@ export default function RoleManagement() {
 
             <CreateRole refetch={refetch} onCancel={() => setIsModalOpen(modalOpen => ({ ...modalOpen, createRole: false }))} open={modalOpen.createRole} initialData={currentRole} />
 
-            <SetPermission onCancel={() => setIsModalOpen(modalOpen => ({ ...modalOpen, setPermission: false }))} open={modalOpen.setPermission} roleId={currentRole?.id} />
+            {
+                modalOpen.setPermission &&
+                (<SetPermission onCancel={() => setIsModalOpen(modalOpen => ({ ...modalOpen, setPermission: false }))} open={modalOpen.setPermission} roleId={currentRole?.id} />)
+            }
+
         </div>
     );
 }
