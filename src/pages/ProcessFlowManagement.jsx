@@ -16,6 +16,7 @@ export default function ProcessFlowManagement() {
     const { data, loading, error, refetch } = useApi({
         url: "process-flows/paged",
         params: { page: pagination.current, size: pagination.pageSize, search: searchText },
+        isAuth: true
     });
 
     const { refetch: deleteProcessFlow } = useApi({

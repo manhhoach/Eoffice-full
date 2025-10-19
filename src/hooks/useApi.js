@@ -9,6 +9,7 @@ export default function useApi(options) {
         body,
         headers = {},
         auto = true,
+        isAuth = false,
         baseUrl = import.meta.env.VITE_API_BASE_URL || "",
     } = options;
 
@@ -27,11 +28,13 @@ export default function useApi(options) {
             body,
             headers,
             baseUrl,
+            isAuth,
             ...overrideOptions,
         };
 
         const fullUrl = `${merged.baseUrl}${merged.url}`;
         const isFormData = merged.body instanceof FormData;
+        const token = merged.isAuth ? localStorage.getItem("accessToken") : null;
 
         const axiosConfig = {
             url: fullUrl,
@@ -40,6 +43,7 @@ export default function useApi(options) {
             data: merged.body,
             headers: {
                 ...(isFormData ? {} : { "Content-Type": "application/json" }),
+                ...(token ? { Authorization: `Bearer ${token}` } : {}),
                 ...merged.headers,
             },
         };
@@ -50,7 +54,6 @@ export default function useApi(options) {
             return res.data;
         } catch (err) {
             setError(err);
-            throw err;
         } finally {
             setLoading(false);
         }

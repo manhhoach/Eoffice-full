@@ -19,6 +19,7 @@ export default function ProcessStatusManagement() {
    const { data, loading, error, refetch } = useApi({
       url: "process-statuses/paged",
       params: { page: pagination.current, size: pagination.pageSize, search: searchText, processFlowId: id },
+      isAuth: true
    });
 
    const { refetch: deleteStatus } = useApi({

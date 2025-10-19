@@ -8,7 +8,7 @@ export default function PrivateRoute({ permissionCode, children }) {
     const { user, permissionCodes, setUser, setModules, setPermissionCodes } = useContext(MainContext);
     let accessToken = localStorage.getItem("accessToken");
     const navigate = useNavigate()
-    const { data, refetch } = useApi({
+    const { data, refetch, error } = useApi({
         url: 'auth/me',
         headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -29,16 +29,15 @@ export default function PrivateRoute({ permissionCode, children }) {
             setPermissionCodes(data.data.permissionCodes)
         } else {
             localStorage.removeItem("accessToken")
+            setUser(null)
+            setModules([])
+            setPermissionCodes([])
             return navigate("/login", { replace: true })
         }
-
     }, [data]);
 
-    if (!accessToken) return <Navigate to="/login" replace />;
-
-    const isWaitingUserData = accessToken && !user;
-    if (isWaitingUserData) return null;
-    
+    if (!accessToken || error) return <Navigate to="/login" replace />;
+    if (!user && !data && !error) return null;
     const hasPermission = permissionCodes.some(p => p === permissionCode) || !permissionCode;
     if (!hasPermission) return <Navigate to="/403" replace />;
 
