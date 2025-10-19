@@ -4,13 +4,13 @@ import { useEffect } from "react";
 import { toast } from "react-toastify";
 
 
-export default function SetPermission({ open, onCancel, roleId }) {
-   const { data, loading, error, refetch } = useApi({
+export default function SetModule({ open, onCancel, roleId }) {
+   const { data } = useApi({
       url: `roles/${roleId}/modules`,
    });
 
    const { refetch: setPermissions } = useApi({
-      method: 'POST',
+      method: 'PUT',
       url: `roles/${roleId}/modules`,
       auto: false,
    })

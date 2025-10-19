@@ -4,7 +4,7 @@ import useApi from "../hooks/useApi";
 import CreateRole from "../partials/role/CreateRole";
 import { BiCog, BiEdit, BiPlus, BiTrash } from "react-icons/bi";
 import DEFAULT_PAGINATION from "../constants/pagination";
-import SetPermission from "../partials/role/SetPermission";
+import SetModule from "../partials/role/SetModule";
 
 const { Search } = Input;
 
@@ -134,7 +134,7 @@ export default function RoleManagement() {
 
             {
                 modalOpen.setPermission &&
-                (<SetPermission onCancel={() => setIsModalOpen(modalOpen => ({ ...modalOpen, setPermission: false }))} open={modalOpen.setPermission} roleId={currentRole?.id} />)
+                (<SetModule onCancel={() => setIsModalOpen(modalOpen => ({ ...modalOpen, setPermission: false }))} open={modalOpen.setPermission} roleId={currentRole?.id} />)
             }
 
         </div>

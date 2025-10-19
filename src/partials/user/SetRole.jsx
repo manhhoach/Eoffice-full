@@ -10,8 +10,8 @@ export default function SetRole({ onCancel, userId }) {
       url: `users/${userId}/roles`,
    });
    const { refetch: setRoles } = useApi({
-      method: 'POST',
-      url: "users/${userId}/roles",
+      method: 'PUT',
+      url: `users/${userId}/roles`,
       auto: false,
    })
    const departments = data?.data || [];

@@ -9,23 +9,23 @@ export default function SetPermissionForUser({ onCancel, userId }) {
       url: `permissions/users/${userId}`,
    });
 
-   const { refetch: setRoles } = useApi({
-      method: 'POST',
+   const { refetch: setPermission } = useApi({
+      method: 'PUT',
       url: `permissions/users/${userId}`,
       auto: false,
    })
 
-   const roles = data?.data || [];
+   const permissions = data?.data || [];
 
    const [form] = Form.useForm();
 
    const handleSubmit = async (values) => {
       try {
-         const roleIds = Object.keys(values).filter(key => values[key]).map(id => parseInt(id));
+         const permissionIds = Object.keys(values).filter(key => values[key]).map(id => parseInt(id));
          const body = {
-            roleIds: roleIds
+            permissionIds: permissionIds
          }
-         await setRoles({ body });
+         await setPermission({ body });
          onCancel()
          toast.success("Successfully");
       }
@@ -36,15 +36,15 @@ export default function SetPermissionForUser({ onCancel, userId }) {
    useEffect(() => {
       form.resetFields();
       form.setFieldsValue(
-         roles?.reduce(
-            (acc, role) => {
-               acc[role.id] = role.selected;
+         permissions?.reduce(
+            (acc, permission) => {
+               acc[permission.id] = permission.selected;
                return acc;
             }, {}
          )
       )
 
-   }, [userId, roles]);
+   }, [userId, permissions]);
 
    return (
       <Modal
@@ -64,22 +64,22 @@ export default function SetPermissionForUser({ onCancel, userId }) {
             form={form}
             onFinish={handleSubmit}
             layout="vertical"
-            initialValues={roles?.reduce(
-               (acc, role) => {
-                  acc[role.id] = role.selected;
+            initialValues={permissions?.reduce(
+               (acc, permission) => {
+                  acc[permission.id] = permission.selected;
                   return acc;
                }, {}
             )}
          >
             <Row>
-               {roles?.map(role => (
-                  <Col span={12} key={role.id}>
+               {permissions?.map(permission => (
+                  <Col span={12} key={permission.id}>
                      <Form.Item
-                        key={role.id}
-                        name={role.id}
+                        key={permission.id}
+                        name={permission.id}
                         valuePropName="checked"
                      >
-                        <Checkbox>{role.name}</Checkbox>
+                        <Checkbox>{permission.name}</Checkbox>
                      </Form.Item>
                   </Col>
                ))}
