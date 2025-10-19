@@ -5,9 +5,9 @@ export const MainContext = createContext();
 export const MainProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [permissionCodes, setPermissionCodes] = useState([]);
-  const [modules, setModules] = useState([]);
+  const [modules, SetPermissionForRoles] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  
+
   return (
     <MainContext.Provider
       value={{
@@ -16,7 +16,7 @@ export const MainProvider = ({ children }) => {
         setUser,
         setPermissionCodes,
         modules,
-        setModules,
+        SetPermissionForRoles,
         sidebarOpen,
         setSidebarOpen
       }}

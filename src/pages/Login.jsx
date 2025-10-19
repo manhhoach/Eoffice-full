@@ -13,7 +13,7 @@ function Login() {
     auto: false,
   })
   const navigate = useNavigate();
-  const { setUser, setPermissionCodes, setModules } = useContext(MainContext);
+  const { setUser, setPermissionCodes, SetPermissionForRoles } = useContext(MainContext);
 
   const onFinish = async (values) => {
     try {
@@ -22,7 +22,7 @@ function Login() {
         localStorage.setItem("accessToken", res.data.accessToken);
         setPermissionCodes(res.data.permissionCodes)
         setUser(res.data.username);
-        setModules(res.data.modules);
+        SetPermissionForRoles(res.data.modules);
         navigate("/");
       }
       else {

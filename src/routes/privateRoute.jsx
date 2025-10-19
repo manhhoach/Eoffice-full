@@ -5,7 +5,7 @@ import useApi from "../hooks/useApi";
 import { useNavigate } from "react-router-dom";
 
 export default function PrivateRoute({ permissionCode, children }) {
-    const { user, permissionCodes, setUser, setModules, setPermissionCodes } = useContext(MainContext);
+    const { user, permissionCodes, setUser, SetPermissionForRoles, setPermissionCodes } = useContext(MainContext);
     let accessToken = localStorage.getItem("accessToken");
     const navigate = useNavigate()
     const { data, refetch, error } = useApi({
@@ -25,12 +25,12 @@ export default function PrivateRoute({ permissionCode, children }) {
         if (!data) return;
         if (data.success) {
             setUser(data.data.username)
-            setModules(data.data.modules)
+            SetPermissionForRoles(data.data.modules)
             setPermissionCodes(data.data.permissionCodes)
         } else {
             localStorage.removeItem("accessToken")
             setUser(null)
-            setModules([])
+            SetPermissionForRoles([])
             setPermissionCodes([])
             return navigate("/login", { replace: true })
         }

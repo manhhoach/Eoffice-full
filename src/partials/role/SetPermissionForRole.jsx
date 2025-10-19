@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { toast } from "react-toastify";
 
 
-export default function SetModule({ open, onCancel, roleId }) {
+export default function SetPermissionForRole({ open, onCancel, roleId }) {
    const { data } = useApi({
       url: `roles/${roleId}/modules`,
    });
@@ -42,7 +42,7 @@ export default function SetModule({ open, onCancel, roleId }) {
 
    return (
       <Modal
-         title="Set permissions"
+         title="Set permissions for role"
          destroyOnHidden
          open={open}
          maskClosable={false}
@@ -61,7 +61,7 @@ export default function SetModule({ open, onCancel, roleId }) {
             initialValues={
                modules?.reduce((acc, module) => {
                   module.permissionSelectionDtos?.forEach(permission => {
-                     acc[permission.id] = permission.selected; 
+                     acc[permission.id] = permission.selected;
                   });
                   return acc;
                }, {})

@@ -7,7 +7,6 @@ import { Button, Popconfirm, Space, Table } from "antd";
 import BackButton from "../components/BackButton";
 import CreateStep from "../partials/processStep/CreateStep";
 import Search from "antd/es/input/Search";
-import ProcessFlowEditor from './../partials/processStep/ProcessFlowEditor'
 
 export default function ProcessStepManagement() {
    const { id } = useParams();

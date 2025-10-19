@@ -5,7 +5,7 @@ import CreateProcessFlow from "../partials/processFlow/CreateProcessFlow.jsx";
 import { BiEdit, BiPlus, BiTrash, BiCog, BiListUl, BiSignal5 } from "react-icons/bi";
 import DEFAULT_PAGINATION from "../constants/pagination";
 import { useNavigate } from "react-router-dom";
-import ProcessFlowEditor from "../partials/processStep/ProcessFlowEditor.jsx";
+import ProcessFlowEditor from "../partials/processFlow/ProcessFlowEditor.jsx";
 const { Search } = Input;
 
 export default function ProcessFlowManagement() {
@@ -126,7 +126,13 @@ export default function ProcessFlowManagement() {
             />
 
             <CreateProcessFlow refetch={refetch} onCancel={() => setIsModalOpen(false)} open={isModalOpen} initialData={currentProcessFlow} />
-            <ProcessFlowEditor onCancel={() => setIsModalConfigOpen(false)} open={isModalConfigOpen} processFlowId={currentProcessFlow?.id} />
+
+            {
+                isModalConfigOpen &&
+                currentProcessFlow &&
+                <ProcessFlowEditor onCancel={() => setIsModalConfigOpen(false)} processFlowId={currentProcessFlow?.id} />
+            }
+
 
         </div>
     );

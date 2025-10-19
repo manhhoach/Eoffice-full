@@ -20,7 +20,7 @@ export default function CreateStep({ open, onCancel, initialData, refetch, proce
 
 
    const { data: config } = useApi({
-      url: 'process-steps/get-create-meta/' + processFlowId,
+      url: `process-flows/${processFlowId}/steps/meta`,
    })
 
    useEffect(() => {
