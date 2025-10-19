@@ -21,6 +21,7 @@ import com.manhhoach.EofficeFull.repository.UserRoleDepartmentRepository;
 import com.manhhoach.EofficeFull.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -99,10 +100,15 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public UserDto getMe() {
-        var authentication = SecurityContextHolder.getContext().getAuthentication();
-        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        var auth = SecurityContextHolder.getContext().getAuthentication();
 
-        LoginRes loginRes = buildLoginRes(userDetails.getId(), userDetails.getUsername());
+        if (auth == null || !auth.isAuthenticated() || auth.getPrincipal().equals("anonymousUser")) {
+            throw new AuthenticationCredentialsNotFoundException("Not authenticated");
+        }
+
+        var userDetails = (CustomUserDetails) auth.getPrincipal();
+
+        var loginRes = buildLoginRes(userDetails.getId(), userDetails.getUsername());
         return UserDto.builder()
                 .permissionCodes(loginRes.getPermissionCodes())
                 .modules(loginRes.getModules())
