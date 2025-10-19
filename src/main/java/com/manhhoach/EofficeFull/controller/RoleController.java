@@ -61,15 +61,4 @@ public class RoleController {
         return ApiResponse.success(null);
     }
 
-    @GetMapping("/users/{userId}")
-    public ApiResponse<List<DepartmentRolesDto>> getCurrentRoles(@PathVariable Long userId) {
-        return ApiResponse.success(roleService.getCurrentRoles(userId));
-    }
-
-    @PostMapping("/users/{userId}")
-    public ApiResponse<Void> assignRoles(@PathVariable Long userId, @RequestBody AssignUserRolesReq req) {
-        roleService.assignRoles(userId, req);
-        return ApiResponse.success(null);
-    }
-
 }

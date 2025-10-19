@@ -47,12 +47,12 @@ public class PermissionController {
     }
 
     @GetMapping("/users/{userId}")
-    public ApiResponse<List<PermissionSelectionDto>> getCurrentPermissions(@PathVariable Long userId) {
+    public ApiResponse<List<PermissionSelectionDto>> getUserPermissions(@PathVariable Long userId) {
         return ApiResponse.success(permissionService.getSelectedPermissions(userId));
     }
 
     @PutMapping("/users/{userId}")
-    public ApiResponse<Void> assignPermissions(@PathVariable Long userId, @RequestBody SelectedPermissionReq req) {
+    public ApiResponse<Void> setUserPermissions(@PathVariable Long userId, @RequestBody SelectedPermissionReq req) {
         permissionService.setSelectedPermissions(userId, req);
         return ApiResponse.success(null);
     }

@@ -4,19 +4,24 @@ import com.manhhoach.EofficeFull.common.ApiResponse;
 import com.manhhoach.EofficeFull.common.PagedResponse;
 import com.manhhoach.EofficeFull.config.annotations.IsAuthorized;
 import com.manhhoach.EofficeFull.constant.PermissionConstant;
+import com.manhhoach.EofficeFull.dto.role.AssignUserRolesReq;
+import com.manhhoach.EofficeFull.dto.role.DepartmentRolesDto;
 import com.manhhoach.EofficeFull.dto.user.CreateUserReq;
 import com.manhhoach.EofficeFull.dto.user.UserDto;
 import com.manhhoach.EofficeFull.dto.user.UserPagingReq;
+import com.manhhoach.EofficeFull.service.RoleService;
 import com.manhhoach.EofficeFull.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
-
+    private final RoleService roleService;
 
     @IsAuthorized(PermissionConstant.VIEW_USERS)
     @GetMapping
@@ -47,4 +52,14 @@ public class UserController {
         return ApiResponse.success(null);
     }
 
+    @GetMapping("/{userId}/roles")
+    public ApiResponse<List<DepartmentRolesDto>> getCurrentRoles(@PathVariable Long userId) {
+        return ApiResponse.success(roleService.getCurrentRoles(userId));
+    }
+
+    @PutMapping("/{userId}/roles")
+    public ApiResponse<Void> assignRoles(@PathVariable Long userId, @RequestBody AssignUserRolesReq req) {
+        roleService.assignRoles(userId, req);
+        return ApiResponse.success(null);
+    }
 }
