@@ -1,7 +1,6 @@
 import { useEffect } from "react";
-import { Modal, Form, Input, message, Checkbox, InputNumber } from 'antd';
+import { Modal, Form, Input, message, Checkbox } from 'antd';
 import useApi from "../../hooks/useApi";
-import { Select } from "antd";
 import Select2 from "../../components/Select2";
 
 
@@ -21,7 +20,7 @@ export default function CreateStep({ open, onCancel, initialData, refetch, proce
 
 
    const { data: config } = useApi({
-      url: 'process-steps/config/' + processFlowId,
+      url: 'process-steps/get-create-meta/' + processFlowId,
    })
 
    useEffect(() => {

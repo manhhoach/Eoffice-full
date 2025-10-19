@@ -2,21 +2,22 @@ import { useEffect, useState } from "react";
 import { Table, Button, Space, Input, Popconfirm } from "antd";
 import useApi from "../hooks/useApi";
 import CreateProcessFlow from "../partials/processFlow/CreateProcessFlow.jsx";
-import { BiEdit, BiPlus, BiTrash, BiSolidBookmarkAlt, BiListUl } from "react-icons/bi";
+import { BiEdit, BiPlus, BiTrash, BiCog, BiListUl, BiSignal5 } from "react-icons/bi";
 import DEFAULT_PAGINATION from "../constants/pagination";
 import { useNavigate } from "react-router-dom";
+import ProcessFlowEditor from "../partials/processStep/ProcessFlowEditor.jsx";
 const { Search } = Input;
 
 export default function ProcessFlowManagement() {
     const [pagination, setPagination] = useState(DEFAULT_PAGINATION);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isModalConfigOpen, setIsModalConfigOpen] = useState(false);
     const [searchText, setSearchText] = useState("");
     const [currentProcessFlow, setCurrentProcessFlow] = useState(null);
     const navigate = useNavigate();
     const { data, loading, error, refetch } = useApi({
-        url: "process-flows/paged",
+        url: "process-flows",
         params: { page: pagination.current, size: pagination.pageSize, search: searchText },
-        isAuth: true
     });
 
     const { refetch: deleteProcessFlow } = useApi({
@@ -50,10 +51,13 @@ export default function ProcessFlowManagement() {
                     <Button icon={<BiListUl />} type="link" onClick={() => {
                         navigate('/process-flows/' + record.id + '/statuses')
                     }} />
-                    <Button icon={<BiSolidBookmarkAlt />} type="link" onClick={() => {
+                    <Button icon={<BiSignal5 />} type="link" onClick={() => {
                         navigate('/process-flows/' + record.id + '/steps')
                     }} />
-
+                    <Button icon={<BiCog />} type="link" onClick={() => {
+                        setCurrentProcessFlow(record)
+                        setIsModalConfigOpen(true)
+                    }} />
                     <Popconfirm
                         title={`Bạn có chắc muốn xoá ProcessFlow "${record.name}"?`}
                         okText="Xoá"
@@ -122,6 +126,8 @@ export default function ProcessFlowManagement() {
             />
 
             <CreateProcessFlow refetch={refetch} onCancel={() => setIsModalOpen(false)} open={isModalOpen} initialData={currentProcessFlow} />
+            <ProcessFlowEditor onCancel={() => setIsModalConfigOpen(false)} open={isModalConfigOpen} processFlowId={currentProcessFlow?.id} />
+
         </div>
     );
 }

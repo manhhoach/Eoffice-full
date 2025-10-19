@@ -8,6 +8,7 @@ import ReactFlow, {
 } from "reactflow";
 import dagre from "dagre";
 import "reactflow/dist/style.css";
+import { Modal } from "antd";
 
 
 
@@ -16,8 +17,8 @@ dagreGraph.setDefaultEdgeLabel(() => ({}));
 const nodeWidth = 172;
 const nodeHeight = 36;
 
-function getDagreLayout(nodes, edges, direction = "LR") {
-   dagreGraph.setGraph({ rankdir: direction });
+function getDagreLayout(nodes, edges) {
+   dagreGraph.setGraph({ rankdir: "LR" });
    nodes.forEach((n) =>
       dagreGraph.setNode(n.id, { width: nodeWidth, height: nodeHeight })
    );
@@ -37,7 +38,8 @@ function getDagreLayout(nodes, edges, direction = "LR") {
    return positioned;
 }
 
-export default function ProcessFlowEditor({ stepsData, direction = "LR" }) {
+export default function ProcessFlowEditor({ processFlowId, open, onCancel }) {
+   let stepsData = []
    const [steps, setSteps] = useState(() => (stepsData || []));
 
    const initialNodes = (steps || []).map((s) => ({
@@ -48,7 +50,7 @@ export default function ProcessFlowEditor({ stepsData, direction = "LR" }) {
 
    const initialEdges = [];
    for (const a of steps) {
-      if (a.endProcessStatusId == null) continue; 
+      if (a.endProcessStatusId == null) continue;
       const b = steps.find((x) => x.startProcessStatusId === a.endProcessStatusId);
       if (b) {
          initialEdges.push({
@@ -64,11 +66,11 @@ export default function ProcessFlowEditor({ stepsData, direction = "LR" }) {
    const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
    useEffect(() => {
-      const positioned = getDagreLayout(initialNodes, initialEdges, direction);
+      const positioned = getDagreLayout(initialNodes, initialEdges);
       setNodes(positioned);
       setEdges(initialEdges);
       setSteps(stepsData || []);
-   }, [JSON.stringify(stepsData)]); 
+   }, [JSON.stringify(stepsData)]);
 
 
    const updateStepApi = async (stepId, patchBody) => {
@@ -124,26 +126,38 @@ export default function ProcessFlowEditor({ stepsData, direction = "LR" }) {
             return [...initialEdges]; // optional: keep current edges; to keep it simple skip complex sync
          })();
 
-         const positioned = getDagreLayout(updatedNodes, [...edges, { source, target, id: `e-${source}-${target}` }], direction);
+         const positioned = getDagreLayout(updatedNodes, [...edges, { source, target, id: `e-${source}-${target}` }]);
          setNodes(positioned);
       },
       // deps: nodes, edges, steps
-      [edges, nodes, steps, direction, updateStepApi, setEdges, setNodes]
+      [edges, nodes, steps, updateStepApi, setEdges, setNodes]
    );
 
    return (
-      <div style={{ width: "100%", height: "700px" }}>
-         <ReactFlow
-            nodes={nodes}
-            edges={edges}
-            onNodesChange={onNodesChange}
-            onEdgesChange={onEdgesChange}
-            onConnect={onConnectHandler}
-            fitView
-         >
-            <Background />
-            <Controls />
-         </ReactFlow>
-      </div>
+      <Modal
+         title="Config step"
+         destroyOnHidden
+         open={open}
+         maskClosable={false}
+         onCancel={() => {
+            onCancel();
+         }}
+         width={'80%'}
+      >
+         <div style={{ width: "100%", height: "650px" }}>
+            <ReactFlow
+               nodes={nodes}
+               edges={edges}
+               onNodesChange={onNodesChange}
+               onEdgesChange={onEdgesChange}
+               onConnect={onConnectHandler}
+               fitView
+            >
+               <Background />
+               <Controls />
+            </ReactFlow>
+         </div>
+      </Modal>
    );
+
 }

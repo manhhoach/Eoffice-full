@@ -9,7 +9,7 @@ export default function useApi(options) {
         body,
         headers = {},
         auto = true,
-        isAuth = false,
+        isAuth = true,
         baseUrl = import.meta.env.VITE_API_BASE_URL || "",
     } = options;
 

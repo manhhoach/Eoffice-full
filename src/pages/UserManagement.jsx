@@ -21,7 +21,7 @@ export default function UserManagement() {
     const [currentUser, setCurrentUser] = useState(null);
 
     const { data, loading, error, refetch } = useApi({
-        url: "users/paged",
+        url: "users",
         params: { page: pagination.current, size: pagination.pageSize, search: searchText },
     });
 
@@ -133,8 +133,13 @@ export default function UserManagement() {
             />
 
             <CreateUser refetch={refetch} onCancel={() => setIsModalOpen(modalOpen => ({ ...modalOpen, createUser: false }))} open={modalOpen.createUser} initialData={currentUser} />
-            <SetRole onCancel={() => setIsModalOpen(modalOpen => ({ ...modalOpen, setRole: false }))} open={modalOpen.setRole} userId={currentUser?.id} />
-            <SetPermissionForUser onCancel={() => setIsModalOpen(modalOpen => ({ ...modalOpen, setPermission: false }))} open={modalOpen.setPermission} userId={currentUser?.id} />
+            {
+                modalOpen.setRole && currentUser && <SetRole onCancel={() => setIsModalOpen(modalOpen => ({ ...modalOpen, setRole: false }))} userId={currentUser?.id} />
+            }
+            {
+                modalOpen.setPermission && currentUser && <SetPermissionForUser onCancel={() => setIsModalOpen(modalOpen => ({ ...modalOpen, setPermission: false }))} userId={currentUser?.id} />
+            }
+
         </div>
     );
 }

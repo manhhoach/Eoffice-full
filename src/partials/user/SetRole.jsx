@@ -4,14 +4,14 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 const { Option } = Select;
 
-export default function SetRole({ open, onCancel, userId }) {
+export default function SetRole({ onCancel, userId }) {
    const [form] = Form.useForm();
    const { data } = useApi({
-      url: "roles/get-current-roles?userId=" + userId,
+      url: `users/${userId}/roles`,
    });
    const { refetch: setRoles } = useApi({
       method: 'POST',
-      url: "roles/assign-roles",
+      url: "users/${userId}/roles",
       auto: false,
    })
    const departments = data?.data || [];
@@ -61,7 +61,6 @@ export default function SetRole({ open, onCancel, userId }) {
             }
          });
          const body = {
-            userId: userId,
             assignments: assignments
          }
          await setRoles({ body });
@@ -77,7 +76,7 @@ export default function SetRole({ open, onCancel, userId }) {
       <Modal
          title="Set roles"
          destroyOnHidden
-         open={open}
+         open={true}
          maskClosable={false}
          width={1000}
          onCancel={() => {

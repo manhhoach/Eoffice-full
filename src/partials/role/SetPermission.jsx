@@ -6,12 +6,12 @@ import { toast } from "react-toastify";
 
 export default function SetPermission({ open, onCancel, roleId }) {
    const { data, loading, error, refetch } = useApi({
-      url: "modules/get-selected?roleId=" + roleId,
+      url: `roles/${roleId}/modules`,
    });
 
    const { refetch: setPermissions } = useApi({
       method: 'POST',
-      url: "modules/set-selected",
+      url: `roles/${roleId}/modules`,
       auto: false,
    })
 
@@ -61,7 +61,7 @@ export default function SetPermission({ open, onCancel, roleId }) {
             initialValues={
                modules?.reduce((acc, module) => {
                   module.permissionSelectionDtos?.forEach(permission => {
-                     acc[permission.id] = permission.selected; // set giá trị mặc định
+                     acc[permission.id] = permission.selected; 
                   });
                   return acc;
                }, {})

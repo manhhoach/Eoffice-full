@@ -4,14 +4,14 @@ import { useEffect } from "react";
 import { toast } from "react-toastify";
 
 
-export default function SetPermissionForUser({ open, onCancel, userId }) {
+export default function SetPermissionForUser({ onCancel, userId }) {
    const { data } = useApi({
-      url: "permissions/get-current-permissions?userId=" + userId,
+      url: `permissions/users/${userId}`,
    });
 
    const { refetch: setRoles } = useApi({
       method: 'POST',
-      url: "permissions/assign-permissions",
+      url: `permissions/users/${userId}`,
       auto: false,
    })
 
@@ -23,7 +23,6 @@ export default function SetPermissionForUser({ open, onCancel, userId }) {
       try {
          const roleIds = Object.keys(values).filter(key => values[key]).map(id => parseInt(id));
          const body = {
-            userId: userId,
             roleIds: roleIds
          }
          await setRoles({ body });
@@ -51,7 +50,7 @@ export default function SetPermissionForUser({ open, onCancel, userId }) {
       <Modal
          title="Set Permission"
          destroyOnHidden
-         open={open}
+         open={true}
          maskClosable={false}
          width={1000}
          onCancel={() => {

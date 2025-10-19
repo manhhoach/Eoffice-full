@@ -18,7 +18,7 @@ export default function RoleManagement() {
     const [currentRole, setCurrentRole] = useState(null);
 
     const { data, loading, error, refetch } = useApi({
-        url: "roles/paged",
+        url: "roles",
         params: { page: pagination.current, size: pagination.pageSize, search: searchText },
     });
 

@@ -16,7 +16,7 @@ export default function ModuleManagement() {
     const navigate = useNavigate();
 
     const { data, loading, error, refetch } = useApi({
-        url: "modules/paged",
+        url: "modules",
         params: { page: pagination.current, size: pagination.pageSize, search: searchText },
     });
 

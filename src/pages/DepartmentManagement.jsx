@@ -14,7 +14,7 @@ export default function DepartmentManagement() {
     const [currentDepartment, setCurrentDepartment] = useState(null);
 
     const { data, loading, error, refetch } = useApi({
-        url: "departments/paged",
+        url: "departments",
         params: { page: pagination.current, size: pagination.pageSize, search: searchText },
     });
 

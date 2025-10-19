@@ -17,7 +17,7 @@ export default function PermissionManagement() {
 
 
     const { data, loading, error, refetch } = useApi({
-        url: "permissions/paged",
+        url: "permissions",
         params: { page: pagination.current, size: pagination.pageSize, search: searchText, moduleId: id },
     });
 

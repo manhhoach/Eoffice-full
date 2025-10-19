@@ -18,9 +18,8 @@ export default function ProcessStepManagement() {
 
 
    const { data, loading, error, refetch } = useApi({
-      url: "process-steps/paged",
+      url: "process-steps",
       params: { page: pagination.page, size: pagination.maxSize, search: searchText, processFlowId: id },
-      isAuth: true
    });
 
    const { refetch: deleteStep } = useApi({
@@ -105,9 +104,6 @@ export default function ProcessStepManagement() {
             pagination={false}
             bordered
          />
-         {data?.success && data?.data?.items && (
-            <ProcessFlowEditor stepsData={data.data.items} />
-         )}
 
          <CreateStep processFlowId={id} refetch={refetch} onCancel={() => setIsModalOpen(false)} open={isModalOpen} initialData={currentStep} />
       </div>
