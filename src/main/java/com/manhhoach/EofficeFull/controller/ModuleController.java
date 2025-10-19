@@ -4,12 +4,12 @@ import com.manhhoach.EofficeFull.common.ApiResponse;
 import com.manhhoach.EofficeFull.common.PagedResponse;
 import com.manhhoach.EofficeFull.config.annotations.IsAuthorized;
 import com.manhhoach.EofficeFull.constant.PermissionConstant;
-import com.manhhoach.EofficeFull.dto.module.*;
+import com.manhhoach.EofficeFull.dto.module.CreateModuleReq;
+import com.manhhoach.EofficeFull.dto.module.ModuleDto;
+import com.manhhoach.EofficeFull.dto.module.ModulePagingReq;
 import com.manhhoach.EofficeFull.service.ModuleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/modules")
@@ -18,7 +18,7 @@ public class ModuleController {
     private final ModuleService moduleService;
 
     @IsAuthorized(PermissionConstant.VIEW_MODULES)
-    @GetMapping("/paged")
+    @GetMapping
     public ApiResponse<PagedResponse<ModuleDto>> getPaged(ModulePagingReq request) {
         return ApiResponse.success(
                 moduleService.getPaged(request)
@@ -46,14 +46,4 @@ public class ModuleController {
         return ApiResponse.success(null);
     }
 
-    @GetMapping("/get-selected")
-    public ApiResponse<List<ModuleSelectionDto>> getSelectedModules(Long roleId) {
-        return ApiResponse.success(moduleService.getSelectedModules(roleId));
-    }
-
-    @PostMapping("/set-selected")
-    public ApiResponse<Void> setSelectedModules(@RequestBody SelectedModuleReq req) {
-        moduleService.setSelectedModules(req);
-        return ApiResponse.success(null);
-    }
 }

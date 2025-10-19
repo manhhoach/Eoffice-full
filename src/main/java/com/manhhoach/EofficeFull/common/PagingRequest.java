@@ -12,7 +12,7 @@ public class PagingRequest {
     private int size = 10;
     private String search;
 
-    public int getSize(){
-        return size > 0 ? size: Integer.MAX_VALUE;
+    public int getSize() {
+        return size > 0 ? size : Integer.MAX_VALUE;
     }
 }

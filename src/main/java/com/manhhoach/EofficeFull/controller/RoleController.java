@@ -4,7 +4,10 @@ import com.manhhoach.EofficeFull.common.ApiResponse;
 import com.manhhoach.EofficeFull.common.PagedResponse;
 import com.manhhoach.EofficeFull.config.annotations.IsAuthorized;
 import com.manhhoach.EofficeFull.constant.PermissionConstant;
+import com.manhhoach.EofficeFull.dto.module.ModuleSelectionDto;
+import com.manhhoach.EofficeFull.dto.module.SelectedModuleReq;
 import com.manhhoach.EofficeFull.dto.role.*;
+import com.manhhoach.EofficeFull.service.ModuleService;
 import com.manhhoach.EofficeFull.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -16,10 +19,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RoleController {
     private final RoleService roleService;
-
+    private final ModuleService moduleService;
 
     @IsAuthorized(PermissionConstant.VIEW_ROLES)
-    @GetMapping("/paged")
+    @GetMapping
     public ApiResponse<PagedResponse<RoleDto>> getPaged(RolePagingReq request) {
         return ApiResponse.success(
                 roleService.getPaged(request)
@@ -47,14 +50,26 @@ public class RoleController {
         return ApiResponse.success(null);
     }
 
-    @GetMapping("/get-current-roles")
-    public ApiResponse<List<DepartmentRolesDto>> getCurrentRoles(Long userId) {
+    @GetMapping("/{id}/modules")
+    public ApiResponse<List<ModuleSelectionDto>> getSelectedModules(@PathVariable Long id) {
+        return ApiResponse.success(moduleService.getSelectedModules(id));
+    }
+
+    @PutMapping("/{id}/modules")
+    public ApiResponse<Void> setSelectedModules(@PathVariable Long id, @RequestBody SelectedModuleReq req) {
+        moduleService.setSelectedModules(id, req);
+        return ApiResponse.success(null);
+    }
+
+    @GetMapping("/users/{userId}")
+    public ApiResponse<List<DepartmentRolesDto>> getCurrentRoles(@PathVariable Long userId) {
         return ApiResponse.success(roleService.getCurrentRoles(userId));
     }
 
-    @PostMapping("/assign-roles")
-    public ApiResponse<Void> assignRoles(@RequestBody AssignUserRolesReq req) {
-        roleService.assignRoles(req);
+    @PostMapping("/users/{userId}")
+    public ApiResponse<Void> assignRoles(@PathVariable Long userId, @RequestBody AssignUserRolesReq req) {
+        roleService.assignRoles(userId, req);
         return ApiResponse.success(null);
     }
+
 }

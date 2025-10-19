@@ -4,7 +4,6 @@ import com.manhhoach.EofficeFull.common.SelectListItem;
 import com.manhhoach.EofficeFull.dto.processStatus.ProcessStatusDto;
 import com.manhhoach.EofficeFull.dto.role.RoleDto;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.List;
 

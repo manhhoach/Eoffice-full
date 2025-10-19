@@ -18,5 +18,5 @@ public interface PermissionService {
 
     List<PermissionSelectionDto> getSelectedPermissions(Long userId);
 
-    void setSelectedPermissions(SelectedPermissionReq req);
+    void setSelectedPermissions(Long userId, SelectedPermissionReq req);
 }

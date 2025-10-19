@@ -109,8 +109,8 @@ public class ModuleServiceImpl implements ModuleService {
     }
 
     @Override
-    public void setSelectedModules(SelectedModuleReq req) {
-        Role role = roleRepository.findById(req.getRoleId())
+    public void setSelectedModules(Long roleId, SelectedModuleReq req) {
+        Role role = roleRepository.findById(roleId)
                 .orElseThrow(() -> new RuntimeException("Role not found"));
 
         List<Permission> newPermissions = permissionRepository.findAllById(req.getPermissionIds());

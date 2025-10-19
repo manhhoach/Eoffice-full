@@ -17,9 +17,8 @@ import java.util.List;
 public class PermissionController {
     private final PermissionService permissionService;
 
-
     @IsAuthorized(PermissionConstant.VIEW_PERMISSIONS)
-    @GetMapping("/paged")
+    @GetMapping
     public ApiResponse<PagedResponse<PermissionDto>> getPaged(PermissionPagingReq request) {
         return ApiResponse.success(
                 permissionService.getPaged(request)
@@ -47,14 +46,14 @@ public class PermissionController {
         return ApiResponse.success(null);
     }
 
-    @GetMapping("/get-current-permissions")
-    public ApiResponse<List<PermissionSelectionDto>> getCurrentPermissions(Long userId) {
+    @GetMapping("/users/{userId}")
+    public ApiResponse<List<PermissionSelectionDto>> getCurrentPermissions(@PathVariable Long userId) {
         return ApiResponse.success(permissionService.getSelectedPermissions(userId));
     }
 
-    @PostMapping("/assign-permissions")
-    public ApiResponse<Void> assignPermissions(@RequestBody SelectedPermissionReq req) {
-        permissionService.setSelectedPermissions(req);
+    @PutMapping("/users/{userId}")
+    public ApiResponse<Void> assignPermissions(@PathVariable Long userId, @RequestBody SelectedPermissionReq req) {
+        permissionService.setSelectedPermissions(userId, req);
         return ApiResponse.success(null);
     }
 }

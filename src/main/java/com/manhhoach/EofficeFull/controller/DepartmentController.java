@@ -18,7 +18,7 @@ public class DepartmentController {
     private final DepartmentService departmentService;
 
     @IsAuthorized(PermissionConstant.VIEW_DEPARTMENTS)
-    @GetMapping("/paged")
+    @GetMapping
     public ApiResponse<PagedResponse<DepartmentDto>> getPaged(DepartmentPagingReq request) {
         return ApiResponse.success(
                 departmentService.getPaged(request)

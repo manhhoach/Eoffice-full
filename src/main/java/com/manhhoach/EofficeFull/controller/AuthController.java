@@ -17,9 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
-
     private final AuthService authService;
-
 
     @PostMapping("/login")
     public ApiResponse<LoginRes> login(@RequestBody LoginReq req, HttpServletResponse response) {
@@ -38,7 +36,7 @@ public class AuthController {
         return ApiResponse.success(authService.getMe());
     }
 
-    @PostMapping("/refresh-token")
+    @PostMapping("/refresh")
     public ApiResponse<LoginRes> refreshToken(@RequestBody RefreshTokenReq refreshTokenReq) {
         return ApiResponse.success(authService.refreshToken(refreshTokenReq));
     }

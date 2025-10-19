@@ -18,5 +18,5 @@ public interface ModuleService {
 
     List<ModuleSelectionDto> getSelectedModules(Long roleId);
 
-    void setSelectedModules(SelectedModuleReq req);
+    void setSelectedModules(Long roleId, SelectedModuleReq req);
 }

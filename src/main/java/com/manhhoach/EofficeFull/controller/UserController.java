@@ -19,7 +19,7 @@ public class UserController {
 
 
     @IsAuthorized(PermissionConstant.VIEW_USERS)
-    @GetMapping("/paged")
+    @GetMapping
     public ApiResponse<PagedResponse<UserDto>> getPaged(UserPagingReq request) {
         return ApiResponse.success(
                 userService.getPaged(request)
@@ -46,4 +46,5 @@ public class UserController {
         userService.delete(id);
         return ApiResponse.success(null);
     }
+
 }

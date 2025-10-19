@@ -2,6 +2,7 @@ package com.manhhoach.EofficeFull.service;
 
 import com.manhhoach.EofficeFull.common.PagedResponse;
 import com.manhhoach.EofficeFull.dto.processFlow.CreateProcessFlowReq;
+import com.manhhoach.EofficeFull.dto.processFlow.FlowDataDto;
 import com.manhhoach.EofficeFull.dto.processFlow.ProcessFlowDto;
 import com.manhhoach.EofficeFull.dto.processFlow.ProcessFlowPagingReq;
 
@@ -13,4 +14,6 @@ public interface ProcessFlowService {
     void delete(Long id);
 
     PagedResponse<ProcessFlowDto> getPaged(ProcessFlowPagingReq request);
+
+    FlowDataDto getFlowData(Long id);
 }

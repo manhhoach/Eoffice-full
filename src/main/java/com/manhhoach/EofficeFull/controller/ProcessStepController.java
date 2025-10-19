@@ -4,12 +4,12 @@ import com.manhhoach.EofficeFull.common.ApiResponse;
 import com.manhhoach.EofficeFull.common.PagedResponse;
 import com.manhhoach.EofficeFull.config.annotations.IsAuthorized;
 import com.manhhoach.EofficeFull.constant.PermissionConstant;
-import com.manhhoach.EofficeFull.dto.processStep.*;
+import com.manhhoach.EofficeFull.dto.processStep.CreateProcessStepReq;
+import com.manhhoach.EofficeFull.dto.processStep.ProcessStepDto;
+import com.manhhoach.EofficeFull.dto.processStep.ProcessStepPagingReq;
 import com.manhhoach.EofficeFull.service.ProcessStepService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/process-steps")
@@ -18,7 +18,7 @@ public class ProcessStepController {
     private final ProcessStepService processStepService;
 
     @IsAuthorized(PermissionConstant.VIEW_STEPS)
-    @GetMapping("/paged")
+    @GetMapping
     public ApiResponse<PagedResponse<ProcessStepDto>> getPaged(ProcessStepPagingReq request) {
         return ApiResponse.success(
                 processStepService.getPaged(request)
@@ -46,12 +46,6 @@ public class ProcessStepController {
     public ApiResponse<Void> delete(@PathVariable Long id) {
         processStepService.delete(id);
         return ApiResponse.success(null);
-    }
-
-
-    @GetMapping("/config/{flowId}")
-    public ApiResponse<StepConfig> getConfigStep(@PathVariable Long flowId){
-        return ApiResponse.success(processStepService.getConfigStep(flowId));
     }
 
 }

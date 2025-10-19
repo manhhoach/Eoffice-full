@@ -105,8 +105,8 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
-    public void setSelectedPermissions(SelectedPermissionReq req) {
-        var user = userRepository.findById(req.getUserId())
+    public void setSelectedPermissions(Long userId, SelectedPermissionReq req) {
+        var user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
         var permissions = permissionRepository.findAllById(req.getPermissionIds());
         user.setPermissions(permissions);

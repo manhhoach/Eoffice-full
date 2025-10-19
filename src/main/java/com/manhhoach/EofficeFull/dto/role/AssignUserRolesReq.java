@@ -6,6 +6,5 @@ import java.util.List;
 
 @Data
 public class AssignUserRolesReq {
-    private Long userId;
     private List<RoleDepartmentReq> assignments;
 }

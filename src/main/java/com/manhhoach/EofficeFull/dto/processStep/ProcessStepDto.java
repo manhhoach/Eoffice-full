@@ -1,20 +1,16 @@
 package com.manhhoach.EofficeFull.dto.processStep;
 
 import com.manhhoach.EofficeFull.dto.processStatus.ProcessStatusDto;
-import com.manhhoach.EofficeFull.dto.role.RoleDto;
-import com.manhhoach.EofficeFull.entity.ProcessFlow;
-import com.manhhoach.EofficeFull.entity.ProcessStatus;
 import com.manhhoach.EofficeFull.entity.ProcessStep;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-
-import java.util.List;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProcessStepDto {
 
     private Long id;
@@ -39,7 +35,7 @@ public class ProcessStepDto {
 
     private Long startProcessStatusId;
 
-    public static ProcessStepDto map(ProcessStep data){
+    public static ProcessStepDto map(ProcessStep data) {
         return ProcessStepDto.builder()
                 .id(data.getId())
                 .name(data.getName())
@@ -51,6 +47,13 @@ public class ProcessStepDto {
                 .startProcessStatusId(data.getStartProcessStatusId())
                 .endProcessStatusId(data.getEndProcessStatusId())
                 .build();
+    }
+
+    public ProcessStepDto(Long id, String name, Long startProcessStatusId, Long endProcessStatusId) {
+        this.id = id;
+        this.name = name;
+        this.startProcessStatusId = startProcessStatusId;
+        this.endProcessStatusId = endProcessStatusId;
     }
 
 }

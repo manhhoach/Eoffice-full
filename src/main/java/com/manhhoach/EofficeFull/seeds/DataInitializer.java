@@ -57,7 +57,6 @@ public class DataInitializer {
                         .isDisplayed(false).module(adminModule).build();
 
 
-
                 Module officeModule = Module.builder().name("Document Management").code("DOC_MGMT").isDisplayed(true).build();
 
                 Permission p5 = Permission.builder().name("Outgoing docs").code(PermissionConstant.VIEW_OUT_GOING_DOCS)
@@ -141,7 +140,7 @@ public class DataInitializer {
 
             }
 
-            if(processFlowRepository.count()==0){
+            if (processFlowRepository.count() == 0) {
 
             }
         };

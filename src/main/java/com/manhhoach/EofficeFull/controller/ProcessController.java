@@ -14,13 +14,9 @@ public class ProcessController {
     private final ProcessService processService;
 
     @PostMapping("/sign")
-    public ApiResponse<Boolean> signDocument(Long documentId){
+    public ApiResponse<Boolean> signDocument(Long documentId) {
         processService.sign(documentId);
         return ApiResponse.success(true);
     }
-
-
-
-
 
 }

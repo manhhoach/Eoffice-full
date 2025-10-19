@@ -11,17 +11,14 @@ import com.manhhoach.EofficeFull.service.ProcessStatusService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/process-statuses")
 @RequiredArgsConstructor
 public class ProcessStatusController {
     private final ProcessStatusService processStatusService;
 
-
     @IsAuthorized(PermissionConstant.VIEW_STATUSES)
-    @GetMapping("/paged")
+    @GetMapping
     public ApiResponse<PagedResponse<ProcessStatusDto>> getPaged(ProcessStatusPagingReq request) {
         return ApiResponse.success(
                 processStatusService.getPaged(request)
@@ -42,10 +39,5 @@ public class ProcessStatusController {
     public ApiResponse<Void> delete(@PathVariable Long id) {
         processStatusService.delete(id);
         return ApiResponse.success(null);
-    }
-
-    @GetMapping("/flow/{flowId}")
-    public ApiResponse<List<ProcessStatusDto>> getListByFlowId(@PathVariable Long flowId){
-        return ApiResponse.success(processStatusService.getListByFlowId(flowId));
     }
 }

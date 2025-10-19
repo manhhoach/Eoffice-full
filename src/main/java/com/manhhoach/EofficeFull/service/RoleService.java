@@ -18,5 +18,5 @@ public interface RoleService {
 
     List<DepartmentRolesDto> getCurrentRoles(Long userId);
 
-    void assignRoles(AssignUserRolesReq req);
+    void assignRoles(Long userId, AssignUserRolesReq req);
 }

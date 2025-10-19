@@ -116,10 +116,10 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public void assignRoles(AssignUserRolesReq req) {
-        User user = userRepository.findById(req.getUserId())
+    public void assignRoles(Long userId, AssignUserRolesReq req) {
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Role not found"));
-        List<UserRoleDepartment> currentAssignments = userRoleDepartmentRepository.findByUserId(req.getUserId());
+        List<UserRoleDepartment> currentAssignments = userRoleDepartmentRepository.findByUserId(userId);
         Map<String, UserRoleDepartment> currentMap = currentAssignments.stream()
                 .collect(Collectors.toMap(
                         e -> e.getRole().getId() + "_" + (e.getDepartment() != null ? e.getDepartment().getId() : "null"),

@@ -24,7 +24,7 @@ public class RoleDto {
         return RoleDto.builder().code(role.getCode()).name(role.getName()).id(role.getId()).build();
     }
 
-    public RoleDto(Long id, String name){
+    public RoleDto(Long id, String name) {
         this.id = id;
         this.name = name;
     }
