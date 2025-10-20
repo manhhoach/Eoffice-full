@@ -36,11 +36,10 @@ function getDagreLayout(nodes, edges) {
    });
 }
 
-export default function ProcessFlowEditor({ processFlowId, onCancel }) {
+export default function ProcessFlowViewer({ processFlowId, onCancel }) {
    const { data: configData } = useApi({
       url: `process-flows/${processFlowId}/graph`,
    });
-   const [stepData, setStepData] = useState([])
    const [nodes, setNodes, onNodesChange] = useNodesState([]);
    const [edges, setEdges, onEdgesChange] = useEdgesState([]);
 
@@ -48,7 +47,6 @@ export default function ProcessFlowEditor({ processFlowId, onCancel }) {
       if (!configData) return;
 
       const { statuses = [], steps = [] } = configData.data;
-      setStepData(steps)
 
       const statusNodes = statuses.map((s) => ({
          id: String(s.id),
@@ -70,69 +68,14 @@ export default function ProcessFlowEditor({ processFlowId, onCancel }) {
       setEdges(stepEdges);
    }, [configData]);
 
-   // Placeholder API call
-   const updateStepApi = async (stepId, patchBody) => {
-      console.log("API call: update step", stepId, patchBody);
-      return Promise.resolve({ ok: true });
-   };
-
-   const onConnectHandler = useCallback(
-
-      async (connection) => {
-         const { source, target } = connection;
-         const sourceId = Number(source);
-         const targetId = Number(target);
-         console.log(connection)
-
-
-         const targetStep = stepData.find((s) => s.id === targetId);
-         if (!targetStep) return;
-
-         const newEndIdForA = targetStep.startProcessStatusId ?? null;
-         console.log(sourceId, targetId)
-
-         try {
-            await updateStepApi(sourceId, { endProcessStatusId: newEndIdForA });
-         } catch (err) {
-            console.error("API update failed", err);
-            return;
-         }
-
-         // Update local steps
-         setSteps((prev) =>
-            prev.map((s) =>
-               s.id === sourceId ? { ...s, endProcessStatusId: newEndIdForA } : s
-            )
-         );
-
-         setEdges((prev) => [
-            ...prev,
-            { id: `e-${source}-${target}`, source, target, animated: true }
-         ]);
-
-
-         // Recompute layout
-         setNodes((prevNodes) => {
-            const updatedNodes = prevNodes.map((n) => {
-               const s = steps.find((st) => String(st.id) === n.id) || n.data.step;
-               return { ...n, data: { ...n.data, step: s } };
-            });
-            return getDagreLayout(updatedNodes, [
-               ...edges,
-               { id: `e-${source}-${target}`, source, target },
-            ]);
-         });
-      },
-      [edges]
-   );
-
    return (
       <Modal
-         title="Config step"
+         title="View flow"
          destroyOnHidden
          open={true}
          maskClosable={false}
          onCancel={onCancel}
+         footer={null}
          width="80%"
       >
          <div style={{ width: "100%", height: "650px" }}>
@@ -141,7 +84,6 @@ export default function ProcessFlowEditor({ processFlowId, onCancel }) {
                edges={edges}
                onNodesChange={onNodesChange}
                onEdgesChange={onEdgesChange}
-               onConnect={onConnectHandler}
                fitView
             >
                <Background />

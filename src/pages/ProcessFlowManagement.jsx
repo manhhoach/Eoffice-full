@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { Table, Button, Space, Input, Popconfirm } from "antd";
 import useApi from "../hooks/useApi";
 import CreateProcessFlow from "../partials/processFlow/CreateProcessFlow.jsx";
-import { BiEdit, BiPlus, BiTrash, BiCog, BiListUl, BiSignal5 } from "react-icons/bi";
+import { BiEdit, BiPlus, BiTrash, BiCog, BiListUl, BiSignal5, BiShow  } from "react-icons/bi";
 import DEFAULT_PAGINATION from "../constants/pagination";
 import { useNavigate } from "react-router-dom";
-import ProcessFlowEditor from "../partials/processFlow/ProcessFlowEditor.jsx";
+import ProcessFlowViewer from "../partials/processFlow/ProcessFlowViewer.jsx";
 const { Search } = Input;
 
 export default function ProcessFlowManagement() {
@@ -54,7 +54,7 @@ export default function ProcessFlowManagement() {
                     <Button icon={<BiSignal5 />} type="link" onClick={() => {
                         navigate('/process-flows/' + record.id + '/steps')
                     }} />
-                    <Button icon={<BiCog />} type="link" onClick={() => {
+                    <Button icon={<BiShow  />} type="link" onClick={() => {
                         setCurrentProcessFlow(record)
                         setIsModalConfigOpen(true)
                     }} />
@@ -130,7 +130,7 @@ export default function ProcessFlowManagement() {
             {
                 isModalConfigOpen &&
                 currentProcessFlow &&
-                <ProcessFlowEditor onCancel={() => setIsModalConfigOpen(false)} processFlowId={currentProcessFlow?.id} />
+                <ProcessFlowViewer onCancel={() => setIsModalConfigOpen(false)} processFlowId={currentProcessFlow?.id} />
             }
 
 
