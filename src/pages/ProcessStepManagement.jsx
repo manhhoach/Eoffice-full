@@ -7,6 +7,7 @@ import { Button, Popconfirm, Space, Table } from "antd";
 import BackButton from "../components/BackButton";
 import CreateStep from "../partials/processStep/CreateStep";
 import Search from "antd/es/input/Search";
+import ProcessFlowViewer from "../partials/processFlow/ProcessFlowViewer";
 
 export default function ProcessStepManagement() {
    const { id } = useParams();
@@ -20,6 +21,15 @@ export default function ProcessStepManagement() {
       url: "process-steps",
       params: { page: pagination.page, size: pagination.maxSize, search: searchText, processFlowId: id },
    });
+   const { data: statuses } = useApi({
+      url: "process-statuses",
+      params: { page: pagination.page, size: pagination.maxSize, search: searchText, processFlowId: id },
+   });
+   const { refetch: updatePosition } = useApi({
+      url: 'process-statuses/update-position',
+      method: 'PUT',
+      auto: false
+   })
 
    const { refetch: deleteStep } = useApi({
       method: 'DELETE',
@@ -103,6 +113,10 @@ export default function ProcessStepManagement() {
             pagination={false}
             bordered
          />
+         {
+            data && statuses && <ProcessFlowViewer updatePosition={updatePosition} steps={data?.data?.items} statuses={statuses?.data?.items} />
+         }
+
 
          <CreateStep processFlowId={id} refetch={refetch} onCancel={() => setIsModalOpen(false)} open={isModalOpen} initialData={currentStep} />
       </div>
