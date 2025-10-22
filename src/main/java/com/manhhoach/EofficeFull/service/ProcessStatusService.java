@@ -1,6 +1,7 @@
 package com.manhhoach.EofficeFull.service;
 
 import com.manhhoach.EofficeFull.common.PagedResponse;
+import com.manhhoach.EofficeFull.dto.processStatus.ChangePositionDto;
 import com.manhhoach.EofficeFull.dto.processStatus.CreateProcessStatusReq;
 import com.manhhoach.EofficeFull.dto.processStatus.ProcessStatusDto;
 import com.manhhoach.EofficeFull.dto.processStatus.ProcessStatusPagingReq;
@@ -17,4 +18,6 @@ public interface ProcessStatusService {
     PagedResponse<ProcessStatusDto> getPaged(ProcessStatusPagingReq request);
 
     List<ProcessStatusDto> getListByFlowId(Long flowId);
+
+    void updatePosition(ChangePositionDto data);
 }

@@ -1,6 +1,7 @@
 package com.manhhoach.EofficeFull.serviceImpl;
 
 import com.manhhoach.EofficeFull.common.PagedResponse;
+import com.manhhoach.EofficeFull.dto.processStatus.ChangePositionDto;
 import com.manhhoach.EofficeFull.dto.processStatus.CreateProcessStatusReq;
 import com.manhhoach.EofficeFull.dto.processStatus.ProcessStatusDto;
 import com.manhhoach.EofficeFull.dto.processStatus.ProcessStatusPagingReq;
@@ -8,6 +9,7 @@ import com.manhhoach.EofficeFull.entity.ProcessStatus;
 import com.manhhoach.EofficeFull.repository.ProcessFlowRepository;
 import com.manhhoach.EofficeFull.repository.ProcessStatusRepository;
 import com.manhhoach.EofficeFull.service.ProcessStatusService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -76,5 +78,13 @@ public class ProcessStatusServiceImpl implements ProcessStatusService {
     public List<ProcessStatusDto> getListByFlowId(Long flowId) {
         var data = processStatusRepository.getByFlowId(flowId);
         return data;
+    }
+
+    @Override
+    public void updatePosition(ChangePositionDto data) {
+        var status = processStatusRepository.findById(data.getId()).orElseThrow(()->new EntityNotFoundException());
+        status.setY(data.getY());
+        status.setX(data.getX());
+        processStatusRepository.save(status);
     }
 }

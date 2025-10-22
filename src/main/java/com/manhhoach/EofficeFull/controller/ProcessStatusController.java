@@ -4,6 +4,7 @@ import com.manhhoach.EofficeFull.common.ApiResponse;
 import com.manhhoach.EofficeFull.common.PagedResponse;
 import com.manhhoach.EofficeFull.config.annotations.IsAuthorized;
 import com.manhhoach.EofficeFull.constant.PermissionConstant;
+import com.manhhoach.EofficeFull.dto.processStatus.ChangePositionDto;
 import com.manhhoach.EofficeFull.dto.processStatus.CreateProcessStatusReq;
 import com.manhhoach.EofficeFull.dto.processStatus.ProcessStatusDto;
 import com.manhhoach.EofficeFull.dto.processStatus.ProcessStatusPagingReq;
@@ -38,6 +39,12 @@ public class ProcessStatusController {
     @DeleteMapping("/{id}")
     public ApiResponse<Void> delete(@PathVariable Long id) {
         processStatusService.delete(id);
+        return ApiResponse.success(null);
+    }
+
+    @PutMapping("/update-position")
+    public ApiResponse<Void> updatePosition(@RequestBody ChangePositionDto data) {
+        processStatusService.updatePosition(data);
         return ApiResponse.success(null);
     }
 }

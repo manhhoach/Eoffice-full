@@ -21,4 +21,7 @@ public class ProcessStatus extends BaseEntity {
     @JoinColumn(name = "processFlowId", nullable = true)
     private ProcessFlow processFlow;
 
+
+    private Double x;
+    private Double y;
 }

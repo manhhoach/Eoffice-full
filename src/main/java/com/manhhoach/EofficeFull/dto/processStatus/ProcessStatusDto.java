@@ -15,6 +15,8 @@ public class ProcessStatusDto {
     private String name;
     private Boolean isStart;
     private Boolean isEnd;
+    private Double x;
+    private Double y;
 
     public static ProcessStatusDto map(ProcessStatus data) {
         return ProcessStatusDto.builder()
@@ -22,8 +24,11 @@ public class ProcessStatusDto {
                 .isStart(data.getIsStart())
                 .isEnd(data.getIsEnd())
                 .name(data.getName())
+                .x(data.getX())
+                .y(data.getY())
                 .build();
     }
+
 
     public ProcessStatusDto(Long id, String name) {
         this.id = id;
