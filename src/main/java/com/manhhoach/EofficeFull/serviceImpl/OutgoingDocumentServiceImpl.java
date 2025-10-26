@@ -19,17 +19,22 @@ public class OutgoingDocumentServiceImpl implements OutgoingDocumentService {
     private final AttachmentRepository attachmentRepository;
 
     @Override
-    public void create(CreateOutgoingDocReq req) throws IOException {
-        var entity = CreateOutgoingDocReq.map(req);
-        outgoingDocumentRepository.save(entity);
+    public void create(CreateOutgoingDocReq req) {
+        try{
+            var entity = CreateOutgoingDocReq.map(req);
+            outgoingDocumentRepository.save(entity);
 
-       String newPath = FileHelper.moveFile(req.getFileUrl(), AttachmentType.OUTGOING_DOCUMENT.name());
-       Attachment attachment = Attachment.builder()
-               .itemId(entity.getId())
-               .type(AttachmentType.OUTGOING_DOCUMENT)
-               .filePath(newPath)
-               .fileName(req.getFileName())
-               .build();
-        attachmentRepository.save(attachment);
+            String newPath = FileHelper.moveFile(req.getFileUrl(), AttachmentType.OUTGOING_DOCUMENT.name());
+            Attachment attachment = Attachment.builder()
+                    .itemId(entity.getId())
+                    .type(AttachmentType.OUTGOING_DOCUMENT)
+                    .filePath(newPath)
+                    .fileName(req.getFileName())
+                    .build();
+            attachmentRepository.save(attachment);
+        }
+        catch (IOException ex){
+            throw new RuntimeException(ex);
+        }
     }
 }
