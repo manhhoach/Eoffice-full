@@ -4,6 +4,10 @@ import com.manhhoach.EofficeFull.constant.FileExtension;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,5 +48,14 @@ public class FileHelper {
         } catch (IOException ex) {
             return false;
         }
+    }
+
+    public static String moveFile(String from, String folderName) throws IOException {
+        Path src = Paths.get(from);
+        Path destDir = Paths.get(String.format("uploads/%s",folderName));
+        Files.createDirectories(destDir);
+        Path dest = destDir.resolve(src.getFileName());
+        Files.move(src, dest, StandardCopyOption.REPLACE_EXISTING);
+        return String.format("uploads/%s/%s", folderName, src.getFileName());
     }
 }

@@ -20,7 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/common")
 public class CommonController {
-    private final Path uploadDir = Paths.get(System.getProperty("user.dir"), "uploads");
+    private final Path uploadDir = Paths.get(System.getProperty("user.dir"), "uploads/temp");
     private static final List<String> ALLOWED_EXTENSIONS = List.of(FileExtension.JPEG, FileExtension.PNG);
 
     @PostMapping("/upload")
@@ -49,7 +49,7 @@ public class CommonController {
                 Path filePath = uploadDir.resolve(newFileName);
 
                 file.transferTo(filePath.toFile()); // Lưu file
-                return "uploads/" + newFileName;    // Trả lại tên file đã lưu
+                return "uploads/temp/" + newFileName;    // Trả lại tên file đã lưu
             } catch (IOException e) {
                 throw new RuntimeException(e.getMessage());
             }
