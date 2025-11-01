@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping("/out-going-documents")
 @RequiredArgsConstructor
@@ -17,7 +19,7 @@ public class OutgoingDocumentController {
     private final OutgoingDocumentService outgoingDocumentService;
 
     @PostMapping
-    public ApiResponse<Boolean> create(@RequestBody CreateOutgoingDocReq req) {
+    public ApiResponse<Boolean> create(@RequestBody CreateOutgoingDocReq req) throws IOException{
         outgoingDocumentService.create(req);
         return ApiResponse.success(true);
     }
