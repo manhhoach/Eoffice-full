@@ -31,9 +31,12 @@ public interface ProcessStatusRepository extends JpaRepository<ProcessStatus, Lo
             """)
     List<ProcessStatusDto> getByFlowId(Long flowId);
 
+
     @Query("""
-            SELECT s FROM ProcessStatus s WHERE s.processFlow.id = :flowId
-            AND s.isStart = true
+            SELECT status FROM ProcessStatus status
+            JOIN status.processFlow flow
+            WHERE flow.code = :flowCode
+            AND status.isStart = true         
             """)
-    Optional<ProcessStatus> getStartStatus(Long flowId);
+    Optional<ProcessStatus> getStartStatusByFlowCode(String flowCode);
 }

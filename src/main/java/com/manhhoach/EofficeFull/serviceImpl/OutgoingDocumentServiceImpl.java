@@ -10,6 +10,7 @@ import com.manhhoach.EofficeFull.entity.ProcessProgress;
 import com.manhhoach.EofficeFull.helper.FileHelper;
 import com.manhhoach.EofficeFull.repository.*;
 import com.manhhoach.EofficeFull.service.OutgoingDocumentService;
+import com.manhhoach.EofficeFull.service.ProcessService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,10 +23,7 @@ import java.io.IOException;
 public class OutgoingDocumentServiceImpl implements OutgoingDocumentService {
     private final OutgoingDocumentRepository outgoingDocumentRepository;
     private final AttachmentRepository attachmentRepository;
-    private final ProcessProgressRepository processProgressRepository;
-    private final ProcessFlowRepository processFlowRepository;
-    private final ProcessStatusRepository processStatusRepository;
-    private final ProcessStepRepository processStepRepository;
+    private final ProcessService processService;
 
 
     @Transactional
@@ -44,23 +42,7 @@ public class OutgoingDocumentServiceImpl implements OutgoingDocumentService {
                     .build();
             attachmentRepository.save(attachment);
 
-            // lay ra step dau tien cua flow outgoing
-            var flow = processFlowRepository.findByCode(ProcessFlowConstant.OUTGOING_DOCUMENT).orElseThrow(()-> new EntityNotFoundException());
-
-            // tao progress cho no
-            var startStep = processStatusRepository.getStartStatus(flow.getId()).orElseThrow(()-> new EntityNotFoundException());
-
-
-            var currentUser = CustomUserDetails.getCurrentUserDetails();
-
-            var progress = ProcessProgress.builder()
-                    .type(ProcessProgressType.OUTGOING_DOCUMENT)
-                    .isProcessed(false)
-                    .processStatus(startStep)
-                    .itemId(entity.getId())
-                    .handlerId(currentUser.getId())
-                    .build();
-            processProgressRepository.save(progress);
+            processService.initProcess(entity.getId(), ProcessProgressType.OUTGOING_DOCUMENT, ProcessFlowConstant.OUTGOING_DOCUMENT);
         }
         catch (IOException ex){
             throw new RuntimeException(ex);

@@ -13,10 +13,4 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProcessController {
     private final ProcessService processService;
 
-    @PostMapping("/sign")
-    public ApiResponse<Boolean> signDocument(Long documentId) {
-        processService.sign(documentId);
-        return ApiResponse.success(true);
-    }
-
 }
