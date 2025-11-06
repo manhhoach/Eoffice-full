@@ -1,14 +1,13 @@
 package com.manhhoach.EofficeFull.serviceImpl;
 
-import com.manhhoach.EofficeFull.config.CustomUserDetails;
 import com.manhhoach.EofficeFull.constant.AttachmentType;
 import com.manhhoach.EofficeFull.constant.ProcessFlowConstant;
 import com.manhhoach.EofficeFull.constant.ProcessProgressType;
 import com.manhhoach.EofficeFull.dto.outgoingDocument.CreateOutgoingDocReq;
 import com.manhhoach.EofficeFull.entity.Attachment;
-import com.manhhoach.EofficeFull.entity.ProcessProgress;
 import com.manhhoach.EofficeFull.helper.FileHelper;
-import com.manhhoach.EofficeFull.repository.*;
+import com.manhhoach.EofficeFull.repository.AttachmentRepository;
+import com.manhhoach.EofficeFull.repository.OutgoingDocumentRepository;
 import com.manhhoach.EofficeFull.service.OutgoingDocumentService;
 import com.manhhoach.EofficeFull.service.ProcessService;
 import jakarta.persistence.EntityNotFoundException;
@@ -29,7 +28,7 @@ public class OutgoingDocumentServiceImpl implements OutgoingDocumentService {
     @Transactional
     @Override
     public void create(CreateOutgoingDocReq req) {
-        try{
+        try {
             var entity = CreateOutgoingDocReq.map(req);
             outgoingDocumentRepository.save(entity);
 
@@ -43,9 +42,36 @@ public class OutgoingDocumentServiceImpl implements OutgoingDocumentService {
             attachmentRepository.save(attachment);
 
             processService.initProcess(entity.getId(), ProcessProgressType.OUTGOING_DOCUMENT, ProcessFlowConstant.OUTGOING_DOCUMENT);
-        }
-        catch (IOException ex){
+        } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
+    }
+
+    @Transactional
+    @Override
+    public void update(CreateOutgoingDocReq req, Long id) {
+        try {
+            var entity = outgoingDocumentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
+            if (req.getFileName() != null && !req.getFileName().isBlank()) {
+                String newPath = FileHelper.moveFile(req.getFileUrl(), AttachmentType.OUTGOING_DOCUMENT.name());
+                Attachment attachment = Attachment.builder()
+                        .itemId(entity.getId())
+                        .type(AttachmentType.OUTGOING_DOCUMENT)
+                        .filePath(newPath)
+                        .fileName(req.getFileName())
+                        .build();
+                attachmentRepository.save(attachment);
+            }
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    @Transactional
+    @Override
+    public void delete(Long id) {
+
+        outgoingDocumentRepository.deleteById(id);
+        attachmentRepository.deleteByItemIdAndType(id, AttachmentType.OUTGOING_DOCUMENT);
     }
 }
