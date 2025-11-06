@@ -21,7 +21,7 @@ import java.util.List;
 @RequestMapping("/common")
 public class CommonController {
     private final Path uploadDir = Paths.get(System.getProperty("user.dir"), "uploads/temp");
-    private static final List<String> ALLOWED_EXTENSIONS = List.of(FileExtension.JPEG, FileExtension.PNG);
+    private static final List<String> ALLOWED_EXTENSIONS = List.of(FileExtension.JPEG, FileExtension.PNG, FileExtension.PDF);
 
     @PostMapping("/upload")
     public ApiResponse<List<String>> uploadFile(@RequestParam("files") MultipartFile[] files) throws IOException {
@@ -48,8 +48,8 @@ public class CommonController {
                 String newFileName = originalName + "_" + timestamp + extension;
                 Path filePath = uploadDir.resolve(newFileName);
 
-                file.transferTo(filePath.toFile()); // Lưu file
-                return "uploads/temp/" + newFileName;    // Trả lại tên file đã lưu
+                file.transferTo(filePath.toFile());
+                return "uploads/temp/" + newFileName;
             } catch (IOException e) {
                 throw new RuntimeException(e.getMessage());
             }

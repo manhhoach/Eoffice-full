@@ -100,13 +100,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public UserDto getMe() {
-        var auth = SecurityContextHolder.getContext().getAuthentication();
-
-        if (auth == null || !auth.isAuthenticated() || auth.getPrincipal().equals("anonymousUser")) {
-            throw new AuthenticationCredentialsNotFoundException("Not authenticated");
-        }
-
-        var userDetails = (CustomUserDetails) auth.getPrincipal();
+        var userDetails = CustomUserDetails.getCurrentUserDetails();
 
         var loginRes = buildLoginRes(userDetails.getId(), userDetails.getUsername());
         return UserDto.builder()

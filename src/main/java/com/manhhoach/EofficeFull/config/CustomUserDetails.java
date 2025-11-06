@@ -1,7 +1,9 @@
 package com.manhhoach.EofficeFull.config;
 
 import lombok.Data;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
@@ -25,4 +27,14 @@ public class CustomUserDetails implements UserDetails {
         this.username = username;
     }
 
+
+    public static CustomUserDetails getCurrentUserDetails() {
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (auth == null || !auth.isAuthenticated() || "anonymousUser".equals(auth.getPrincipal())) {
+            throw new AuthenticationCredentialsNotFoundException("Not authenticated");
+        }
+
+        return (CustomUserDetails) auth.getPrincipal();
+    }
 }

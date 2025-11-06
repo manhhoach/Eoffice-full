@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface ProcessFlowRepository extends JpaRepository<ProcessFlow, Long> {
 
@@ -17,4 +19,7 @@ public interface ProcessFlowRepository extends JpaRepository<ProcessFlow, Long> 
             )
             """)
     Page<ProcessFlow> searchFlow(ProcessFlowPagingReq req, Pageable pageable);
+
+
+    Optional<ProcessFlow> findByCode(String code);
 }

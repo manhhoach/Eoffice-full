@@ -20,6 +20,8 @@ import java.util.List;
 public class ProcessFlow extends BaseEntity {
     private String name;
 
+    private String code;
+
     @OneToMany(mappedBy = "processFlow", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProcessStatus> processStatuses;
 }

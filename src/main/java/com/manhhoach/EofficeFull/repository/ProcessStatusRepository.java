@@ -3,6 +3,7 @@ package com.manhhoach.EofficeFull.repository;
 import com.manhhoach.EofficeFull.dto.processStatus.ProcessStatusDto;
 import com.manhhoach.EofficeFull.dto.processStatus.ProcessStatusPagingReq;
 import com.manhhoach.EofficeFull.entity.ProcessStatus;
+import com.manhhoach.EofficeFull.entity.ProcessStep;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,6 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ProcessStatusRepository extends JpaRepository<ProcessStatus, Long> {
@@ -28,4 +30,10 @@ public interface ProcessStatusRepository extends JpaRepository<ProcessStatus, Lo
             WHERE p.processFlow.id = :flowId 
             """)
     List<ProcessStatusDto> getByFlowId(Long flowId);
+
+    @Query("""
+            SELECT s FROM ProcessStatus s WHERE s.processFlow.id = :flowId
+            AND s.isStart = true
+            """)
+    Optional<ProcessStatus> getStartStatus(Long flowId);
 }

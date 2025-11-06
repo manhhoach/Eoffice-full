@@ -5,4 +5,5 @@ public class FileExtension {
     public static String JPEG = "JPEG";
     public static String PDF = "PDF";
     public static String MP3 = "MP3";
+    public static String XLSX = "XLSX";
 }

@@ -2,10 +2,7 @@ package com.manhhoach.EofficeFull.entity;
 
 import com.manhhoach.EofficeFull.constant.AttachmentType;
 import com.manhhoach.EofficeFull.constant.ProcessProgressType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -30,4 +27,11 @@ public class ProcessProgress extends BaseEntity{
     private Long recipientId;
 
     private Long handlerId;
+
+    @Column(name = "processStatusId", insertable = false, updatable = false)
+    private Long processStatusId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "processStatusId", nullable = true)
+    private ProcessStatus processStatus;
 }
